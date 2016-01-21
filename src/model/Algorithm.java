@@ -1,8 +1,8 @@
 package model;
 
-public abstract class Algorithm extends Thread{
+public abstract class Algorithm<E extends Number> extends Thread{
 	
-	protected Environment world;
+	protected Environment<E> world;
 	
 	/**
 	 * Modify the environment depending on the current algorithm.

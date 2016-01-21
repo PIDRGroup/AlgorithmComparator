@@ -18,7 +18,7 @@ public class Console {
 			
 			//env.getMatrix().delete("Unknown");
 			
-			Dijkstra dijkstra = new Dijkstra(env);
+			Dijkstra<Integer> dijkstra = new Dijkstra<Integer>(env);
 			dijkstra.grow("Kebab", "J'aime les trains");
 			
 		} catch (IOException | MultiplePlace | UnknownPlace e) {

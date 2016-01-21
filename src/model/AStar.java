@@ -1,8 +1,8 @@
 package model;
 
-public class AStar extends Algorithm {
+public class AStar<E extends Number> extends Algorithm<E>{
 	
-	public AStar(Environment env){
+	public AStar(Environment<E> env){
 		this.world = env;
 	}
 

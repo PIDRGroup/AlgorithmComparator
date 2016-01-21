@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-public class Dijkstra extends Algorithm {
+public class Dijkstra<E extends Number> extends Algorithm<E>{
 	
 	public Dijkstra(Environment env){
 		this.world = env;
@@ -27,18 +27,18 @@ public class Dijkstra extends Algorithm {
 		if(!world.isIndex(destination))
 			throw new UnknownPlace(destination);
 		
-		MaMatrice<Integer> matrice = this.world.getMatrix();
-		ArrayList<Integer> distance = new ArrayList<Integer>();
+		MaMatrice<E> matrice = this.world.getMatrix();
+		ArrayList<E> distance = new ArrayList<E>();
 		ArrayList<Integer> predecessor = new ArrayList<Integer>();
 		ArrayList<Integer> banlist = new ArrayList<Integer>();
 		
-		int dist;
+		E dist;
 		for (int i = 0; i < matrice.size(); i++){
 			try {
-				if ((dist = matrice.get(source, i)) < Integer.MAX_VALUE){
+				if ((dist = matrice.get(source, i)).intValue() < Integer.MAX_VALUE){
 					distance.add(dist);
 				}else{
-					distance.add(Integer.MAX_VALUE);
+					distance.add((E)(Integer)Integer.MAX_VALUE);
 				}
 				predecessor.add(source);
 			} catch (UnknownPlace e) {
@@ -52,8 +52,8 @@ public class Dijkstra extends Algorithm {
 			int min = Integer.MAX_VALUE;
 			int minnode = destination;
 			for(int i = 0 ; i < matrice.size() ; i++){
-				if (!banlist.contains(i) && distance.get(i) < min){
-					min = distance.get(i);
+				if (!banlist.contains(i) && distance.get(i).intValue() < min){
+					min = distance.get(i).intValue();
 					minnode = i;
 				}
 			}
@@ -64,10 +64,10 @@ public class Dijkstra extends Algorithm {
 			for (int i = 0; i < matrice.size() ; i++){
 				try {
 					
-					if (!banlist.contains(i) && (newdistance = matrice.get(minnode, i)) < Integer.MAX_VALUE){
-						newdistance += distance.get(minnode); 
-						if (newdistance < distance.get(i)){
-							distance.set(i, newdistance);
+					if (!banlist.contains(i) && (newdistance = (int) matrice.get(minnode, i)) < Integer.MAX_VALUE){
+						newdistance += distance.get(minnode).intValue(); 
+						if (newdistance < distance.get(i).intValue()){
+							distance.set(i, (E) (Integer) newdistance);
 							predecessor.set(i, minnode);
 						}
 					}
