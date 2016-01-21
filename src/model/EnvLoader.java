@@ -49,6 +49,9 @@ public class EnvLoader<E extends Number>{
 				
 				for (int i = 0; i < weights.length; i++) {
 					E weight = (E)((Number)Integer.parseInt(weights[i]));
+					
+					//Si le poids est de 0, alors on traduit cela par un poids infini (valeur max d'un int)
+					weight = (weight == (Integer) 0) ? (E)(Integer)Integer.MAX_VALUE : weight;
 					matrix.addLink(index, i, weight);
 				}
 				
