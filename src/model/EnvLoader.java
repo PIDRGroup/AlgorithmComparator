@@ -1,5 +1,7 @@
 package model;
 
+import java.io.*;
+
 /**
  * 
  * Load and generates environments
@@ -17,9 +19,41 @@ public class EnvLoader<E extends Number>{
 	 * Pour se faire, il faut construire un objet avec le type paramétré et appeler 
 	 * cette fonction auquelle on passe le chemin du fichier à charger.
 	 * @return
+	 * @throws IOException 
+	 * @throws MultiplePlace 
 	 */
-	public Environment<E> load(){
+	public Environment<E> load() throws IOException, MultiplePlace{
 		Environment<E> env = new Environment<E>();
+		
+		InputStream ips=new FileInputStream(path); 
+		InputStreamReader ipsr=new InputStreamReader(ips);
+		BufferedReader br=new BufferedReader(ipsr);
+		
+		String line = null;
+		MaMatrice<E> matrix = env.getMatrix();
+		
+		//On boucle tant qu'on est sur des définitions de place (des labels)
+		while ((line=br.readLine())!=null && line != "" && !line.isEmpty()){
+			matrix.addPlace(line);
+		}
+		
+		//On sort de la boucle, donc soit on passe aux liens, soit on on est à la fin du fichier
+		if(line != null){
+			
+			//Numéro de la place dont on définit les successeurs
+			int index = 0;
+			//tant qu'on tombe sur des lignes remplies, on crée des relations
+			while ((line=br.readLine())!=null && line != "" && !line.isEmpty()){
+				String[] weights = line.split(" ");
+				
+				for (int i = 0; i < weights.length; i++) {
+					E weight = (E)((Number)Integer.parseInt(weights[i]));
+					matrix.addLink(index, i, weight);
+				}
+				
+				index++;
+			}
+		}
 		
 		return env;
 	}
@@ -28,21 +62,25 @@ public class EnvLoader<E extends Number>{
 	 * Une méthode statique pour charger un Environnement d'Integer
 	 * @param path
 	 * @return
+	 * @throws IOException 
+	 * @throws MultiplePlace 
 	 */
-	public static Environment<Integer> loadInteger(String path){
-		Environment<Integer> env = new Environment<Integer>();
+	public static Environment<Integer> loadInteger(String path) throws IOException, MultiplePlace{
+		EnvLoader<Integer> loader = new EnvLoader<>(path);
 		
-		return env;
+		return loader.load();
 	}
 	
 	/**
 	 * une méthode statique pour charger un environnement de Double
 	 * @param path
 	 * @return
+	 * @throws IOException 
+	 * @throws MultiplePlace 
 	 */
-	public static Environment<Double> loadDouble(String path){
-		Environment<Double> env = new Environment<Double>();
+	public static Environment<Double> loadDouble(String path) throws IOException, MultiplePlace{
+		EnvLoader<Double> loader = new EnvLoader<>(path);
 		
-		return env;
+		return loader.load();
 	}
 }

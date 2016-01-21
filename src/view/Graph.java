@@ -8,11 +8,11 @@ import model.*;
 public class Graph implements Observer{
 	
 	public Graph(){
-		Environment env_astar = new Environment();
+		Environment<Integer> env_astar = new Environment<Integer>();
 		env_astar.addObserver(this);
 		AStar a_star = new AStar(env_astar);
 		
-		Environment env_dijkstra = env_astar.duplicate();
+		Environment<Integer> env_dijkstra = env_astar.duplicate();
 		env_dijkstra.addObserver(this);
 		Dijkstra dijkstra = new Dijkstra(env_dijkstra);
 	}

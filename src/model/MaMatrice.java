@@ -59,8 +59,14 @@ public class MaMatrice<E extends Number>{
 	 * Surtout utile pour les environnements variables.
 	 * 
 	 * @param label Label de la nouvelle place.
+	 * @throws MultiplePlace Si la place que l'on essaie d'ajouter se trouve déjà dans l'environnement
 	 */
-	public void addPlace(String label){
+	public void addPlace(String label) throws MultiplePlace{
+		
+		//On vérifie que le place n'existe pas encore.
+		if(labels.indexOf(label) != -1)
+			throw new MultiplePlace();
+		
 		labels.add(label);
 		
 		//On ajoute l'ArrayList correspondant aux prédécesseurs du nouvel éléments avec uen taille
