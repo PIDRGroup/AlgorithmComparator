@@ -7,15 +7,18 @@ public class Environment<E extends Number> extends Observable{
 	private MaMatrice<E> matrix;
 	
 	public Environment(){
-		
-	}
-
-	public Environment(Environment<E> env){
-		
+		matrix = new MaMatrice<E>();
 	}
 	
 	public MaMatrice<E> getMatrix(){
 		return matrix;
 	}
 
+	public Environment<E> duplicate(){
+		Environment<E> copy = new Environment<E>();
+		
+		copy.matrix = this.matrix.duplicate();
+		
+		return copy;
+	}
 }
