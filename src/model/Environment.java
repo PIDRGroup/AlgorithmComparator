@@ -21,4 +21,8 @@ public class Environment<E extends Number> extends Observable{
 		
 		return copy;
 	}
+	
+	public String toString(){
+		return matrix.toString();
+	}
 }

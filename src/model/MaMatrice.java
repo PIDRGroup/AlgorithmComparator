@@ -92,10 +92,17 @@ public class MaMatrice<E extends Number>{
 	 * @param src Label de la source
 	 * @param dest Label de la destination
 	 * @param weight Poids du lien
+	 * @throws UnknownPlace 
 	 */
-	public void addLink(String src, String dest, E weight){
+	public void addLink(String src, String dest, E weight) throws UnknownPlace{
 		int index_src = labels.indexOf(src);
 		int index_dest = labels.indexOf(dest);
+		
+		if(index_src == -1)
+			throw new UnknownPlace(src);
+			
+		if(index_dest == -1)
+			throw new UnknownPlace(dest);
 		
 		this.addLink(index_src, index_dest, weight);
 	}
@@ -107,8 +114,15 @@ public class MaMatrice<E extends Number>{
 	 * @param src Indice de la source
 	 * @param dest Indice de la destination
 	 * @param weight Poids du lien
+	 * @throws UnknownPlace 
 	 */
-	public void addLink(int src, int dest, E weight){
+	public void addLink(int src, int dest, E weight) throws UnknownPlace{
+		if(src == -1)
+			throw new UnknownPlace(src);
+			
+		if(dest == -1)
+			throw new UnknownPlace(dest);
+		
 		data.get(src).set(dest, weight);
 	}
 	
@@ -186,5 +200,33 @@ public class MaMatrice<E extends Number>{
 		}
 		
 		return copy;
+	}
+	
+	public String toString(){
+		String res = "";
+		res += "Places : ";
+		
+		for(String place : labels){
+			res+=place+" / ";
+		}
+		
+		res+="\n\n";
+		
+		int i=0;
+		int j;
+		for(ArrayList<E> line : data){
+			j=0;
+			for(E weight : line){
+				if(weight != (Integer) 0){
+					res+=labels.get(i)+"-- "+weight+" -->"+labels.get(j)+"\n";
+				}
+				j++;
+			}
+			
+			res+="\n";
+			i++;
+		}
+		
+		return res;
 	}
 }

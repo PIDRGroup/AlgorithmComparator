@@ -21,8 +21,9 @@ public class EnvLoader<E extends Number>{
 	 * @return
 	 * @throws IOException 
 	 * @throws MultiplePlace 
+	 * @throws UnknownPlace 
 	 */
-	public Environment<E> load() throws IOException, MultiplePlace{
+	public Environment<E> load() throws IOException, MultiplePlace, UnknownPlace{
 		Environment<E> env = new Environment<E>();
 		
 		InputStream ips=new FileInputStream(path); 
@@ -64,8 +65,9 @@ public class EnvLoader<E extends Number>{
 	 * @return
 	 * @throws IOException 
 	 * @throws MultiplePlace 
+	 * @throws UnknownPlace 
 	 */
-	public static Environment<Integer> loadInteger(String path) throws IOException, MultiplePlace{
+	public static Environment<Integer> loadInteger(String path) throws IOException, MultiplePlace, UnknownPlace{
 		EnvLoader<Integer> loader = new EnvLoader<>(path);
 		
 		return loader.load();
@@ -77,8 +79,9 @@ public class EnvLoader<E extends Number>{
 	 * @return
 	 * @throws IOException 
 	 * @throws MultiplePlace 
+	 * @throws UnknownPlace 
 	 */
-	public static Environment<Double> loadDouble(String path) throws IOException, MultiplePlace{
+	public static Environment<Double> loadDouble(String path) throws IOException, MultiplePlace, UnknownPlace{
 		EnvLoader<Double> loader = new EnvLoader<>(path);
 		
 		return loader.load();
