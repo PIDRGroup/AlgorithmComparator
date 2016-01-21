@@ -4,6 +4,8 @@ import java.util.Observable;
 
 public class Environment extends Observable{
 	
+	private MaMatrice matrice;
+	
 	public Environment(){
 		
 	}

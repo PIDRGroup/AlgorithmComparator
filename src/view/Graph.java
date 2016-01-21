@@ -21,5 +21,9 @@ public class Graph implements Observer{
 	public void update(Observable o, Object arg) {
 		
 	}
+	
+	public static void main(String[] args) {
+		Graph g = new Graph();
+	}
 
 }
