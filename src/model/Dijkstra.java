@@ -78,6 +78,8 @@ public class Dijkstra<E extends Number> extends Algorithm<E>{
 			}
 		}
 		
+		path = predecessor;
+		
 	}
 
 }

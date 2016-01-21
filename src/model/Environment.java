@@ -37,4 +37,8 @@ public class Environment<E extends Number> extends Observable{
 	public int indexOf(String label){
 		return matrix.indexOf(label);
 	}
+	
+	public String labelOf(int i){
+		return matrix.labelOf(i);
+	}
 }

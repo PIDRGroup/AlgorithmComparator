@@ -215,6 +215,10 @@ public class MaMatrice<E extends Number>{
 		return labels.indexOf(label);
 	}
 	
+	public String labelOf(int ind){
+		return labels.get(ind);
+	}
+	
 	public String toString(){
 		String res = "";
 		res += "Places : ";

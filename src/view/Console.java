@@ -14,12 +14,13 @@ public class Console {
 			
 			//env.getMatrix().delete("J'aime les trains");
 			
-			//System.out.println(env);
+			System.out.println(env);
 			
 			//env.getMatrix().delete("Unknown");
 			
 			Dijkstra<Integer> dijkstra = new Dijkstra<Integer>(env);
 			dijkstra.grow("Kebab", "J'aime les trains");
+			System.out.println(dijkstra.getPathLabels());
 			
 		} catch (IOException | MultiplePlace | UnknownPlace e) {
 			e.printStackTrace();
