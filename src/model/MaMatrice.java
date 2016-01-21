@@ -203,6 +203,18 @@ public class MaMatrice<E extends Number>{
 		return copy;
 	}
 	
+	public boolean isIndex(int index){
+		return index >= 0 && index < data.size();
+	}
+	
+	public boolean isLabel(String label){
+		return isIndex(labels.indexOf(label));
+	}
+	
+	public int indexOf(String label){
+		return labels.indexOf(label);
+	}
+	
 	public String toString(){
 		String res = "";
 		res += "Places : ";

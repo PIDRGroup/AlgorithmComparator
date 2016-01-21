@@ -7,7 +7,12 @@ public class AStar extends Algorithm {
 	}
 
 	@Override
-	public void grow() {
+	public void grow(int source, int destination) throws UnknownPlace{
+		
+	}
+
+	@Override
+	public void grow(String src, String dest) throws UnknownPlace {
 		
 	}
 

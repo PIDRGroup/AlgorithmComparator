@@ -25,4 +25,16 @@ public class Environment<E extends Number> extends Observable{
 	public String toString(){
 		return matrix.toString();
 	}
+	
+	public boolean isLabel(String label){
+		return matrix.isLabel(label);
+	}
+	
+	public boolean isIndex(int index){
+		return matrix.isIndex(index);
+	}
+	
+	public int indexOf(String label){
+		return matrix.indexOf(label);
+	}
 }

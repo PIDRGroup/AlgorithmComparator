@@ -7,12 +7,27 @@ public class Dijkstra extends Algorithm {
 	public Dijkstra(Environment env){
 		this.world = env;
 	}
+	
+	public void grow(String src, String dest) throws UnknownPlace{
+		if(!world.isLabel(src))
+			throw new UnknownPlace(src);
+		
+		if(!world.isLabel(dest))
+			throw new UnknownPlace(dest);
+		
+		grow(world.indexOf(src), world.indexOf(dest));
+	}
 
 	@Override
-	public void grow() {
+	public void grow(int source, int destination) throws UnknownPlace {
+		
+		if(!world.isIndex(source))
+			throw new UnknownPlace(source);
+		
+		if(!world.isIndex(destination))
+			throw new UnknownPlace(destination);
+		
 		MaMatrice<Integer> matrice = this.world.getMatrix();
-		int source = 0;
-		int destination = matrice.size() - 1;
 		ArrayList<Integer> distance = new ArrayList<Integer>();
 		ArrayList<Integer> predecessor = new ArrayList<Integer>();
 		ArrayList<Integer> banlist = new ArrayList<Integer>();
