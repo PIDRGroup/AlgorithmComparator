@@ -64,7 +64,7 @@ public class Dijkstra<E extends Number> extends Algorithm<E>{
 			for (int i = 0; i < matrice.size() ; i++){
 				try {
 					
-					if (!banlist.contains(i) && (newdistance = (int) matrice.get(minnode, i)) < Integer.MAX_VALUE){
+					if (!banlist.contains(i) && (newdistance = (Integer) matrice.get(minnode, i)) < Integer.MAX_VALUE){
 						newdistance += distance.get(minnode).intValue(); 
 						if (newdistance < distance.get(i).intValue()){
 							distance.set(i, (E) (Integer) newdistance);
