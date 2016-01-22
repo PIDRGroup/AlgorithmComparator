@@ -78,8 +78,16 @@ public class Dijkstra<E extends Number> extends Algorithm<E>{
 			}
 		}
 		
-		path = predecessor;
+		int current = destination;
+		
+		while (current != source){
+			int pred = predecessor.get(current);
+			path.add(pred);
+			current = pred;
+		}
 		
 	}
+	
+	
 
 }
