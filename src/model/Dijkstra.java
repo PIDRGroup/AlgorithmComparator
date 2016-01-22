@@ -78,7 +78,9 @@ public class Dijkstra<E extends Number> extends Algorithm<E>{
 			}
 		}
 		
+		this.path = new ArrayList<Integer>();
 		int current = destination;
+		
 		
 		while (current != source){
 			int pred = predecessor.get(current);
