@@ -79,6 +79,7 @@ public class Dijkstra<E extends Number> extends Algorithm<E>{
 		}
 		
 		this.path = new ArrayList<Integer>();
+		path.add(destination);
 		int current = destination;
 		
 		
