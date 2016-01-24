@@ -15,7 +15,7 @@ public class AStar<E extends Number> extends Algorithm<E>{
 		MaMatrice<Integer> matrice = (MaMatrice<Integer>) world.getMatrix();
 		ArrayList<Integer> noeudouvert = new ArrayList<Integer>();
 		ArrayList<Integer> noeudferme = new ArrayList<Integer>();
-		noeudferme.add(src);
+		noeudouvert.add(src);
 		HashMap<Integer,Integer> predecesseur = new HashMap<Integer,Integer>();
 		
 		ArrayList<Integer> g = new ArrayList<Integer>();
