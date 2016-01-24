@@ -77,6 +77,10 @@ public class AStar<E extends Number> extends Algorithm<E>{
 				}
 			}
 		}
+		
+		if (noeudouvert.isEmpty()){
+			System.out.println("Aucun chemin trouvé!");
+		}
 	}
 	
 	int h(int current){
