@@ -16,6 +16,7 @@ import edu.uci.ics.jung.visualization.BasicVisualizationServer;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
 import model.*;
+import sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap;
 
 public class GraphView<E extends Number> extends JPanel implements Observer{
 	
@@ -42,10 +43,30 @@ public class GraphView<E extends Number> extends JPanel implements Observer{
 		btn_run.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				ArrayList<Thread> threads = new ArrayList<Thread>();
 				for(Algorithm<? extends Number> alg : algorithms){
 					Thread t = new Thread(alg);
+					threads.add(t);
 					t.start();
 				}
+				
+				//On attend que tous les threads soient finis
+				for (int i = 0; i < threads.size(); i++) {
+					try {
+						threads.get(i).join();
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}
+				}
+				
+				String estimations = "";
+				
+				for (int i = 0; i < algorithms.size(); i++) {
+					Algorithm<E> current = algorithms.get(i);
+					estimations += current.getName() + " : " + current.getDuration() + " ns, " + current.getMemory() + " nb blocks\n";
+				}
+				
+				JOptionPane.showMessageDialog(btn_run, estimations, "Estimations", JOptionPane.OK_OPTION);
 			}
 		});
 		
@@ -140,7 +161,7 @@ public class GraphView<E extends Number> extends JPanel implements Observer{
 		dijkstra.setSrc("Kebab");
 		dijkstra.setDest("I Like Trains");;
 		dijkstra.addObserver(gv);
-		//gv.addAlgo(dijkstra);
+		gv.addAlgo(dijkstra);
              
         // Set up a new stroke Transformer for the edges
         JFrame frame = new JFrame("Simple Graph View 2");

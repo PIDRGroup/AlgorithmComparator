@@ -76,7 +76,6 @@ public class AStar<E extends Number> extends Algorithm<E>{
 					f.set(i, g.get(i) + h(i));
 				}
 			}
-			System.out.println(noeudouvert);
 		}
 		
 		if (noeudouvert.isEmpty()){

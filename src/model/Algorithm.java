@@ -9,6 +9,10 @@ public abstract class Algorithm<E extends Number> extends Observable implements 
 	protected  ArrayList<Integer> path;
 	protected int source, destination;
 	
+	//Attrbuts pour juger de la performance de l'algo
+	private long estimated_time;
+	protected int estimated_memory;
+	
 	/**
 	 * Modify the environment depending on the current algorithm.
 	 * Each algorithm has its own instance of the environment
@@ -60,11 +64,23 @@ public abstract class Algorithm<E extends Number> extends Observable implements 
 	}
 	
 	public void run(){
+		long first_time = System.nanoTime();
+		
 		try {
 			grow(source, destination);
 		} catch (UnknownPlace e) {
 			e.printStackTrace();
 		}
+		
+		estimated_time = System.nanoTime() - first_time;
+	}
+	
+	public long getDuration(){
+		return estimated_time;
+	}
+	
+	public int getMemory(){
+		return estimated_memory;
 	}
 	
 	public abstract String getName();
