@@ -66,7 +66,7 @@ public class AStar<E extends Number> extends Algorithm<E>{
 					dist = g.get(current) + matrice.get(current, i);
 					if (!noeudouvert.contains(new Integer(i))){
 						noeudouvert.add(i);
-					}else if (dist > g.get(i)){
+					}else if (dist >= g.get(i)){
 						continue;
 					}
 					
