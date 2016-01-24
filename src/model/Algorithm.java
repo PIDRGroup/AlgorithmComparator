@@ -12,7 +12,16 @@ public abstract class Algorithm<E extends Number> extends Thread{
 	 * Each algorithm has its own instance of the environment
 	 */
 	public abstract void grow(int source, int destination) throws UnknownPlace;
-	public abstract void grow(String src, String dest) throws UnknownPlace;
+	
+	public void grow(String src, String dest) throws UnknownPlace{
+		if(!world.isLabel(src))
+			throw new UnknownPlace(src);
+		
+		if(!world.isLabel(dest))
+			throw new UnknownPlace(dest);
+		
+		grow(world.indexOf(src), world.indexOf(dest));
+	}
 	
 	public ArrayList<Integer> getPathIndexes(){
 		return path;

@@ -7,16 +7,6 @@ public class Dijkstra<E extends Number> extends Algorithm<E>{
 	public Dijkstra(Environment env){
 		this.world = env;
 	}
-	
-	public void grow(String src, String dest) throws UnknownPlace{
-		if(!world.isLabel(src))
-			throw new UnknownPlace(src);
-		
-		if(!world.isLabel(dest))
-			throw new UnknownPlace(dest);
-		
-		grow(world.indexOf(src), world.indexOf(dest));
-	}
 
 	@Override
 	public void grow(int source, int destination) throws UnknownPlace {

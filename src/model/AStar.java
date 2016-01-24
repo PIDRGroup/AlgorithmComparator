@@ -73,11 +73,6 @@ public class AStar<E extends Number> extends Algorithm<E>{
 			}
 		}
 	}
-
-	@Override
-	public void grow(String src, String dest) throws UnknownPlace {
-		
-	}
 	
 	int h(int current){
 		return 0;
