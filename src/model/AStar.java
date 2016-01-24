@@ -50,6 +50,7 @@ public class AStar<E extends Number> extends Algorithm<E>{
 					setChanged();
 					notifyObservers();
 				}
+				break;
 			}
 						
 			noeudouvert.remove(new Integer(current));
