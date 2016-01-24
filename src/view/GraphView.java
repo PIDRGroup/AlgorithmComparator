@@ -140,7 +140,7 @@ public class GraphView<E extends Number> extends JPanel implements Observer{
 		dijkstra.setSrc("Kebab");
 		dijkstra.setDest("I Like Trains");;
 		dijkstra.addObserver(gv);
-		gv.addAlgo(dijkstra);
+		//gv.addAlgo(dijkstra);
              
         // Set up a new stroke Transformer for the edges
         JFrame frame = new JFrame("Simple Graph View 2");

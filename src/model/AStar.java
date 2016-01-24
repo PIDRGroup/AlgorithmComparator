@@ -51,7 +51,7 @@ public class AStar<E extends Number> extends Algorithm<E>{
 					notifyObservers();
 				}
 			}
-			
+						
 			noeudouvert.remove(new Integer(current));
 			noeudferme.add(current);
 			int dist;
