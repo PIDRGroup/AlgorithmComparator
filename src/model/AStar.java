@@ -44,7 +44,6 @@ public class AStar<E extends Number> extends Algorithm<E>{
 				path.add(current);
 				setChanged();
 				notifyObservers();
-				System.out.println("HELLO");
 				while (predecesseur.containsKey(current)){
 					current = predecesseur.get(current);
 					path.add(current);
