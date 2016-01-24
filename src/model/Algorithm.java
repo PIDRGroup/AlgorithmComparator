@@ -66,4 +66,6 @@ public abstract class Algorithm<E extends Number> extends Observable implements 
 			e.printStackTrace();
 		}
 	}
+	
+	public abstract String getName();
 }

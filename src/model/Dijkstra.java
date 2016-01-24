@@ -98,5 +98,10 @@ public class Dijkstra<E extends Number> extends Algorithm<E>{
 		}
 		
 	}
+
+	@Override
+	public String getName() {
+		return "Dijkstra";
+	}
 	
 }

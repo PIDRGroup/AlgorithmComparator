@@ -25,14 +25,17 @@ public class GraphView<E extends Number> extends JPanel implements Observer{
 	private ArrayList<Algorithm<E>> algorithms;
 	private Graph<String, E> graph;
 	private BasicVisualizationServer<String, E> visual;
+	private JPanel legend;
 	
 	public GraphView(Graph<String, E> g){
 		graph = g;
 		
 		this.setLayout(new BorderLayout());
+		algorithms = new ArrayList<Algorithm<E>>();
 		
 		//On crée le panneau de contrôle
 		JPanel pan_control = new JPanel();
+		pan_control.setLayout(new BorderLayout());
 		JButton btn_run = new JButton("Run !");
 		pan_control.add(btn_run, BorderLayout.NORTH);
 		
@@ -46,6 +49,20 @@ public class GraphView<E extends Number> extends JPanel implements Observer{
 			}
 		});
 		
+		//On crée la légende des couleurs
+		
+		legend = new JPanel();
+		
+		for (int i = 0; i < algorithms.size(); i++) {
+			JPanel col = new JPanel();
+			col.setPreferredSize(new Dimension(20, 20));
+			col.setBackground(GraphView.colors[i]);
+			
+			legend.add(col);
+			legend.add(new JLabel(algorithms.get(i).getName()));
+		}
+		
+		pan_control.add(legend, BorderLayout.SOUTH);
 		this.add(pan_control);
 		
 		//On crée l'interface du graphe 
@@ -79,12 +96,19 @@ public class GraphView<E extends Number> extends JPanel implements Observer{
         
         visual.setBackground(Color.WHITE);
         this.add(visual, BorderLayout.SOUTH);
-        
-        algorithms = new ArrayList<Algorithm<E>>();
 	}
 	
 	public void addAlgo(Algorithm<E> algo){
 		algorithms.add(algo);
+		
+		JPanel col = new JPanel();
+		col.setPreferredSize(new Dimension(20, 20));
+		col.setBackground(GraphView.colors[algorithms.size()-1]);
+		
+		legend.add(col);
+		legend.add(new JLabel(algorithms.get(algorithms.size()-1).getName()));
+		
+		repaint();
 	}
 	
 	@Override
@@ -116,7 +140,7 @@ public class GraphView<E extends Number> extends JPanel implements Observer{
 		dijkstra.setSrc("Kebab");
 		dijkstra.setDest("I Like Trains");;
 		dijkstra.addObserver(gv);
-		//gv.addAlgo(dijkstra);
+		gv.addAlgo(dijkstra);
              
         // Set up a new stroke Transformer for the edges
         JFrame frame = new JFrame("Simple Graph View 2");

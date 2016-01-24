@@ -81,4 +81,9 @@ public class AStar<E extends Number> extends Algorithm<E>{
 	int h(int current){
 		return 0;
 	}
+
+	@Override
+	public String getName() {
+		return "A*";
+	}
 }
