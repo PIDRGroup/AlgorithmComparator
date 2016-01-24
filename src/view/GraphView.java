@@ -60,8 +60,7 @@ public class GraphView<E extends Number> extends JPanel implements Observer{
 			
             public Paint transform(String str) {
             	for(int i=0; i<algorithms.size(); i++){
-            		Algorithm<E> alg = algorithms.get(i);
-            		
+            		Algorithm<E> alg = algorithms.get(i);            		
             		if(alg.getPathLabels().contains(str))
             			return GraphView.colors[i];
             	}
@@ -109,7 +108,7 @@ public class GraphView<E extends Number> extends JPanel implements Observer{
 		a_star.setDest("I Like Trains");
 		a_star.addObserver(gv);
 		env.addObserver(gv);
-		//gv.addAlgo(a_star);
+		gv.addAlgo(a_star);
 		
 		Environment<Integer> copy = env.duplicate();
 		copy.addObserver(gv);
@@ -117,7 +116,7 @@ public class GraphView<E extends Number> extends JPanel implements Observer{
 		dijkstra.setSrc("Kebab");
 		dijkstra.setDest("I Like Trains");;
 		dijkstra.addObserver(gv);
-		gv.addAlgo(dijkstra);
+		//gv.addAlgo(dijkstra);
              
         // Set up a new stroke Transformer for the edges
         JFrame frame = new JFrame("Simple Graph View 2");

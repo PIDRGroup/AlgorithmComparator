@@ -12,7 +12,7 @@ public class AStar<E extends Number> extends Algorithm<E>{
 
 	@Override
 	public void grow(int src, int dest) throws UnknownPlace{
-		MaMatrice<Integer> matrice = new MaMatrice<Integer>();
+		MaMatrice<Integer> matrice = (MaMatrice<Integer>) world.getMatrix();
 		ArrayList<Integer> noeudouvert = new ArrayList<Integer>();
 		ArrayList<Integer> noeudferme = new ArrayList<Integer>();
 		noeudferme.add(src);
@@ -42,9 +42,14 @@ public class AStar<E extends Number> extends Algorithm<E>{
 			
 			if (current == dest){
 				path.add(current);
+				setChanged();
+				notifyObservers();
+				System.out.println("HELLO");
 				while (predecesseur.containsKey(current)){
 					current = predecesseur.get(current);
 					path.add(current);
+					setChanged();
+					notifyObservers();
 				}
 			}
 			
