@@ -4,18 +4,19 @@ import java.util.ArrayList;
 
 public class Dijkstra<E extends Number> extends Algorithm<E>{
 	
-	public Dijkstra(Environment env){
+	public Dijkstra(Environment<E> env){
 		this.world = env;
+		path = new ArrayList<Integer>();
 	}
 
 	@Override
-	public void grow(int source, int destination) throws UnknownPlace {
+	public void grow(int src, int dest) throws UnknownPlace {
 		
-		if(!world.isIndex(source))
-			throw new UnknownPlace(source);
+		if(!world.isIndex(src))
+			throw new UnknownPlace(src);
 		
-		if(!world.isIndex(destination))
-			throw new UnknownPlace(destination);
+		if(!world.isIndex(dest))
+			throw new UnknownPlace(dest);
 		
 		MaMatrice<E> matrice = this.world.getMatrix();
 		ArrayList<E> distance = new ArrayList<E>();
@@ -25,14 +26,14 @@ public class Dijkstra<E extends Number> extends Algorithm<E>{
 		E dist;
 		for (int i = 0; i < matrice.size(); i++){
 			try {
-				if ((dist = matrice.get(source, i)).intValue() < Integer.MAX_VALUE){
+				if ((dist = matrice.get(src, i)).intValue() < Integer.MAX_VALUE){
 					distance.add(dist);
-					//On initialise les noeuds à une distance infini de la source
+					//On initialise les noeuds à une distance infini de la src
 				}else{
 					distance.add((E)(Integer)Integer.MAX_VALUE);
-					//On initialise les noeuds adjacents à la source, par leur distance à la source
+					//On initialise les noeuds adjacents à la src, par leur distance à la src
 				}
-				predecessor.add(source);
+				predecessor.add(src);
 				//On ajoute à chaque noeud comme prédécesseur, eux-mêmes
 			} catch (UnknownPlace e) {
 				System.out.println("Erreur dans le grow de Dijkstra: initialisation");
@@ -45,9 +46,9 @@ public class Dijkstra<E extends Number> extends Algorithm<E>{
 			// Tant que tous les noeuds n'ont pas été parcourus
 			
 			int min = Integer.MAX_VALUE;
-			int minnode = destination;
+			int minnode = dest;
 			
-			//On cherche le noeud n'ont encore parcourus avec la plus petit distance à la source
+			//On cherche le noeud n'ont encore parcourus avec la plus petit distance à la src
 			for(int i = 0 ; i < matrice.size() ; i++){
 				if (!banlist.contains(i) && distance.get(i).intValue() < min){
 					min = distance.get(i).intValue();
@@ -80,20 +81,22 @@ public class Dijkstra<E extends Number> extends Algorithm<E>{
 				}
 			}
 		}
+	
+		path.add(dest);
+		this.setChanged();
+		this.notifyObservers();
 		
-		this.path = new ArrayList<Integer>();
-		path.add(destination);
-		int current = destination;
+		int current = dest;
 		
-		//On rétablit le plus court chemin jusqu'à la destination d'après la liste des prédécesseurs
-		while (current != source){
+		//On rétablit le plus court chemin jusqu'à la dest d'après la liste des prédécesseurs
+		while (current != src){
 			int pred = predecessor.get(current);
 			path.add(pred);
 			current = pred;
+			this.setChanged();
+			this.notifyObservers();
 		}
 		
 	}
 	
-	
-
 }

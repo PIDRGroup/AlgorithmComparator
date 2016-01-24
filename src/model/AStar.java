@@ -7,14 +7,15 @@ public class AStar<E extends Number> extends Algorithm<E>{
 	
 	public AStar(Environment<E> env){
 		this.world = env;
+		path = new ArrayList<Integer>();
 	}
 
 	@Override
-	public void grow(int source, int destination) throws UnknownPlace{
+	public void grow(int src, int dest) throws UnknownPlace{
 		MaMatrice<Integer> matrice = new MaMatrice<Integer>();
 		ArrayList<Integer> noeudouvert = new ArrayList<Integer>();
 		ArrayList<Integer> noeudferme = new ArrayList<Integer>();
-		noeudferme.add(source);
+		noeudferme.add(src);
 		HashMap<Integer,Integer> predecesseur = new HashMap<Integer,Integer>();
 		
 		ArrayList<Integer> g = new ArrayList<Integer>();
@@ -24,8 +25,8 @@ public class AStar<E extends Number> extends Algorithm<E>{
 			g.add(Integer.MAX_VALUE);
 			f.add(Integer.MAX_VALUE);
 		}
-		g.set(source, 0);
-		f.set(source, h(source));
+		g.set(src, 0);
+		f.set(src, h(src));
 		
 		while (!noeudouvert.isEmpty()){
 			int min = Integer.MAX_VALUE;
@@ -39,8 +40,7 @@ public class AStar<E extends Number> extends Algorithm<E>{
 				}
 			}
 			
-			if (current == destination){
-				path = new ArrayList<Integer>();
+			if (current == dest){
 				path.add(current);
 				while (predecesseur.containsKey(current)){
 					current = predecesseur.get(current);
@@ -77,5 +77,4 @@ public class AStar<E extends Number> extends Algorithm<E>{
 	int h(int current){
 		return 0;
 	}
-
 }

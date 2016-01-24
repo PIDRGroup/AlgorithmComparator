@@ -1,11 +1,13 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Observable;
 
-public abstract class Algorithm<E extends Number> extends Thread{
+public abstract class Algorithm<E extends Number> extends Observable implements Runnable{
 	
 	protected Environment<E> world;
 	protected  ArrayList<Integer> path;
+	protected int source, destination;
 	
 	/**
 	 * Modify the environment depending on the current algorithm.
@@ -23,6 +25,10 @@ public abstract class Algorithm<E extends Number> extends Thread{
 		grow(world.indexOf(src), world.indexOf(dest));
 	}
 	
+	public void grow() throws UnknownPlace{
+		grow(destination, source);
+	}
+	
 	public ArrayList<Integer> getPathIndexes(){
 		return path;
 	}
@@ -35,5 +41,29 @@ public abstract class Algorithm<E extends Number> extends Thread{
 		}
 		
 		return labels;
+	}
+	
+	public void setDest(int dest){
+		destination = dest;
+	}
+	
+	public void setSrc(int src){
+		source=src;
+	}
+	
+	public void setDest(String dest){
+		destination = world.indexOf(dest);
+	}
+	
+	public void setSrc(String src){
+		source=world.indexOf(src);
+	}
+	
+	public void run(){
+		try {
+			grow(source, destination);
+		} catch (UnknownPlace e) {
+			e.printStackTrace();
+		}
 	}
 }
