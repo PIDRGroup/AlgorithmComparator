@@ -12,6 +12,9 @@ public class AStar<E extends Number> extends Algorithm<E>{
 
 	@Override
 	public void grow(int src, int dest) throws UnknownPlace{
+		nb_visited_nodes = 0;
+		estimated_time = 0;
+		
 		MaMatrice<Integer> matrice = (MaMatrice<Integer>) world.getMatrix();
 		ArrayList<Integer> noeudouvert = new ArrayList<Integer>();
 		ArrayList<Integer> noeudferme = new ArrayList<Integer>();
@@ -59,6 +62,8 @@ public class AStar<E extends Number> extends Algorithm<E>{
 			
 			for (int i = 0; i < matrice.size(); i++){
 				if (matrice.get(current, i) < Integer.MAX_VALUE){
+					nb_visited_nodes++;
+					
 					if (noeudferme.contains(new Integer(i))){
 						continue;
 						

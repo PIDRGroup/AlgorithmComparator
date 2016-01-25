@@ -9,8 +9,8 @@ import javax.swing.*;
 
 import org.apache.commons.collections15.Transformer;
 
-import edu.uci.ics.jung.algorithms.layout.CircleLayout;
-import edu.uci.ics.jung.algorithms.layout.Layout;
+import edu.uci.ics.jung.algorithms.layout.*;
+import edu.uci.ics.jung.algorithms.layout.SpringLayout;
 import edu.uci.ics.jung.graph.*;
 import edu.uci.ics.jung.visualization.BasicVisualizationServer;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
@@ -63,10 +63,10 @@ public class GraphView<E extends Number> extends JPanel implements Observer{
 				
 				for (int i = 0; i < algorithms.size(); i++) {
 					Algorithm<E> current = algorithms.get(i);
-					estimations += current.getName() + " : " + current.getDuration() + " ns, " + current.getMemory() + " nb blocks\n";
+					estimations += current.getName() + " : " + current.getDuration() + " ns (time), " + current.getNbNodes() + " nb visited nodes.\n";
 				}
 				
-				JOptionPane.showMessageDialog(btn_run, estimations, "Estimations", JOptionPane.OK_OPTION);
+				JOptionPane.showMessageDialog(btn_run, estimations, "Estimations", JOptionPane.NO_OPTION);
 			}
 		});
 		
@@ -141,7 +141,7 @@ public class GraphView<E extends Number> extends JPanel implements Observer{
 		
 		Environment<Integer> env = null;
 		try {
-			env = EnvLoader.loadInteger("./graph/test.g");
+			env = EnvLoader.loadInteger("./graph/prob1.g");
 		} catch (IOException | MultiplePlace | UnknownPlace e) {
 			e.printStackTrace();
 		}
@@ -149,8 +149,8 @@ public class GraphView<E extends Number> extends JPanel implements Observer{
 		GraphView<Integer> gv = new GraphView<Integer>(env.toGraph());
 		
 		AStar<Integer> a_star = new AStar<Integer>(env);
-		a_star.setSrc("Kebab");
-		a_star.setDest("I Like Trains");
+		a_star.setSrc("K");
+		a_star.setDest("J");
 		a_star.addObserver(gv);
 		env.addObserver(gv);
 		gv.addAlgo(a_star);
@@ -158,13 +158,13 @@ public class GraphView<E extends Number> extends JPanel implements Observer{
 		Environment<Integer> copy = env.duplicate();
 		copy.addObserver(gv);
 		Dijkstra<Integer> dijkstra = new Dijkstra<Integer>(copy);
-		dijkstra.setSrc("Kebab");
-		dijkstra.setDest("I Like Trains");;
+		dijkstra.setSrc("K");
+		dijkstra.setDest("J");;
 		dijkstra.addObserver(gv);
 		gv.addAlgo(dijkstra);
              
         // Set up a new stroke Transformer for the edges
-        JFrame frame = new JFrame("Simple Graph View 2");
+        JFrame frame = new JFrame("AlgoComparator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(gv);
         frame.pack();

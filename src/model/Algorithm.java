@@ -10,8 +10,8 @@ public abstract class Algorithm<E extends Number> extends Observable implements 
 	protected int source, destination;
 	
 	//Attrbuts pour juger de la performance de l'algo
-	private long estimated_time;
-	protected int estimated_memory;
+	protected long estimated_time;
+	protected int nb_visited_nodes;
 	
 	/**
 	 * Modify the environment depending on the current algorithm.
@@ -79,8 +79,8 @@ public abstract class Algorithm<E extends Number> extends Observable implements 
 		return estimated_time;
 	}
 	
-	public int getMemory(){
-		return estimated_memory;
+	public int getNbNodes(){
+		return nb_visited_nodes;
 	}
 	
 	public abstract String getName();

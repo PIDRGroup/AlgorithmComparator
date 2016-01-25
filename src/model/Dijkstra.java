@@ -12,6 +12,9 @@ public class Dijkstra<E extends Number> extends Algorithm<E>{
 	@Override
 	public void grow(int src, int dest) throws UnknownPlace {
 		
+		estimated_time = 0;
+		nb_visited_nodes = 0;
+		
 		if(!world.isIndex(src))
 			throw new UnknownPlace(src);
 		
@@ -28,6 +31,7 @@ public class Dijkstra<E extends Number> extends Algorithm<E>{
 			try {
 				if ((dist = matrice.get(src, i)).intValue() < Integer.MAX_VALUE){
 					distance.add(dist);
+					nb_visited_nodes++;
 					//On initialise les noeuds à une distance infini de la src
 				}else{
 					distance.add((E)(Integer)Integer.MAX_VALUE);
@@ -65,6 +69,7 @@ public class Dijkstra<E extends Number> extends Algorithm<E>{
 					
 					//On fais une mise à jour de la distance à la source pour les noeuds connectés au noeud courant
 					if (!banlist.contains(i) && (newdistance = (Integer) matrice.get(minnode, i)) < Integer.MAX_VALUE){
+						nb_visited_nodes++;
 						newdistance += distance.get(minnode).intValue(); 
 						if (newdistance < distance.get(i).intValue()){
 							/*Si la distance à la source d'un noeud connecté change,
