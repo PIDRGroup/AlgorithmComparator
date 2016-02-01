@@ -29,9 +29,8 @@ public class EnvLoader<E extends Number>{
 		InputStream ips=new FileInputStream(path); 
 		InputStreamReader ipsr=new InputStreamReader(ips);
 		BufferedReader br=new BufferedReader(ipsr);
-		
+
 		String line = null;
-		MaMatrice<E> matrix = env.getMatrix();
 		
 		//On boucle tant qu'on est sur des définitions de place (des labels)
 		while ((line=br.readLine())!=null && line != "" && !line.isEmpty()){
