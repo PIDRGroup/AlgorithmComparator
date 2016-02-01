@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Observable;
 
 import edu.uci.ics.jung.graph.DirectedSparseMultigraph;
@@ -7,61 +8,98 @@ import edu.uci.ics.jung.graph.Graph;
 
 public class Environment<E extends Number> extends Observable{
 	
-	private MaMatrice<E> matrix;
-	
+	private ArrayList<ArrayList<E>> successors;
+	private ArrayList<ArrayList<E>> predecessors;
+	private ArrayList<String> labels;
+		
 	public Environment(){
-		matrix = new MaMatrice<E>();
+		successors = new ArrayList<ArrayList<E>>();
+		predecessors = new ArrayList<ArrayList<E>>();
+		labels = new ArrayList<String>();
 	}
 	
-	public MaMatrice<E> getMatrix(){
-		return matrix;
+	public ArrayList<ArrayList<E>> getPredecessors(){
+		return predecessors;
+	}
+	
+	public ArrayList<ArrayList<E>> getSuccessors(){
+		return successors;
 	}
 
 	public Environment<E> duplicate(){
 		Environment<E> copy = new Environment<E>();
 		
-		copy.matrix = this.matrix.duplicate();
+		ArrayList<ArrayList<E>> succ_copy = new ArrayList<ArrayList<E>>();
+		ArrayList<ArrayList<E>> pred_copy = new ArrayList<ArrayList<E>>();
+		
+		for(ArrayList<E> l : successors){
+			ArrayList<E> list = new ArrayList<E>();
+			
+			for(E el : l){
+				list.add(el);
+			}
+			
+			succ_copy.add(list);
+		}
+		
+		copy.predecessors = pred_copy;
+		copy.successors = succ_copy;
 		
 		return copy;
 	}
 	
 	public String toString(){
-		return matrix.toString();
+		String s = "";
+		
+		s+="Predessors : ";
+		for(ArrayList<E> list : predecessors){
+			s+="[";
+			
+			for(E el : list){
+				s+=el + " / ";
+			}
+			
+			s+="]";
+		}
+		
+		return s;
 	}
 	
 	public boolean isLabel(String label){
-		return matrix.isLabel(label);
+		return labels.contains(label);
 	}
 	
 	public boolean isIndex(int index){
-		return matrix.isIndex(index);
+		return index > 0 && index < labels.size();
 	}
 	
-	public int indexOf(String label){
-		return matrix.indexOf(label);
+	public int indexOf(String label) throws UnknownPlace{
+		if(!labels.contains(label))
+			throw new UnknownPlace(label);
+		
+		return labels.indexOf(label);
 	}
 	
-	public String labelOf(int i){
-		return matrix.labelOf(i);
+	public String labelOf(int i) throws UnknownPlace{
+		if(i < 0 || i > labels.size())
+			throw new UnknownPlace(i);
+		
+		return labels.get(i);
 	}
 	
 	public Graph<String, E> toGraph(){
 		Graph<String, E> g = new DirectedSparseMultigraph<String, E>();
 		
 		//On crée toutes les places
-		for(int i=0; i<matrix.size(); i++){
-			g.addVertex(matrix.labelOf(i));
+		for(int i=0; i<labels.size(); i++){
+			g.addVertex(labels.get(i));
 		}
 		
 		//Puis on crée les flux
-		for(int i=0; i<matrix.size(); i++){
-			for(int j=0; j<matrix.size(); j++){
-				try {
-					if(matrix.get(i, j).intValue()<Integer.MAX_VALUE)
-						g.addEdge(matrix.get(i, j), matrix.labelOf(i), matrix.labelOf(j));
-				} catch (UnknownPlace e) {
-					e.printStackTrace();
-				}
+		for(int i=0; i<successors.size(); i++){
+			for(int j=0; j<successors.get(i).size(); j++){
+				if(successors.get(i).get(j).intValue()<Integer.MAX_VALUE)
+					g.addEdge(successors.get(i).get(j), labels.get(i), labels.get(j));
 			}
 		}
 		
