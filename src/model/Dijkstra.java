@@ -10,16 +10,16 @@ public class Dijkstra<E extends Number> extends Algorithm<E>{
 	}
 
 	@Override
-	public void grow(int src, int dest) throws UnknownPlace {
+	public void grow(int src, int dest) throws UnknownPlaceException {
 		
 		estimated_time = 0;
 		nb_visited_nodes = 0;
 		
 		if(!world.isIndex(src))
-			throw new UnknownPlace(src);
+			throw new UnknownPlaceException(src);
 		
 		if(!world.isIndex(dest))
-			throw new UnknownPlace(dest);
+			throw new UnknownPlaceException(dest);
 		
 		MaMatrice<E> matrice = this.world.getMatrix();
 		ArrayList<E> distance = new ArrayList<E>();
@@ -39,7 +39,7 @@ public class Dijkstra<E extends Number> extends Algorithm<E>{
 				}
 				predecessor.add(src);
 				//On ajoute à chaque noeud comme prédécesseur, eux-mêmes
-			} catch (UnknownPlace e) {
+			} catch (UnknownPlaceException e) {
 				System.out.println("Erreur dans le grow de Dijkstra: initialisation");
 				e.printStackTrace();
 				
@@ -80,7 +80,7 @@ public class Dijkstra<E extends Number> extends Algorithm<E>{
 							predecessor.set(i, minnode);
 						}
 					}
-				} catch (UnknownPlace e) {
+				} catch (UnknownPlaceException e) {
 					System.out.println("Erreur dans le grow de Dijkstra: mise à jour des noeuds voisins");
 					e.printStackTrace();
 				}

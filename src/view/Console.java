@@ -22,7 +22,7 @@ public class Console {
 			dijkstra.grow("Kebab", "J'aime les trains");
 			System.out.println(dijkstra.getPathLabels());
 			
-		} catch (IOException | MultiplePlace | UnknownPlace e) {
+		} catch (IOException | MultiplePlaceException | UnknownPlaceException e) {
 			e.printStackTrace();
 		}
 	}

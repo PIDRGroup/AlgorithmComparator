@@ -20,10 +20,10 @@ public class EnvLoader<E extends Number>{
 	 * cette fonction auquelle on passe le chemin du fichier à charger.
 	 * @return
 	 * @throws IOException 
-	 * @throws MultiplePlace 
-	 * @throws UnknownPlace 
+	 * @throws MultiplePlaceException 
+	 * @throws UnknownPlaceException 
 	 */
-	public Environment<E> load() throws IOException, MultiplePlace, UnknownPlace{
+	public Environment<E> load() throws IOException, MultiplePlaceException, UnknownPlaceException{
 		Environment<E> env = new Environment<E>();
 		
 		InputStream ips=new FileInputStream(path); 
@@ -66,10 +66,10 @@ public class EnvLoader<E extends Number>{
 	 * @param path
 	 * @return
 	 * @throws IOException 
-	 * @throws MultiplePlace 
-	 * @throws UnknownPlace 
+	 * @throws MultiplePlaceException 
+	 * @throws UnknownPlaceException 
 	 */
-	public static Environment<Integer> loadInteger(String path) throws IOException, MultiplePlace, UnknownPlace{
+	public static Environment<Integer> loadInteger(String path) throws IOException, MultiplePlaceException, UnknownPlaceException{
 		EnvLoader<Integer> loader = new EnvLoader<>(path);
 		
 		return loader.load();
@@ -80,10 +80,10 @@ public class EnvLoader<E extends Number>{
 	 * @param path
 	 * @return
 	 * @throws IOException 
-	 * @throws MultiplePlace 
-	 * @throws UnknownPlace 
+	 * @throws MultiplePlaceException 
+	 * @throws UnknownPlaceException 
 	 */
-	public static Environment<Double> loadDouble(String path) throws IOException, MultiplePlace, UnknownPlace{
+	public static Environment<Double> loadDouble(String path) throws IOException, MultiplePlaceException, UnknownPlaceException{
 		EnvLoader<Double> loader = new EnvLoader<>(path);
 		
 		return loader.load();

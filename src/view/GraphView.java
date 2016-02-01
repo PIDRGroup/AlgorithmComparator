@@ -142,7 +142,7 @@ public class GraphView<E extends Number> extends JPanel implements Observer{
 		Environment<Integer> env = null;
 		try {
 			env = EnvLoader.loadInteger("./graph/prob1.g");
-		} catch (IOException | MultiplePlace | UnknownPlace e) {
+		} catch (IOException | MultiplePlaceException | UnknownPlaceException e) {
 			e.printStackTrace();
 		}
 		

@@ -11,7 +11,7 @@ public class AStar<E extends Number> extends Algorithm<E>{
 	}
 
 	@Override
-	public void grow(int src, int dest) throws UnknownPlace{
+	public void grow(int src, int dest) throws UnknownPlaceException{
 		nb_visited_nodes = 0;
 		estimated_time = 0;
 		

@@ -17,19 +17,19 @@ public abstract class Algorithm<E extends Number> extends Observable implements 
 	 * Modify the environment depending on the current algorithm.
 	 * Each algorithm has its own instance of the environment
 	 */
-	public abstract void grow(int source, int destination) throws UnknownPlace;
+	public abstract void grow(int source, int destination) throws UnknownPlaceException;
 	
-	public void grow(String src, String dest) throws UnknownPlace{
+	public void grow(String src, String dest) throws UnknownPlaceException{
 		if(!world.isLabel(src))
-			throw new UnknownPlace(src);
+			throw new UnknownPlaceException(src);
 		
 		if(!world.isLabel(dest))
-			throw new UnknownPlace(dest);
+			throw new UnknownPlaceException(dest);
 		
 		grow(world.indexOf(src), world.indexOf(dest));
 	}
 	
-	public void grow() throws UnknownPlace{
+	public void grow() throws UnknownPlaceException{
 		grow(destination, source);
 	}
 	
@@ -68,7 +68,7 @@ public abstract class Algorithm<E extends Number> extends Observable implements 
 		
 		try {
 			grow(source, destination);
-		} catch (UnknownPlace e) {
+		} catch (UnknownPlaceException e) {
 			e.printStackTrace();
 		}
 		
