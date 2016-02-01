@@ -62,7 +62,6 @@ public class AStar<E extends Number> extends Algorithm<E>{
 			
 			for (int i = 0; i < matrice.size(); i++){
 				if (matrice.get(current, i) < Integer.MAX_VALUE){
-					nb_visited_nodes++;
 					
 					if (noeudferme.contains(new Integer(i))){
 						continue;
@@ -72,6 +71,7 @@ public class AStar<E extends Number> extends Algorithm<E>{
 					dist = g.get(current) + matrice.get(current, i);
 					if (!noeudouvert.contains(new Integer(i))){
 						noeudouvert.add(i);
+						nb_visited_nodes++;
 					}else if (dist >= g.get(i)){
 						continue;
 					}
