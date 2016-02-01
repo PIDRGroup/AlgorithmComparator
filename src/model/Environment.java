@@ -171,10 +171,18 @@ public class Environment<E extends Number> extends Observable{
 		return labels.size();
 	}
 	
+	/**
+	 * Retourne la liste des liens
+	 * @return Liste des liens de l'environnement
+	 */
 	public ArrayList<Link<E>> getLinks(){
 		return links;
 	}
-
+	
+	/**
+	 * Crée une copie en profondeur d'un environnement
+	 * @return Copie en profondeur
+	 */
 	public Environment<E> duplicate(){
 		Environment<E> copy = new Environment<E>();
 		
@@ -211,14 +219,30 @@ public class Environment<E extends Number> extends Observable{
 		return s;
 	}
 	
+	/**
+	 * Vérifie si un label fait partie de l'environnement
+	 * @param label Label à checker
+	 * @return Vrai si le label est une place, faux sinon
+	 */
 	public boolean isLabel(String label){
 		return labels.contains(label);
 	}
 	
+	/**
+	 * vérifie qu'un index représente une palce dans l'enrivonnement
+	 * @param index
+	 * @return
+	 */
 	public boolean isIndex(int index){
 		return index > 0 && index < labels.size();
 	}
 	
+	/**
+	 * Retourne l'index du label
+	 * @param label 
+	 * @return
+	 * @throws UnknownPlaceException
+	 */
 	public int indexOf(String label) throws UnknownPlaceException{
 		if(!labels.contains(label))
 			throw new UnknownPlaceException(label);
@@ -226,6 +250,12 @@ public class Environment<E extends Number> extends Observable{
 		return labels.indexOf(label);
 	}
 	
+	/**
+	 * Renvoie le label d'un index
+	 * @param i
+	 * @return
+	 * @throws UnknownPlaceException
+	 */
 	public String labelOf(int i) throws UnknownPlaceException{
 		if(i < 0 || i > labels.size())
 			throw new UnknownPlaceException(i);
@@ -243,7 +273,8 @@ public class Environment<E extends Number> extends Observable{
 		
 		//Puis on crée les flux
 		for(Link l : links){
-			g.addEdge((E) l.getVal(), l.getSrc(), l.getDest());
+			if(l.getVal().intValue() < Integer.MAX_VALUE)
+				g.addEdge((E) l.getVal(), l.getSrc(), l.getDest());
 		}
 		
 		return g;

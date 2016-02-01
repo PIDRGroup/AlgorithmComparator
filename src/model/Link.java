@@ -2,11 +2,19 @@ package model;
 
 /**
  * 
- * Modélise un lien entre deux places
+ * Modélise un lien entre deux places.
  *
  */
 public class Link<E extends Number>{
+	
+	/**
+	 * Label de la source et de la destination du lien
+	 */
 	private String source, destination;
+	
+	/**
+	 * Valeur du lien
+	 */
 	private E value;
 	
 	public Link(String src, String dest, E val){
@@ -15,6 +23,11 @@ public class Link<E extends Number>{
 		value=val;
 	}
 	
+	/**
+	 * Crée un lien fixé arbitrairement à 1
+	 * @param src Source du lien
+	 * @param dest Destination du lien
+	 */
 	public Link(String src, String dest){
 		this(src, dest, (E) (Integer) 1);
 	}

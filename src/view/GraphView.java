@@ -97,11 +97,17 @@ public class GraphView<E extends Number> extends JPanel implements Observer{
 		Transformer<String,Paint> vertexPaint = new Transformer<String,Paint>() {
 			
             public Paint transform(String str) {
-            	for(int i=0; i<algorithms.size(); i++){
-            		Algorithm<E> alg = algorithms.get(i);            		
-            		if(alg.getPathLabels().contains(str))
-            			return GraphView.colors[i];
-            	}
+            	try {
+	            	for(int i=0; i<algorithms.size(); i++){
+	            		Algorithm<E> alg = algorithms.get(i);            		
+	            		
+							if(alg.getPathLabels().contains(str))
+								return GraphView.colors[i];
+						} 
+	            	}
+            	catch (UnknownPlaceException e) {
+					e.printStackTrace();
+				}
             	return Color.LIGHT_GRAY;
             }
             
@@ -141,34 +147,35 @@ public class GraphView<E extends Number> extends JPanel implements Observer{
 		
 		Environment<Integer> env = null;
 		try {
-			env = EnvLoader.loadInteger("./graph/prob1.g");
+			env = EnvironmentFactory.loadInteger("./graph/prob1.g");
+		
+		
+			GraphView<Integer> gv = new GraphView<Integer>(env.toGraph());
+			
+			AStar<Integer> a_star = new AStar<Integer>(env);
+			a_star.setSrc("K");
+			a_star.setDest("J");
+			a_star.addObserver(gv);
+			env.addObserver(gv);
+			gv.addAlgo(a_star);
+			
+			Environment<Integer> copy = env.duplicate();
+			copy.addObserver(gv);
+			Dijkstra<Integer> dijkstra = new Dijkstra<Integer>(copy);
+			dijkstra.setSrc("K");
+			dijkstra.setDest("J");;
+			dijkstra.addObserver(gv);
+			gv.addAlgo(dijkstra);
+	             
+	        // Set up a new stroke Transformer for the edges
+	        JFrame frame = new JFrame("AlgoComparator");
+	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	        frame.getContentPane().add(gv);
+	        frame.pack();
+	        frame.setVisible(true);  
 		} catch (IOException | MultiplePlaceException | UnknownPlaceException e) {
 			e.printStackTrace();
 		}
-		
-		GraphView<Integer> gv = new GraphView<Integer>(env.toGraph());
-		
-		AStar<Integer> a_star = new AStar<Integer>(env);
-		a_star.setSrc("K");
-		a_star.setDest("J");
-		a_star.addObserver(gv);
-		env.addObserver(gv);
-		gv.addAlgo(a_star);
-		
-		Environment<Integer> copy = env.duplicate();
-		copy.addObserver(gv);
-		Dijkstra<Integer> dijkstra = new Dijkstra<Integer>(copy);
-		dijkstra.setSrc("K");
-		dijkstra.setDest("J");;
-		dijkstra.addObserver(gv);
-		gv.addAlgo(dijkstra);
-             
-        // Set up a new stroke Transformer for the edges
-        JFrame frame = new JFrame("AlgoComparator");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().add(gv);
-        frame.pack();
-        frame.setVisible(true);   
 	}
 
 }

@@ -1,5 +1,10 @@
 package model;
 
+/**
+ * 
+ * Exception levée quand la place est inconnue
+ *
+ */
 public class UnknownPlaceException extends Exception{
 	
 	public UnknownPlaceException(int indice){
