@@ -34,7 +34,7 @@ public class EnvLoader<E extends Number>{
 		
 		//On boucle tant qu'on est sur des définitions de place (des labels)
 		while ((line=br.readLine())!=null && line != "" && !line.isEmpty()){
-			matrix.addPlace(line);
+			env.addPlace(line);
 		}
 		
 		//On sort de la boucle, donc soit on passe aux liens, soit on on est à la fin du fichier
@@ -51,7 +51,7 @@ public class EnvLoader<E extends Number>{
 					
 					//Si le poids est de 0, alors on traduit cela par un poids infini (valeur max d'un int)
 					weight = (weight == (Integer) 0) ? (E)(Integer)Integer.MAX_VALUE : weight;
-					matrix.addLink(index, i, weight);
+					env.addLink(index, i, weight);
 				}
 				
 				index++;

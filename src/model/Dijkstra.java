@@ -21,15 +21,14 @@ public class Dijkstra<E extends Number> extends Algorithm<E>{
 		if(!world.isIndex(dest))
 			throw new UnknownPlaceException(dest);
 		
-		MaMatrice<E> matrice = this.world.getMatrix();
 		ArrayList<E> distance = new ArrayList<E>();
 		ArrayList<Integer> predecessor = new ArrayList<Integer>();
 		ArrayList<Integer> banlist = new ArrayList<Integer>();
 		
 		E dist;
-		for (int i = 0; i < matrice.size(); i++){
+		for (int i = 0; i < world.size(); i++){
 			try {
-				if ((dist = matrice.get(src, i)).intValue() < Integer.MAX_VALUE){
+				if ((dist = world.get(src, i)).intValue() < Integer.MAX_VALUE){
 					distance.add(dist);
 					nb_visited_nodes++;
 					//On initialise les noeuds à une distance infini de la src
@@ -46,14 +45,14 @@ public class Dijkstra<E extends Number> extends Algorithm<E>{
 			}
 		}
 		
-		while(banlist.size() != matrice.size()){
+		while(banlist.size() != world.size()){
 			// Tant que tous les noeuds n'ont pas été parcourus
 			
 			int min = Integer.MAX_VALUE;
 			int minnode = dest;
 			
 			//On cherche le noeud n'ont encore parcourus avec la plus petit distance à la src
-			for(int i = 0 ; i < matrice.size() ; i++){
+			for(int i = 0 ; i < world.size() ; i++){
 				if (!banlist.contains(i) && distance.get(i).intValue() < min){
 					min = distance.get(i).intValue();
 					minnode = i;
@@ -64,11 +63,11 @@ public class Dijkstra<E extends Number> extends Algorithm<E>{
 			banlist.add(minnode);
 			int newdistance;
 			
-			for (int i = 0; i < matrice.size() ; i++){
+			for (int i = 0; i < world.size() ; i++){
 				try {
 					
 					//On fais une mise à jour de la distance à la source pour les noeuds connectés au noeud courant
-					if (!banlist.contains(i) && (newdistance = (Integer) matrice.get(minnode, i)) < Integer.MAX_VALUE){
+					if (!banlist.contains(i) && (newdistance = (Integer) world.get(minnode, i)) < Integer.MAX_VALUE){
 						nb_visited_nodes++;
 						newdistance += distance.get(minnode).intValue(); 
 						if (newdistance < distance.get(i).intValue()){

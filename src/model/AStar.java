@@ -15,7 +15,6 @@ public class AStar<E extends Number> extends Algorithm<E>{
 		nb_visited_nodes = 0;
 		estimated_time = 0;
 		
-		MaMatrice<Integer> matrice = (MaMatrice<Integer>) world.getMatrix();
 		ArrayList<Integer> noeudouvert = new ArrayList<Integer>();
 		ArrayList<Integer> noeudferme = new ArrayList<Integer>();
 		noeudouvert.add(src);
@@ -24,7 +23,7 @@ public class AStar<E extends Number> extends Algorithm<E>{
 		ArrayList<Integer> g = new ArrayList<Integer>();
 		ArrayList<Integer> f = new ArrayList<Integer>();
 		
-		for (int i =0; i < matrice.size(); i++){
+		for (int i =0; i < world.size(); i++){
 			g.add(Integer.MAX_VALUE);
 			f.add(Integer.MAX_VALUE);
 		}
@@ -35,7 +34,7 @@ public class AStar<E extends Number> extends Algorithm<E>{
 			int min = Integer.MAX_VALUE;
 			int current = 0;
 			
-			for (int i = 0; i < matrice.size(); i++){
+			for (int i = 0; i < world.size(); i++){
 				//On recherche le noeud n'appartenant pas au noeud ouvert tel que f est minimal
 				if (f.get(i) < min && noeudouvert.contains(new Integer(i))){
 					min = f.get(i);
@@ -60,15 +59,15 @@ public class AStar<E extends Number> extends Algorithm<E>{
 			noeudferme.add(current);
 			int dist;
 			
-			for (int i = 0; i < matrice.size(); i++){
-				if (matrice.get(current, i) < Integer.MAX_VALUE){
+			for (int i = 0; i < world.size(); i++){
+				if (world.get(current, i).intValue() < Integer.MAX_VALUE){
 					
 					if (noeudferme.contains(new Integer(i))){
 						continue;
 						
 					}
 					
-					dist = g.get(current) + matrice.get(current, i);
+					dist = (int) (g.get(current) + world.get(current, i).doubleValue());
 					if (!noeudouvert.contains(new Integer(i))){
 						noeudouvert.add(i);
 						nb_visited_nodes++;

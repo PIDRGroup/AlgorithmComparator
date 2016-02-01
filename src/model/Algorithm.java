@@ -37,7 +37,7 @@ public abstract class Algorithm<E extends Number> extends Observable implements 
 		return path;
 	}
 	
-	public ArrayList<String> getPathLabels(){
+	public ArrayList<String> getPathLabels() throws UnknownPlaceException{
 		ArrayList<String> labels = new ArrayList<String>();
 		
 		for(int pl : path){
@@ -55,11 +55,11 @@ public abstract class Algorithm<E extends Number> extends Observable implements 
 		source=src;
 	}
 	
-	public void setDest(String dest){
+	public void setDest(String dest) throws UnknownPlaceException{
 		destination = world.indexOf(dest);
 	}
 	
-	public void setSrc(String src){
+	public void setSrc(String src) throws UnknownPlaceException{
 		source=world.indexOf(src);
 	}
 	
