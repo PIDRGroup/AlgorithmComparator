@@ -1,13 +1,19 @@
 package model;
 
-import java.util.Observable;
-
-public class RBFS <E extends Number> extends Observable implements Runnable{
+public class RBFS<E extends Number> extends Algorithm<E>{
 
 	@Override
-	public void run() {
+	public void grow(int source, int destination) throws UnknownPlaceException {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 
 }
