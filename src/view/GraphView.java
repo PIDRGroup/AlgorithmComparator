@@ -152,8 +152,8 @@ public class GraphView<E extends Number> extends JPanel implements Observer{
 			GraphView<Integer> gv = new GraphView<Integer>(env.toGraph());
 			
 			AStar<Integer> a_star = new AStar<Integer>(env);
-			a_star.setSrc("50");
-			a_star.setDest("934");
+			a_star.setSrc("4");
+			a_star.setDest("150");
 			a_star.addObserver(gv);
 			env.addObserver(gv);
 			gv.addAlgo(a_star);
@@ -161,10 +161,10 @@ public class GraphView<E extends Number> extends JPanel implements Observer{
 			Environment<Integer> copy = env.duplicate();
 			copy.addObserver(gv);
 			Dijkstra<Integer> dijkstra = new Dijkstra<Integer>(copy);
-			dijkstra.setSrc("K");
-			dijkstra.setDest("J");;
+			dijkstra.setSrc("4");
+			dijkstra.setDest("150");;
 			dijkstra.addObserver(gv);
-			gv.addAlgo(dijkstra);
+			//gv.addAlgo(dijkstra);
 	             
 	        // Set up a new stroke Transformer for the edges
 	        JFrame frame = new JFrame("AlgoComparator");

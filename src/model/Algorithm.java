@@ -64,7 +64,7 @@ public abstract class Algorithm<E extends Number> extends Observable implements 
 	}
 	
 	public void run(){
-		long first_time = System.nanoTime();
+		long first_time = System.currentTimeMillis() / 1000;
 		
 		try {
 			grow(source, destination);
@@ -72,7 +72,7 @@ public abstract class Algorithm<E extends Number> extends Observable implements 
 			e.printStackTrace();
 		}
 		
-		estimated_time = System.nanoTime() - first_time;
+		estimated_time = System.currentTimeMillis() / 1000 - first_time;
 	}
 	
 	public long getDuration(){

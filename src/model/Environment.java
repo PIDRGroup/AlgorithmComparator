@@ -207,9 +207,9 @@ public class Environment<E extends Number> extends Observable{
 						
 			for(int j=0; j<l.size(); j++){
 				try {
-					E v=this.get(i, j);
-					if(v.intValue() < Integer.MAX_VALUE)
-						s+="("+labels.get(i)+"-"+v.doubleValue()+"->"+labels.get(j)+"), ";
+					E v=this.get(i, l.get(j).getDest());
+					if(v.doubleValue() < Integer.MAX_VALUE)
+						s+="("+labels.get(i)+"-"+v.doubleValue()+"->"+labels.get(l.get(j).getDest())+"), ";
 				} catch (UnknownPlaceException e) {
 					e.printStackTrace();
 				}
@@ -277,8 +277,11 @@ public class Environment<E extends Number> extends Observable{
 			ArrayList<Link<E>> l = successors.get(i);
 			for(int j=0; j<l.size(); j++){
 				Link<E> el = l.get(j);
-				if(el.getVal().doubleValue() < Integer.MAX_VALUE)
-					g.addEdge(el.getVal(), labels.get(i), labels.get(j));
+				if(el.getVal().doubleValue() < Integer.MAX_VALUE){
+					try{
+						g.addEdge(el.getVal(), labels.get(i), labels.get(j));
+					}catch(Throwable th){}
+				}
 			}
 		}
 
