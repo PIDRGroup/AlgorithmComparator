@@ -10,11 +10,11 @@ import edu.uci.ics.jung.graph.Graph;
 
 public class Environment<E extends Number> extends Observable{
 	
-	private ArrayList<Link<E>> links;
+	private ArrayList<ArrayList<Link<E>>> successors;
 	private ArrayList<String> labels;
 		
 	public Environment(){
-		links = new ArrayList<Link<E>>();
+		successors = new ArrayList<ArrayList<Link<E>>>();
 		labels = new ArrayList<String>();
 	}
 	
@@ -30,6 +30,7 @@ public class Environment<E extends Number> extends Observable{
 			throw new MultiplePlaceException(label);
 		
 		labels.add(label);
+		successors.add(new ArrayList<>());
 	}
 	
 	/**
@@ -40,15 +41,7 @@ public class Environment<E extends Number> extends Observable{
 	 * @throws UnknownPlaceException Si le label n'est pas reconnu
 	 */
 	public void delete(String label) throws UnknownPlaceException{
-		if(!labels.contains(label))
-			throw new UnknownPlaceException(label);
-		
-		labels.remove(label);
-		
-		for(Link l : links){
-			if(l.getDest().equals(label) || l.getSrc().equals(label))
-				links.remove(l);
-		}
+		this.delete(labels.indexOf(label));
 	}
 	
 	/**
@@ -62,11 +55,16 @@ public class Environment<E extends Number> extends Observable{
 		if(index < 0 || index >= labels.size())
 			throw new UnknownPlaceException(index);
 		
-		String lab = labels.get(index);
+		labels.remove(index);
 		
-		for(Link l : links){
-			if(l.getDest().equals(lab) || l.getSrc().equals(lab))
-				links.remove(l);
+		//Suppression dans la liste de successeurs
+		successors.remove(index);
+		for(ArrayList<Link<E>> l : successors){
+			for(Link<E> el : l){
+				if(el.getDest() == index){
+					l.remove(el);
+				}
+			}
 		}
 	}
 	
@@ -80,13 +78,7 @@ public class Environment<E extends Number> extends Observable{
 	 * @throws UnknownPlaceException 
 	 */
 	public void addLink(String src, String dest, E weight) throws UnknownPlaceException{
-		if(!labels.contains(src))
-			throw new UnknownPlaceException(src);
-		
-		if(!labels.contains(dest))
-			throw new UnknownPlaceException(dest);
-		
-		links.add(new Link<E>(src, dest, weight));
+		this.addLink(labels.indexOf(src), labels.indexOf(dest), weight);
 	}
 	
 	/**
@@ -99,13 +91,13 @@ public class Environment<E extends Number> extends Observable{
 	 * @throws UnknownPlaceException 
 	 */
 	public void addLink(int src, int dest, E weight) throws UnknownPlaceException{
-		if(src < 0 || src >= labels.size())
+		if(src < 0 || src > labels.size())
 			throw new UnknownPlaceException(src);
 		
-		if(dest < 0 || dest >= labels.size())
+		if(dest < 0 || dest > labels.size())
 			throw new UnknownPlaceException(dest);
-		
-		links.add(new Link<E>(labels.get(src), labels.get(dest), weight));
+				
+		successors.get(src).add(new Link<E>(dest, weight));
 	}
 	
 	/**
@@ -117,19 +109,8 @@ public class Environment<E extends Number> extends Observable{
 	 * @return Poids du lien
 	 * @throws UnknownPlaceException Si le label de la source ou de la destination est inconnu
 	 */
-	public E get(String src, String dest) throws UnknownLinkException{
-		
-		if(links.contains(new Link(src, dest)))
-			throw new UnknownLinkException(src, dest);
-		
-		for(Link l : links){
-			if(l.getSrc().equals(src)){
-				if(l.getDest().equals(dest))
-					return (E) l.getVal();
-			}
-		}
-		
-		return (E) (Integer) Integer.MAX_VALUE;
+	public E get(String src, String dest) throws UnknownPlaceException{
+		return this.get(labels.indexOf(src), labels.indexOf(dest));
 	}
 	
 	/**
@@ -148,21 +129,27 @@ public class Environment<E extends Number> extends Observable{
 		if(dest < 0 || dest >= labels.size())
 			throw new UnknownPlaceException(dest);
 		
-		String lab_src = labels.get(src);
-		String lab_dest = labels.get(dest);
+		//Si val vaut null, la distance est infinie
+		ArrayList<Link<E>> l = successors.get(src);
 		
-		for(Link l : links){
-			if(l.getSrc().equals(lab_src)){
-				if(l.getDest().equals(lab_dest))
-					return (E) l.getVal();
+		E val = null;
+		int i=0;
+		
+		while(i < l.size() && val == null){
+			if(l.get(i).getDest() == dest){
+				val = l.get(i).getVal();
+			}else{
+				i++;
 			}
 		}
 		
-		return (E) (Integer) Integer.MAX_VALUE;
+		val = (val == null) ? (E) (Integer) Integer.MAX_VALUE : val;
+		
+		return val;
 	}
 	
 	/**
-	 * Taille de la matrice d'adjacence.
+	 * Nombre de places.
 	 * Celle-ci étant forcément carrée, on ne renvoie qu'un entier.
 	 * 
 	 * @return Taille de la matrice.
@@ -172,11 +159,11 @@ public class Environment<E extends Number> extends Observable{
 	}
 	
 	/**
-	 * Retourne la liste des liens
+	 * Retourne la liste des successeurs
 	 * @return Liste des liens de l'environnement
 	 */
-	public ArrayList<Link<E>> getLinks(){
-		return links;
+	public ArrayList<ArrayList<Link<E>>> getLinks(){
+		return successors;
 	}
 	
 	/**
@@ -186,10 +173,16 @@ public class Environment<E extends Number> extends Observable{
 	public Environment<E> duplicate(){
 		Environment<E> copy = new Environment<E>();
 		
-		ArrayList<Link<E>> l_copy = new ArrayList<Link<E>>();
+		ArrayList<ArrayList<Link<E>>> l_copy = new ArrayList<ArrayList<Link<E>>>();
 		
-		for(Link<E> l : links){
-			l_copy.add(new Link<E>(l.getSrc(), l.getDest(), l.getVal()));
+		for(ArrayList<Link<E>> l : successors){
+			ArrayList<Link<E>> waiting_list=new ArrayList<Link<E>>();
+			
+			for(Link<E> el : l){
+				waiting_list.add(el);
+			}
+			
+			l_copy.add(waiting_list);
 		}
 		
 		ArrayList<String> labs = new ArrayList<String>();
@@ -198,7 +191,7 @@ public class Environment<E extends Number> extends Observable{
 		}
 		
 		copy.labels = labs;
-		copy.links = l_copy;
+		copy.successors = l_copy;
 		
 		return copy;
 	}
@@ -206,16 +199,24 @@ public class Environment<E extends Number> extends Observable{
 	public String toString(){
 		String s = "";
 		
-		s+="Predessors : [ ";
+		s+="Successors : ";
 		
-		for(Link<E> l : links){	
-			
-			s+="("+l.getSrc()+"-"+l.getVal()+"->"+l.getDest()+"), ";
-			
+		for(int i=0; i<successors.size();i++){
+			ArrayList<Link<E>> l = successors.get(i);
+			s+="[";
+						
+			for(int j=0; j<l.size(); j++){
+				try {
+					E v=this.get(i, j);
+					if(v.intValue() < Integer.MAX_VALUE)
+						s+="("+labels.get(i)+"-"+v.doubleValue()+"->"+labels.get(j)+"), ";
+				} catch (UnknownPlaceException e) {
+					e.printStackTrace();
+				}
+			}
+			s+="] ";
 		}
-		
-		s+=" ]";
-		
+				
 		return s;
 	}
 	
@@ -272,10 +273,15 @@ public class Environment<E extends Number> extends Observable{
 		}
 		
 		//Puis on crée les flux
-		for(Link l : links){
-			if(l.getVal().intValue() < Integer.MAX_VALUE)
-				g.addEdge((E) l.getVal(), l.getSrc(), l.getDest());
+		for(int i=0; i<successors.size(); i++){
+			ArrayList<Link<E>> l = successors.get(i);
+			for(int j=0; j<l.size(); j++){
+				Link<E> el = l.get(j);
+				if(el.getVal().doubleValue() < Integer.MAX_VALUE)
+					g.addEdge(el.getVal(), labels.get(i), labels.get(j));
+			}
 		}
+
 		
 		return g;
 	}

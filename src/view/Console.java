@@ -1,28 +1,26 @@
 package view;
 
-import java.io.IOException;
-
 import model.*;
 
 public class Console {
 	public static void main(String[] args) {
 		try {
-			Environment<Integer> env =  EnvironmentFactory.loadInteger("./graph/test.g");
-			env.addPlace("J'aime les trains");
-			env.addLink("I Like Trains", "J'aime les trains", 12000);
-			//System.out.println(env);
 			
-			//env.getMatrix().delete("J'aime les trains");
+			long t1 = System.currentTimeMillis() / 1000;
+			Environment<Integer> env =  EnvGenerator.generateUniformGrid(100);
+			long t2 = System.currentTimeMillis() / 1000;
 			
-			System.out.println(env);
-			
-			//env.getMatrix().delete("Unknown");
+			System.out.println("TIME ###  " + (t2 - t1) + " sec. ###\n");
+			System.out.println(env+"\n");
 			
 			Dijkstra<Integer> dijkstra = new Dijkstra<Integer>(env);
-			dijkstra.grow("Kebab", "J'aime les trains");
+			dijkstra.grow("3", "15");
+			long t3 = System.currentTimeMillis() / 1000;
+			
+			System.out.println("TIME ###  " + (t3 - t1) + " sec. ###\n");
 			System.out.println(dijkstra.getPathLabels());
 			
-		} catch (IOException | MultiplePlaceException | UnknownPlaceException e) {
+		} catch (MultiplePlaceException | UnknownPlaceException e) {
 			e.printStackTrace();
 		}
 	}

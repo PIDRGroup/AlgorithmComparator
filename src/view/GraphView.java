@@ -147,14 +147,13 @@ public class GraphView<E extends Number> extends JPanel implements Observer{
 		
 		Environment<Integer> env = null;
 		try {
-			env = EnvironmentFactory.loadInteger("./graph/prob1.g");
-		
+			env = EnvGenerator.generateUniformGrid(100);
 		
 			GraphView<Integer> gv = new GraphView<Integer>(env.toGraph());
 			
 			AStar<Integer> a_star = new AStar<Integer>(env);
-			a_star.setSrc("K");
-			a_star.setDest("J");
+			a_star.setSrc("50");
+			a_star.setDest("934");
 			a_star.addObserver(gv);
 			env.addObserver(gv);
 			gv.addAlgo(a_star);
@@ -173,7 +172,7 @@ public class GraphView<E extends Number> extends JPanel implements Observer{
 	        frame.getContentPane().add(gv);
 	        frame.pack();
 	        frame.setVisible(true);  
-		} catch (IOException | MultiplePlaceException | UnknownPlaceException e) {
+		} catch (MultiplePlaceException | UnknownPlaceException e) {
 			e.printStackTrace();
 		}
 	}

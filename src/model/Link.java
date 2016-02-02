@@ -2,7 +2,7 @@ package model;
 
 /**
  * 
- * Modélise un lien entre deux places.
+ * Modélise un couple destination / poids
  *
  */
 public class Link<E extends Number>{
@@ -10,15 +10,14 @@ public class Link<E extends Number>{
 	/**
 	 * Label de la source et de la destination du lien
 	 */
-	private String source, destination;
+	private int destination;
 	
 	/**
 	 * Valeur du lien
 	 */
 	private E value;
 	
-	public Link(String src, String dest, E val){
-		source = src;
+	public Link(int dest, E val){
 		destination = dest;
 		value=val;
 	}
@@ -28,22 +27,18 @@ public class Link<E extends Number>{
 	 * @param src Source du lien
 	 * @param dest Destination du lien
 	 */
-	public Link(String src, String dest){
-		this(src, dest, (E) (Integer) 1);
+	public Link(int dest){
+		this(dest, (E) (Integer) 1);
 	}
 	
 	@Override
 	public boolean equals(Object o){
 		Link l = (Link) o;
 		
-		return l.source.equals(source) && l.destination.equals(destination);
+		return l.destination == destination;
 	}
 	
-	public String getSrc(){
-		return source;
-	}
-	
-	public String getDest(){
+	public int getDest(){
 		return destination;
 	}
 	
@@ -53,5 +48,9 @@ public class Link<E extends Number>{
 	
 	public void setVal(E val){
 		value=val;
+	}
+	
+	public String toString(){
+		return destination + " / " + value;
 	}
 }

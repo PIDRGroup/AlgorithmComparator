@@ -4,13 +4,13 @@ import java.io.*;
 
 /**
  * 
- * Load and generates environments
+ * Charge des environnements depuis des documents texte.
  *
  */
-public class EnvironmentFactory<E extends Number>{
+public class EnvLoader<E extends Number>{
 	private String path;
 	
-	public EnvironmentFactory(String path){
+	public EnvLoader(String path){
 		this.path = path;
 	}
 	
@@ -70,7 +70,7 @@ public class EnvironmentFactory<E extends Number>{
 	 * @throws UnknownPlaceException 
 	 */
 	public static Environment<Integer> loadInteger(String path) throws IOException, MultiplePlaceException, UnknownPlaceException{
-		EnvironmentFactory<Integer> loader = new EnvironmentFactory<>(path);
+		EnvLoader<Integer> loader = new EnvLoader<>(path);
 		
 		return loader.load();
 	}
@@ -84,29 +84,8 @@ public class EnvironmentFactory<E extends Number>{
 	 * @throws UnknownPlaceException 
 	 */
 	public static Environment<Double> loadDouble(String path) throws IOException, MultiplePlaceException, UnknownPlaceException{
-		EnvironmentFactory<Double> loader = new EnvironmentFactory<>(path);
+		EnvLoader<Double> loader = new EnvLoader<>(path);
 		
 		return loader.load();
-	}
-	
-	
-	/**
-	 * Génère un environnement d'Integer pseudo-aléatoirement selon les contraintes spécifiées
-	 * 
-	 * @param nb_places
-	 * @return
-	 */
-	public static Environment<Integer> generateInteger(int nb_places){
-		
-	}
-	
-	/**
-	 * Génère un environnement d'Integer pseudo-aléatoirement selon les contraintes spécifiées
-	 * 
-	 * @param nb_places
-	 * @return
-	 */
-	public static Environment<Integer> generateDouble(int nb_places){
-		
 	}
 }
