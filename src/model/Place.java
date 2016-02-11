@@ -73,20 +73,17 @@ public class Place {
 			
 			places[i] = new Place(coordinates);
 			
-			//Si on active w, on calcule la dimension dans la moyenne des bornes
+			//Si on active w, on calcule la dimension avec les plus petites bornes
 			if(w_activation){
-				int avg_min = 0, avg_max = 0;
+				int min_max = bounds[0].max(), min_min = bounds[0].min();
 				
 				//On calcule la moyenne des bornes
-				for(int j=0; j<bounds.length; j++){
-					avg_max += bounds[j].max();
-					avg_min += bounds[j].min();
+				for(int j=1; j<bounds.length; j++){
+					if (min_max > bounds[j].max()) min_max = bounds[j].max();
+					if (min_min > bounds[j].min()) min_min += bounds[j].min();
 				}
 				
-				avg_max/=bounds.length;
-				avg_min/=bounds.length;
-				
-				places[i].activateW(avg_min, avg_max);
+				places[i].activateW(min_min, min_max);
 			}
 		}
 		
@@ -148,7 +145,7 @@ public class Place {
 	 * @param p Point dont on veut connaître la distance au point courant
 	 * @return Valeur de la distance
 	 */
-	public double distance(Place p){
+	public double distanceEuclidienne(Place p){
 		double dist = 0;
 		
 		//On fait la somme des carrés des différences de chaque coordonnées
@@ -162,13 +159,21 @@ public class Place {
 		return Math.sqrt(dist);
 	}
 	
+	public String toString(){
+		String s = "(";
+		
+		for (int i = 0; i < coordinates.length; i++) {
+			s+=coordinates[i];
+			if(i != coordinates.length-1) s+=", ";
+		}
+		
+		return s+")";
+	}
+	
 	@Override
 	public boolean equals(Object o){
 		Place p = (Place) o;
 		boolean ret = true;
-		
-		//On regarde si le label est nul ou non. Si non, on vérifie que les labels soient identiques.
-		ret = (label == null) ? p.label == null : label.equals(p.label);
 		
 		int i=0;
 		while(ret && i<coordinates.length){

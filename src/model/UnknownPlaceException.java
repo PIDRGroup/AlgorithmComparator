@@ -7,12 +7,20 @@ package model;
  */
 public class UnknownPlaceException extends Exception{
 	
-	public UnknownPlaceException(int indice){
-		super("L'indice de la place est inconnu : "+indice);
+	public UnknownPlaceException(Place p){
+		super(toMess(p));
 	}
 	
-	public UnknownPlaceException(String label){
-		super("Le label de la place est inconnu : "+label);
+	private static String toMess(Place p){
+		String msg = "La place est inconnue : ("+p.getLabel()+", coordonnées : [";
+		
+		for (int i = 0; i < p.getCoordinates().length; i++) {
+			msg+=p.getCoordinate(i)+" ";
+		}
+		
+		msg+=" ] )";
+		
+		return msg;
 	}
 	
 }

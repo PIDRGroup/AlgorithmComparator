@@ -3,22 +3,29 @@ package model;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class AStar<E extends Number> extends Algorithm<E>{
+public class AStar extends Algorithm{
 	
-	public AStar(Environment<E> env){
+	public AStar(Environment env){
 		this.world = env;
-		path = new ArrayList<Integer>();
+		path = new ArrayList<Place>();
 	}
 
 	@Override
-	public void grow(int src, int dest) throws UnknownPlaceException{
+	public void grow(Place src, Place dest) throws UnknownPlaceException{
+		
+		if(!world.isPlace(src))
+			throw new UnknownPlaceException(src);
+		
+		if(!world.isPlace(dest))
+			throw new UnknownPlaceException(dest);
+		
 		nb_visited_nodes = 0;
 		estimated_time = 0;
 		
-		ArrayList<Integer> noeudouvert = new ArrayList<Integer>();
-		ArrayList<Integer> noeudferme = new ArrayList<Integer>();
+		ArrayList<Place> noeudouvert = new ArrayList<Place>();
+		ArrayList<Place> noeudferme = new ArrayList<Place>();
 		noeudouvert.add(src);
-		HashMap<Integer,Integer> predecesseur = new HashMap<Integer,Integer>();
+		HashMap<Place,Place> predecesseur = new HashMap<Place, Place>();
 		
 		ArrayList<Integer> g = new ArrayList<Integer>();
 		ArrayList<Integer> f = new ArrayList<Integer>();
@@ -27,8 +34,8 @@ public class AStar<E extends Number> extends Algorithm<E>{
 			g.add(Integer.MAX_VALUE);
 			f.add(Integer.MAX_VALUE);
 		}
-		g.set(src, 0);
-		f.set(src, h(src));
+		g.set(world.indexOf(src), 0);
+		f.set(world.indexOf(src), h(src));
 		
 		while (!noeudouvert.isEmpty()){
 			int min = Integer.MAX_VALUE;
@@ -42,10 +49,9 @@ public class AStar<E extends Number> extends Algorithm<E>{
 				}
 			}
 			
-			if (current == dest){
+			if (current == world.indexOf(dest)){
 				path.add(current);
-				setChanged();
-				notifyObservers();
+
 				while (predecesseur.containsKey(current)){
 					current = predecesseur.get(current);
 					path.add(current);
@@ -83,11 +89,11 @@ public class AStar<E extends Number> extends Algorithm<E>{
 		}
 		
 		if (noeudouvert.isEmpty()){
-			System.out.println("Aucun chemin trouvÃ©!");
+			System.out.println("Aucun chemin trouvé!");
 		}
 	}
 	
-	int h(int current){
+	int h(Place current){
 		return 0;
 	}
 

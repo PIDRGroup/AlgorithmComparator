@@ -2,27 +2,26 @@ package model;
 
 import java.util.ArrayList;
 
-public class Node<E extends Number>{
-	private int stat;
-	private E path_cost;
+public class Node{
+	private Place stat;
+	private double path_cost;
 	private ArrayList<Node> solvation = new ArrayList<Node>();
 	
-	public Node(int state, E path_cost, ArrayList<Node> solvation){
-		this.stat = stat;
+	public Node(Place state, double path_cost, ArrayList<Node> solvation){
+		this.stat = state;
 		this.path_cost=path_cost;
 		this.solvation=solvation;
 	}
 	
 	public boolean isSuperior(Node noeud){
-		return this.getstat() == noeud.getstat() && (Integer)this.getpathcost() < (Integer)noeud.getpathcost();
+		return this.getstat() == noeud.getstat() && this.getpathcost() < noeud.getpathcost();
 	}
 
-	public int getstat(){
+	public Place getstat(){
 		return stat;
 	}
 	
-	public E getpathcost() {
-		// TODO Auto-generated method stub
+	public double getpathcost() {
 		return this.path_cost;
 	}
 	
