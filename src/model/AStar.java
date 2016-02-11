@@ -12,6 +12,13 @@ public class AStar extends Algorithm{
 
 	@Override
 	public void grow(Place src, Place dest) throws UnknownPlaceException{
+		
+		if(!world.isPlace(src))
+			throw new UnknownPlaceException(src);
+		
+		if(!world.isPlace(dest))
+			throw new UnknownPlaceException(dest);
+		
 		nb_visited_nodes = 0;
 		estimated_time = 0;
 		

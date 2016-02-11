@@ -2,41 +2,41 @@ package model;
 
 import java.util.ArrayList;
 
-public class Dijkstra<E extends Number> extends Algorithm<E>{
+public class Dijkstra extends Algorithm{
 	
-	public Dijkstra(Environment<E> env){
+	public Dijkstra(Environment env){
 		this.world = env;
-		path = new ArrayList<Integer>();
+		path = new ArrayList<Place>();
 	}
 
 	@Override
-	public void grow(int src, int dest) throws UnknownPlaceException {
+	public void grow(Place src, Place dest) throws UnknownPlaceException {
 		
 		estimated_time = 0;
 		nb_visited_nodes = 0;
 		
-		if(!world.isIndex(src))
+		if(!world.isPlace(src))
 			throw new UnknownPlaceException(src);
 		
-		if(!world.isIndex(dest))
+		if(!world.isPlace(dest))
 			throw new UnknownPlaceException(dest);
 		
-		ArrayList<E> distance = new ArrayList<E>();
+		ArrayList<Double> distance = new ArrayList<Double>();
 		ArrayList<Integer> predecessor = new ArrayList<Integer>();
 		ArrayList<Integer> banlist = new ArrayList<Integer>();
 		
-		E dist;
+		double dist;
 		for (int i = 0; i < world.size(); i++){
 			try {
-				if ((dist = world.get(src, i)).intValue() < Integer.MAX_VALUE){
+				if ((dist = world.get(src, world.getPlace(i))) < Integer.MAX_VALUE){
 					distance.add(dist);
 					nb_visited_nodes++;
 					//On initialise les noeuds à une distance infini de la src
 				}else{
-					distance.add((E)(Integer)Integer.MAX_VALUE);
+					distance.add(new Double(Integer.MAX_VALUE));
 					//On initialise les noeuds adjacents à la src, par leur distance à la src
 				}
-				predecessor.add(src);
+				predecessor.add(world.indexOf(src));
 				//On ajoute à chaque noeud comme prédécesseur, eux-mêmes
 			} catch (UnknownPlaceException e) {
 				System.out.println("Erreur dans le grow de Dijkstra: initialisation");
@@ -49,7 +49,7 @@ public class Dijkstra<E extends Number> extends Algorithm<E>{
 			// Tant que tous les noeuds n'ont pas été parcourus
 			
 			int min = Integer.MAX_VALUE;
-			int minnode = dest;
+			int minnode = world.indexOf(dest);
 			
 			//On cherche le noeud n'ont encore parcourus avec la plus petit distance à la src
 			for(int i = 0 ; i < world.size() ; i++){
@@ -61,13 +61,13 @@ public class Dijkstra<E extends Number> extends Algorithm<E>{
 			
 			//On indique qu'on l'a parcouru
 			banlist.add(minnode);
-			int newdistance;
+			double newdistance;
 			
 			for (int i = 0; i < world.size() ; i++){
 				try {
 					
 					//On fais une mise à jour de la distance à la source pour les noeuds connectés au noeud courant
-					if (!banlist.contains(i) && (newdistance = (Integer) world.get(minnode, i)) < Integer.MAX_VALUE){
+					if (!banlist.contains(i) && (newdistance = world.get(world.getPlace(minnode), world.getPlace(i))) < Integer.MAX_VALUE){
 						nb_visited_nodes++;
 						newdistance += distance.get(minnode).intValue(); 
 						if (newdistance < distance.get(i).intValue()){
@@ -75,7 +75,7 @@ public class Dijkstra<E extends Number> extends Algorithm<E>{
 							cela signifie que le noeud à parcourir avec ce noeud dans la cadre
 							d'un plus cours chemin est le noeud courant
 							*/
-							distance.set(i, (E) (Integer) newdistance);
+							distance.set(i, newdistance);
 							predecessor.set(i, minnode);
 						}
 					}
@@ -87,18 +87,14 @@ public class Dijkstra<E extends Number> extends Algorithm<E>{
 		}
 	
 		path.add(dest);
-		this.setChanged();
-		this.notifyObservers();
 		
-		int current = dest;
+		int current = world.indexOf(dest);
 		
 		//On rétablit le plus court chemin jusqu'à la dest d'après la liste des prédécesseurs
-		while (current != src){
+		while (!world.getPlace(current).equals(src)){
 			int pred = predecessor.get(current);
-			path.add(pred);
+			path.add(world.getPlace(pred));
 			current = pred;
-			this.setChanged();
-			this.notifyObservers();
 		}
 		
 	}
