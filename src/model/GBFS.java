@@ -2,15 +2,15 @@ package model;
 
 import java.util.ArrayList;
 
-public class GreedybestfirstSearch<E extends Number> extends Algorithm<E> {
+public class GBFS extends Algorithm{
 
-	public GreedybestfirstSearch(Environment<E> env){
+	public GBFS(Environment env){
 		this.world = env;
-		this.path = new ArrayList<Integer>();
+		this.path = new ArrayList<Place>();
 	}
 	
 	@Override
-	public void grow(int source, int destination) throws UnknownPlaceException {
+	public void grow(Place source, Place destination) throws UnknownPlaceException {
 		// TODO Auto-generated method stub
 
 		ArrayList<Node> frontiere = new ArrayList<Node>();
@@ -24,17 +24,17 @@ public class GreedybestfirstSearch<E extends Number> extends Algorithm<E> {
 				break;
 			}
 			
-			int dist;
+			double dist;
 			int size = frontiere.size();
 			ArrayList<Node> buffer = new ArrayList<Node>();
 			
 			for (int i = 0; i < size; i++){
 				
-				Node node = new Node(-1,0,null);
-				int min = Integer.MAX_VALUE;
+				Node node = new Node(null,0,null);
+				double min = Integer.MAX_VALUE;
 				
 				for (int j = 0; j < frontiere.size();j++ ){
-					if((dist = (Integer) frontiere.get(j).getpathcost()) < min){
+					if((dist = frontiere.get(j).getpathcost()) < min){
 						min = dist;
 						node = frontiere.get(j);
 					}
@@ -52,21 +52,21 @@ public class GreedybestfirstSearch<E extends Number> extends Algorithm<E> {
 				break;
 			}
 			
-			exploration.add(currentnode.getstat());
-			int currentpathcost = (Integer) currentnode.getpathcost();
+			exploration.add(world.indexOf(currentnode.getstat()));
+			double currentpathcost = currentnode.getpathcost();
 			ArrayList<Node> currentsolvation = currentnode.getsolvation();
 			currentsolvation.add(currentnode);
 			
 			for (int i = 0; i < world.size(); i++){
-				if((dist = world.get(currentnode.getstat(), i).intValue()) < Integer.MAX_VALUE){
-					int newpathcost = currentpathcost+dist;
+				if((dist = world.get(currentnode.getstat(), world.getPlace(i))) < Integer.MAX_VALUE){
+					double newpathcost = currentpathcost+dist;
 					
 					if (!(exploration.contains(i)||frontiere.contains(i))){
-						frontiere.add(new Node(i, newpathcost,currentsolvation));
+						frontiere.add(new Node(world.getPlace(i), newpathcost,currentsolvation));
 					}else{
 						for (int j = 0; j < frontiere.size(); j++){
-							if (frontiere.get(j).isSuperior(new Node(i, newpathcost, null))){
-								frontiere.set(j,new Node(i,newpathcost,currentsolvation));
+							if (frontiere.get(j).isSuperior(new Node(world.getPlace(i), newpathcost, null))){
+								frontiere.set(j,new Node(world.getPlace(i),newpathcost,currentsolvation));
 							}
 						}
 					}
@@ -77,8 +77,7 @@ public class GreedybestfirstSearch<E extends Number> extends Algorithm<E> {
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Greedy Best First Search";
 	}
 
 }
