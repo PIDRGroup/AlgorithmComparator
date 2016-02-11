@@ -12,20 +12,13 @@ public class AStar extends Algorithm{
 
 	@Override
 	public void grow(Place src, Place dest) throws UnknownPlaceException{
-		
-		if(!world.isPlace(src))
-			throw new UnknownPlaceException(src);
-		
-		if(!world.isPlace(dest))
-			throw new UnknownPlaceException(dest);
-		
 		nb_visited_nodes = 0;
 		estimated_time = 0;
 		
-		ArrayList<Place> noeudouvert = new ArrayList<Place>();
-		ArrayList<Place> noeudferme = new ArrayList<Place>();
-		noeudouvert.add(src);
-		HashMap<Place,Place> predecesseur = new HashMap<Place, Place>();
+		ArrayList<Integer> noeudouvert = new ArrayList<Integer>();
+		ArrayList<Integer> noeudferme = new ArrayList<Integer>();
+		noeudouvert.add(world.indexOf(src));
+		HashMap<Integer,Integer> predecesseur = new HashMap<Integer,Integer>();
 		
 		ArrayList<Integer> g = new ArrayList<Integer>();
 		ArrayList<Integer> f = new ArrayList<Integer>();
@@ -50,13 +43,10 @@ public class AStar extends Algorithm{
 			}
 			
 			if (current == world.indexOf(dest)){
-				path.add(current);
-
+				path.add(world.getPlace(current));
 				while (predecesseur.containsKey(current)){
 					current = predecesseur.get(current);
-					path.add(current);
-					setChanged();
-					notifyObservers();
+					path.add(world.getPlace(current));
 				}
 				break;
 			}
@@ -66,14 +56,13 @@ public class AStar extends Algorithm{
 			int dist;
 			
 			for (int i = 0; i < world.size(); i++){
-				if (world.get(current, i).intValue() < Integer.MAX_VALUE){
+				if (world.get(world.getPlace(current), world.getPlace(i)) < Integer.MAX_VALUE){
 					
 					if (noeudferme.contains(new Integer(i))){
 						continue;
-						
 					}
 					
-					dist = (int) (g.get(current) + world.get(current, i).doubleValue());
+					dist = (int) (g.get(current) + world.get(world.getPlace(current), world.getPlace(i)));
 					if (!noeudouvert.contains(new Integer(i))){
 						noeudouvert.add(i);
 						nb_visited_nodes++;
@@ -83,13 +72,13 @@ public class AStar extends Algorithm{
 					
 					predecesseur.put(i,current);
 					g.set(i, dist);
-					f.set(i, g.get(i) + h(i));
+					f.set(i, g.get(i) + h(world.getPlace(i)));
 				}
 			}
 		}
 		
 		if (noeudouvert.isEmpty()){
-			System.out.println("Aucun chemin trouvé!");
+			System.out.println("Aucun chemin trouvÃ©!");
 		}
 	}
 	

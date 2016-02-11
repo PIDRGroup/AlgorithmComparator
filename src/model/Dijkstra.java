@@ -2,33 +2,33 @@ package model;
 
 import java.util.ArrayList;
 
-public class Dijkstra extends Algorithm{
+public class Dijkstra<E extends Number> extends Algorithm<E>{
 	
-	public Dijkstra(Environment env){
+	public Dijkstra(Environment<E> env){
 		this.world = env;
-		path = new ArrayList<Place>();
+		path = new ArrayList<Integer>();
 	}
 
 	@Override
-	public void grow(Place src, Place dest) throws UnknownPlaceException {
-		
-		if(!world.isPlace(src))
-			throw new UnknownPlaceException(src);
-		
-		if(!world.isPlace(dest))
-			throw new UnknownPlaceException(dest);
+	public void grow(int src, int dest) throws UnknownPlaceException {
 		
 		estimated_time = 0;
 		nb_visited_nodes = 0;
 		
-		ArrayList<Double> distance = new ArrayList<Double>();
+		if(!world.isIndex(src))
+			throw new UnknownPlaceException(src);
+		
+		if(!world.isIndex(dest))
+			throw new UnknownPlaceException(dest);
+		
+		ArrayList<E> distance = new ArrayList<E>();
 		ArrayList<Integer> predecessor = new ArrayList<Integer>();
 		ArrayList<Integer> banlist = new ArrayList<Integer>();
 		
-		double dist;
+		E dist;
 		for (int i = 0; i < world.size(); i++){
 			try {
-				if ((dist = world.get(src, i)) < Integer.MAX_VALUE){
+				if ((dist = world.get(src, i)).intValue() < Integer.MAX_VALUE){
 					distance.add(dist);
 					nb_visited_nodes++;
 					//On initialise les noeuds à une distance infini de la src
@@ -87,6 +87,8 @@ public class Dijkstra extends Algorithm{
 		}
 	
 		path.add(dest);
+		this.setChanged();
+		this.notifyObservers();
 		
 		int current = dest;
 		
@@ -95,6 +97,8 @@ public class Dijkstra extends Algorithm{
 			int pred = predecessor.get(current);
 			path.add(pred);
 			current = pred;
+			this.setChanged();
+			this.notifyObservers();
 		}
 		
 	}

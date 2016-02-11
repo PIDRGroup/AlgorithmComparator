@@ -2,25 +2,17 @@ package model;
 
 import java.util.ArrayList;
 
-public class GreedybestfirstSearch extends Algorithm{
+public class GreedybestfirstSearch<E extends Number> extends Algorithm<E> {
 
-	public GreedybestfirstSearch(Environment env){
+	public GreedybestfirstSearch(Environment<E> env){
 		this.world = env;
-		this.path = new ArrayList<Place>();
+		this.path = new ArrayList<Integer>();
 	}
 	
 	@Override
-	public void grow(Place source, Place destination) throws UnknownPlaceException {
-		
-		if(!world.isPlace(source))
-			throw new UnknownPlaceException(source);
-		
-		if(!world.isPlace(destination))
-			throw new UnknownPlaceException(destination);
-		
-		estimated_time = 0;
-		nb_visited_nodes = 0;
-		
+	public void grow(int source, int destination) throws UnknownPlaceException {
+		// TODO Auto-generated method stub
+
 		ArrayList<Node> frontiere = new ArrayList<Node>();
 		ArrayList<Integer> exploration = new ArrayList<Integer>();
 		
@@ -85,7 +77,8 @@ public class GreedybestfirstSearch extends Algorithm{
 
 	@Override
 	public String getName() {
-		return "Greedy Best First Search";
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
