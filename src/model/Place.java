@@ -6,6 +6,7 @@ import java.util.Random;
  * 
  * Une place dans le graphe.
  * On peut calculer sa distance par rapport à une autre place et activer une dimension de contrainte.
+ * On peut aussi générer un ensemble de points par des contraintes.
  *
  */
 public class Place {
@@ -49,6 +50,50 @@ public class Place {
 	}
 	
 	/**
+	 * Génère un lot d'un certain nombre de places anonymes avec un nombre de dimensions 
+	 * bounds.length. Toute dimension d a des coordonnées comprises entre bounds[i].min()
+	 * et bounds[i].max().
+	 * 
+	 * Le paramètre w_activation permet de contrôler l'activation de la dimension de contrainte.
+	 * 
+	 * @param nb_places
+	 * @return
+	 */
+	public static Place[] generate(int nb_places, Bound[] bounds, boolean w_activation){
+		Place[] places = new Place[nb_places];
+		
+		for (int i = 0; i < places.length; i++) {
+			
+			int [] coordinates = new int[bounds.length];
+			
+			for(int j=0; j<bounds.length; j++){
+				Bound b = bounds[j];
+				coordinates[j] = (new Random()).nextInt(b.max()-b.min()) + b.min();
+			}
+			
+			places[i] = new Place(coordinates);
+			
+			//Si on active w, on calcule la dimension dans la moyenne des bornes
+			if(w_activation){
+				int avg_min = 0, avg_max = 0;
+				
+				//On calcule la moyenne des bornes
+				for(int j=0; j<bounds.length; j++){
+					avg_max += bounds[j].max();
+					avg_min += bounds[j].min();
+				}
+				
+				avg_max/=bounds.length;
+				avg_min/=bounds.length;
+				
+				places[i].activateW(avg_min, avg_max);
+			}
+		}
+		
+		return places;
+	}
+	
+	/**
 	 * Renvoie le tableau des coordonnées
 	 * @return
 	 */
@@ -63,6 +108,16 @@ public class Place {
 	 */
 	public int getCoordinate(int x){
 		return coordinates[x];
+	}
+	
+	/**
+	 * Retourne le label ou une chaine vide si la place n'a pas de label
+	 * @return Le label de la place
+	 */
+	public String getLabel(){
+		if(label == null) return "";
+		
+		return label;
 	}
 	
 	/**
