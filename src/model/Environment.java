@@ -171,6 +171,18 @@ public class Environment extends Observable{
 	}
 	
 	/**
+	 * Retourne la liste de toutes les places du graphe
+	 * @return
+	 */
+	public ArrayList<Place> getPlaces(){
+		return graph.keyList();
+	}
+	
+	public int nbDim(){
+		return graph.keyList().get(0).getCoordinates().length;
+	}
+	
+	/**
 	 * Tier une place au hasard.
 	 * @return
 	 */

@@ -146,12 +146,12 @@ public class EnvironmentFactory{
 	public static Environment generateAlea(int nb_places, Bound... bounds) throws MultiplePlaceException, UnknownPlaceException{
 		Environment env = new Environment();
 		int nb_dim = bounds.length;
-		
+				
 		//On crée tout d'abord les places
 		for (int i = 0; i < nb_places; i++) {
 			int[] coord = new int[nb_dim];
 			for(int j=0; j<nb_dim; j++){
-				coord[j] = rand.nextInt(bounds[i].max() - bounds[i].min()) + bounds[i].min(); 
+				coord[j] = rand.nextInt(bounds[j].max() - bounds[j].min()) + bounds[j].min(); 
 			}
 			env.addPlace(new Place(coord));
 		}

@@ -66,7 +66,7 @@ public class MyMap<E, F> {
 	}
 	
 	/**
-	 * Renvoie le set des clés.
+	 * Renvoie la liste des clés.
 	 * @return
 	 */
 	public ArrayList<E> keyList(){

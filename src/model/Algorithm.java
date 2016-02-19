@@ -1,8 +1,9 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Observable;
 
-public abstract class Algorithm implements Runnable{
+public abstract class Algorithm extends Observable implements Runnable{
 	
 	protected Environment world;
 	protected  ArrayList<Place> path;
@@ -64,6 +65,10 @@ public abstract class Algorithm implements Runnable{
 	
 	public int getNbNodes(){
 		return nb_visited_nodes;
+	}
+	
+	public Environment getEnv(){
+		return world;
 	}
 	
 	public abstract String getName();
