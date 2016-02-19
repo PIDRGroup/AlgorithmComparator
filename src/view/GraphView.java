@@ -18,7 +18,7 @@ import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
 import model.*;
 import sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap;
 
-public class GraphView extends JPanel{
+public class GraphView extends JFrame{
 	
 	private final static int SIZE = 600;
 	private final static Color[] colors = {Color.CYAN, Color.GREEN, Color.RED, Color.PINK, Color.BLACK, Color.WHITE};
