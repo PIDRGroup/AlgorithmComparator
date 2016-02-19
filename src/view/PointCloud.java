@@ -17,7 +17,7 @@ public class PointCloud extends JPanel implements Observer{
 	private ArrayList<Point> points;
 	
 	//On définit la couleur des noeuds du chemin, des noeuds qui ont été développés et des noeuds qui n'ont pas été touchés.
-	private final static Color COLOR_POINT = Color.BLACK, COLOR_PATH = Color.GREEN, COLOR_EXPANDED = Color.LIGHT_GRAY;
+	public final static Color COLOR_POINT = Color.BLACK, COLOR_PATH = Color.GREEN, COLOR_EXPANDED = Color.LIGHT_GRAY;
 	
 	public PointCloud(Algorithm alg, int width, int height){
 		algo = alg;
