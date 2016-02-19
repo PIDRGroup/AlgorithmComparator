@@ -23,7 +23,7 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class HomeMenu extends JPanel{
+public class HomeView extends JPanel{
 	
 	//Affichage de la liste des expériences disponibles dans le dossier par défaut
 	private JPanel panel_container;
@@ -40,7 +40,10 @@ public class HomeMenu extends JPanel{
 	private JPanel panel_main;
 	private JButton btn_new, btn_load;
 	
-	public HomeMenu(){
+	private MainWindow parent;
+	
+	public HomeView(MainWindow parent){
+		this.parent = parent;
 		
 		//La liste des expériences dans un text area
 		list_experiences = new JList<String>();
@@ -105,10 +108,18 @@ public class HomeMenu extends JPanel{
 		btn_new = new JButton("Créer une nouvelle expérience");
 		btn_load = new JButton("Charger l'expérience sélectionée");
 		
+		btn_new.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				parent.switchCreation();
+			}
+		});
+		
 		panel_main = new JPanel();
 		panel_main.add(btn_new);
 		panel_main.add(btn_load);
 		
+		this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		this.setLayout(new BorderLayout());
 		this.add(panel_container, BorderLayout.NORTH);
 		this.add(panel_main, BorderLayout.SOUTH);
