@@ -16,6 +16,7 @@ public class CreationView extends JPanel{
 	
 	private MainWindow parent;
 	
+	private JButton btn_return;
 	private JPanel panel_general;
 		private JLabel label_name;
 		private JTextField field_name;
@@ -41,6 +42,8 @@ public class CreationView extends JPanel{
 				private JLabel label_min, label_max;
 				private JFormattedTextField field_min, field_max;
 				
+		private JButton btn_launch;
+				
 		public CreationView(MainWindow p){
 			parent=p;
 			
@@ -48,7 +51,9 @@ public class CreationView extends JPanel{
 			field_name = new JTextField();
 			field_name.setPreferredSize(new Dimension(400, 25));
 			Calendar c = Calendar.getInstance();
-			label_date = new JLabel("Date : " + c.get(Calendar.DAY_OF_MONTH)+"/"+c.get(Calendar.MONTH)+"/"+c.get(Calendar.YEAR));
+			String date = c.get(Calendar.DAY_OF_MONTH)+"/"+(c.get(Calendar.MONTH)+1)+"/"+c.get(Calendar.YEAR);
+			label_date = new JLabel("Date : " + date);
+			field_name.setText("exp-"+c.get(Calendar.DAY_OF_MONTH)+"-"+(c.get(Calendar.MONTH)+1)+"-"+c.get(Calendar.YEAR)+"-"+c.get(Calendar.HOUR_OF_DAY)+":"+c.get(Calendar.MINUTE)+":"+c.get(Calendar.SECOND));
 			
 			panel_general = new JPanel();
 			panel_general.add(label_name);
@@ -78,6 +83,7 @@ public class CreationView extends JPanel{
 			NumberFormat integerFieldFormatter = NumberFormat.getIntegerInstance();
 			integerFieldFormatter.setGroupingUsed(false);
 			field_nodes = new JFormattedTextField(integerFieldFormatter);
+			field_nodes.setValue(new Long(5000));
 			field_nodes.setPreferredSize(new Dimension(50, 25));
 			label_dimensions = new JLabel("Nombre de dimensions : ");
 			slider_dimensions = new JSlider(1, 50, 2);
@@ -142,6 +148,8 @@ public class CreationView extends JPanel{
 			label_max = new JLabel("Max : ");
 			field_min = new JFormattedTextField(integerFieldFormatter);
 			field_max = new JFormattedTextField(integerFieldFormatter);
+			field_min.setValue(new Long(50));
+			field_max.setValue(new Long(1000));
 			
 			panel_fixed = new JPanel();
 			panel_fixed.setLayout(new BoxLayout(panel_fixed, BoxLayout.X_AXIS));
@@ -183,10 +191,104 @@ public class CreationView extends JPanel{
 			panel_env.add(pane_bounds, BorderLayout.CENTER);
 			panel_env.add(panel_dimensionW, BorderLayout.SOUTH);
 			
-			this.setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
+			JPanel container = new JPanel();
+			
+			container.setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
+			container.setLayout(new BorderLayout());
+			container.add(panel_general, BorderLayout.NORTH);
+			container.add(panel_algo, BorderLayout.CENTER);
+			container.add(panel_env, BorderLayout.SOUTH);
+			
+			btn_launch = new JButton("Lancer l'expérience !");
+			btn_launch.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					String err_mess = check();
+					if(err_mess.equals("")){
+						//TODO On lance l'expérience
+					}else{
+						JOptionPane.showMessageDialog(btn_launch, err_mess, "Une erreur est survenue !", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			});
+			
+			btn_return = new JButton("Retour");
+			btn_return.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					parent.switchHome();
+				}
+			});
+			
+			JPanel resizer = new JPanel(); //Un JPanel pour contrôler la taille du bouton de retour (histoire qu'il ne prenne pas toute la largeur)
+			resizer.setLayout(new BoxLayout(resizer, BoxLayout.X_AXIS));
+			resizer.add(btn_return);
+			
 			this.setLayout(new BorderLayout());
-			this.add(panel_general, BorderLayout.NORTH);
-			this.add(panel_algo, BorderLayout.CENTER);
-			this.add(panel_env, BorderLayout.SOUTH);
+			this.add(resizer, BorderLayout.NORTH);
+			this.add(container,BorderLayout.CENTER);
+			this.add(btn_launch, BorderLayout.SOUTH);
+		}
+		
+		/**
+		 * Vérifie les entrées utilisateurs.
+		 * 
+		 * @return Renvoie le message d'erreur. Si aucune n'a été détectée, renvoie une chaine vide.
+		 */
+		public String check(){
+			String err_mess = "";
+			
+			String name = field_name.getText();
+			if(name == null || name.isEmpty() || name.equals("") || name.trim().equals("")){
+				err_mess += " - Le nom de l'expérience doit être renseigné !\n";
+			}
+			
+			int nb_algos = 0;
+			for(JCheckBox box : check_algos){
+				nb_algos+= (box.isSelected()) ? 1 : 0;
+			}
+			
+			if(nb_algos == 0){
+				err_mess += " - Au moins un algo doit-être sélectionné !\n";
+			}
+			
+			long nb_noeuds = (long) field_nodes.getValue();
+			if(nb_noeuds == 0){
+				err_mess+=" - Vous devez indiquer le nombre de noeuds de l'expérience !\n";
+			}
+			
+			String bounds_error = " - Bornes dans les dimensions : ";
+			int errors=0;
+			for(BoundView bv : bounds){
+				if(bv.min()>bv.max() || bv.min()<0 || bv.max()<0){
+					errors++;
+					bounds_error+=bv.desc()+", ";
+				}
+			}
+			
+			if(errors > 0) err_mess+=bounds_error+" !\n";
+			
+			if(radio_fixed.isSelected()){
+				long min = (long) field_min.getValue();
+				long max = (long) field_max.getValue();
+				
+				if(min == 0){
+					err_mess+=" - Vous avez choisi de fixer les bornes, vous devez donc indiquer la borne min !\n";
+				}
+				
+				if(max == 0){
+					err_mess+=" - Vous avez choisi de fixer les bornes, vous devez donc indiquer la borne max !\n";
+				}
+				
+				if(max < min){
+					err_mess+=" - La borne inf. doit être plus petite que la borne sup. dans la dimension W !\n";
+				}
+				
+				if(min<0 || max<0){
+					err_mess+=" - Les bornes ne peuvent pas être négatives !\n";
+				}
+			}
+			
+			return err_mess;
 		}
 }

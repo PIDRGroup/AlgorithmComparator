@@ -26,8 +26,8 @@ public class BoundView extends JPanel{
 		min = new JFormattedTextField(integerFieldFormatter);
 		max = new JFormattedTextField(integerFieldFormatter);
 		
-		min.setValue(new Integer(0));
-		max.setValue(new Integer(600));
+		min.setValue(new Long(0));
+		max.setValue(new Long(600));
 		
 		this.setLayout(new GridLayout(1, 5));
 		this.add(desc);
@@ -39,14 +39,18 @@ public class BoundView extends JPanel{
 	}
 	
 	public int max(){
-		return (int) max.getValue();
+		return  (int) (long) max.getValue();
 	}
 	
 	public int min(){
-		return (int) min.getValue();
+		return (int) (long) min.getValue();
 	}
 	
 	public Bound bound(){
 		return new Bound(min(), max());
+	}
+	
+	public String desc(){
+		return desc.getText();
 	}
 }
