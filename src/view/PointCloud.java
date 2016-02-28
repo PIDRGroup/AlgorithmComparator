@@ -13,18 +13,19 @@ import model.*;
  */
 public class PointCloud extends JPanel implements Observer{
 	
+	Environment env;
 	private Algorithm algo;
 	private ArrayList<Point> points;
 	
 	//On définit la couleur des noeuds du chemin, des noeuds qui ont été développés et des noeuds qui n'ont pas été touchés.
 	public final static Color COLOR_POINT = Color.BLACK, COLOR_PATH = Color.GREEN, COLOR_EXPANDED = Color.LIGHT_GRAY;
 	
-	public PointCloud(Algorithm alg, int width, int height){
+	public PointCloud(Environment e, Algorithm alg, int width, int height){
 		algo = alg;
 		this.setSize(new Dimension(width, height));
 		
 		//On crée l'ensemble des points initiaux.
-		Environment env = algo.getEnv();
+		env=e;
 		if(env.nbDim() == 1){
 			for(Place p : env.getPlaces()){
 				//Si c'est en 1D, on place tous les points sur une ligne
@@ -46,12 +47,10 @@ public class PointCloud extends JPanel implements Observer{
 	@Override
 	public void paintComponent(Graphics g){
 		
-		Environment env = algo.getEnv();
-		
 		//On affiche tous les points de l'environnement
 		g.setColor(COLOR_POINT);
 		
-		if(algo.getEnv().nbDim() == 1){
+		if(env.nbDim() == 1){
 			int middle = (int) (this.getSize().getHeight() / 2);
 			for(Place p : env.getPlaces()){
 				//Si c'est en 1D, on place tous les points sur une ligne
@@ -66,7 +65,7 @@ public class PointCloud extends JPanel implements Observer{
 		
 		//On change la couleur des points du chemin
 		g.setColor(COLOR_PATH);
-		if(algo.getEnv().nbDim() == 1){
+		if(env.nbDim() == 1){
 			int middle = (int) (this.getSize().getHeight() / 2);
 			for(Place p : algo.getPath()){
 				//Si c'est en 1D, on place tous les points sur une ligne

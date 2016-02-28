@@ -5,13 +5,12 @@ import java.util.HashMap;
 
 public class AStar extends Algorithm{
 	
-	public AStar(Environment env){
-		this.world = env;
+	public AStar(){
 		path = new ArrayList<Place>();
 	}
 
 	@Override
-	public void grow(Place src, Place dest) throws UnknownPlaceException{
+	public void grow(Environment world, Place src, Place dest) throws UnknownPlaceException{
 		
 		if(!world.isPlace(src))
 			throw new UnknownPlaceException(src);

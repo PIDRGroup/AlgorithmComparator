@@ -4,13 +4,12 @@ import java.util.ArrayList;
 
 public class GBFS extends Algorithm{
 
-	public GBFS(Environment env){
-		this.world = env;
+	public GBFS(){
 		this.path = new ArrayList<Place>();
 	}
 	
 	@Override
-	public void grow(Place source, Place destination) throws UnknownPlaceException {
+	public void grow(Environment world, Place source, Place destination) throws UnknownPlaceException {
 		// TODO Auto-generated method stub
 
 		ArrayList<Node> frontiere = new ArrayList<Node>();

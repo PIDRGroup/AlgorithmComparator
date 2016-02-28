@@ -4,13 +4,12 @@ import java.util.ArrayList;
 
 public class Dijkstra extends Algorithm{
 	
-	public Dijkstra(Environment env){
-		this.world = env;
+	public Dijkstra(){
 		path = new ArrayList<Place>();
 	}
 
 	@Override
-	public void grow(Place src, Place dest) throws UnknownPlaceException {
+	public void grow(Environment world, Place src, Place dest) throws UnknownPlaceException {
 		
 		estimated_time = 0;
 		nb_visited_nodes = 0;

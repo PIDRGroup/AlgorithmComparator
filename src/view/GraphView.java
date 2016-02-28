@@ -42,9 +42,9 @@ public class GraphView extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				ArrayList<Thread> threads = new ArrayList<Thread>();
 				for(Algorithm alg : algorithms){
-					Thread t = new Thread(alg);
+					/*Thread t = new Thread(alg);
 					threads.add(t);
-					t.start();
+					t.start();*/
 				}
 				
 				//On attend que tous les threads soient finis
@@ -102,11 +102,11 @@ public class GraphView extends JFrame{
 		
 		Environment env = null;
 		try {
-			env = EnvironmentFactory.generateUniformGrid(100);
+			env = EnvironmentFactory.generateUniformGrid2D(100);
 		
 			GraphView gv = new GraphView();
 			
-			AStar a_star = new AStar(env);
+			/*AStar a_star = new AStar(env);
 			a_star.setSrc(env.alea());
 			a_star.setDest(env.alea());
 			gv.addAlgo(a_star);
@@ -114,7 +114,7 @@ public class GraphView extends JFrame{
 			Environment copy = env.duplicate();
 			Dijkstra dijkstra = new Dijkstra(copy);
 			dijkstra.setSrc(env.alea());
-			dijkstra.setDest(env.alea());
+			dijkstra.setDest(env.alea());*/
 	             
 	        // Set up a new stroke Transformer for the edges
 	        JFrame frame = new JFrame("AlgoComparator");

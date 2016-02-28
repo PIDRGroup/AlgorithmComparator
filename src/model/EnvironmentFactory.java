@@ -105,17 +105,123 @@ public class EnvironmentFactory{
 	 * 
 	 * Génère une grille 2D selon une loi uniforme bornée.
 	 * 
+	 * @param nb_places La racine carrée du nombre de place à générer (10 = une grille de 10 * 10 places)
 	 * @param bound_x Bornes inf et sup de x
 	 * @param bound_y Bornes inf et sup de y
 	 * @return
 	 * @throws MultiplePlaceException 
 	 * @throws UnknownPlaceException 
 	 */
-	public static Environment generateUniformGrid(int nb_places, Bound bound_x, Bound bound_y) throws MultiplePlaceException, UnknownPlaceException{
+	public static Environment generateUniformGrid2D(int nb_places, Bound bound_x, Bound bound_y) throws MultiplePlaceException, UnknownPlaceException{
 		Environment env = new Environment();
+		
+		int total = (int) Math.pow(nb_places, 2);
 
-		//int width = bound_x.max() - bound_x.min();
-		//int height = bound_y.max() - bound_y.min();
+		int width = bound_x.max() - bound_x.min();
+		int height = bound_y.max() - bound_y.min();
+		
+		int width_interval = width / nb_places;
+		int height_interval = height / nb_places;
+		
+		//On gère les problèmes d'arrondis
+		/*if(width_interval * nb_places < width){
+			
+			//On n'aura pas de places sur le width. On augmente la taille
+		
+		}else if(width_interval * nb_places > width){
+			
+		}
+		
+		if(height_interval * nb_places < height){
+			
+		}else if(height_interval * nb_places > height){
+			
+		}*/
+		
+		//On commence par créer le lot de places
+		for (int i = 0; i <= width; i+=width_interval) {
+			for (int j = 0; j <= height; j+=height_interval) {
+				env.addPlace(new Place(i, j));
+			}
+		}
+		
+		//Puis on génère les liaisons
+		ArrayList<Place> places = env.getPlaces();
+		for (int i = 0; i < places.size(); i++) {
+			Place current = places.get(i);
+			
+			if (current.getCoordinate(1) == 0){
+				//On est sur la première ligne
+				
+				if(current.getCoordinate(1) == 0){
+					//On est sur le coin supérieur gauche
+					
+					env.addLink(current, env.getPlace(0, height_interval));
+					env.addLink(current, env.getPlace(width_interval, 0));
+					
+				}else if(current.getCoordinate(1) == width){
+					//On est sur le coin supérieur droit
+					
+					env.addLink(current, env.getPlace(width - width_interval, 0));
+					env.addLink(current, env.getPlace(width, height_interval));
+					
+				}else{
+					//On est à l'intérieur de la ligne
+					
+					env.addLink(current, env.getPlace(current.getCoordinate(0) - width_interval, 0));
+					env.addLink(current, env.getPlace(current.getCoordinate(0) + width_interval, 0));
+					env.addLink(current, env.getPlace(current.getCoordinate(0), height_interval));
+					
+				}
+				
+			}else if(current.getCoordinate(1) == height){
+				//On est sur la dernière ligne
+				
+				if(current.getCoordinate(0) == 0){
+					//On est sur le coin inférieur gauche
+					
+					env.addLink(current, env.getPlace(0, height - height_interval));
+					env.addLink(current, env.getPlace(width_interval, height));
+					
+				}else if(current.getCoordinate(0) == width){
+					//On est sur le coin inférieur droit
+					
+					env.addLink(current, env.getPlace(width - width_interval, height));
+					env.addLink(current, env.getPlace(width, height - height_interval));
+					
+				}else{
+					//On est à l'intérieur de la ligne
+					
+					env.addLink(current, env.getPlace(current.getCoordinate(0) - width_interval, height));
+					env.addLink(current, env.getPlace(current.getCoordinate(0) + width_interval, height));
+					env.addLink(current, env.getPlace(current.getCoordinate(0), height - height_interval));
+					
+				}
+				
+			}else if(current.getCoordinate(0) == 0){
+				//On est sur la première colonne
+				
+				env.addLink(current, env.getPlace(0, current.getCoordinate(1) - height_interval));
+				env.addLink(current, env.getPlace(0, current.getCoordinate(1) + height_interval));
+				env.addLink(current, env.getPlace(width_interval, current.getCoordinate(1)));
+				
+			}else if(current.getCoordinate(0) == width){
+				//On est sur la dernière colonne
+				
+				env.addLink(current, env.getPlace(width, current.getCoordinate(1) - height_interval));
+				env.addLink(current, env.getPlace(width, current.getCoordinate(1) + height_interval));
+				env.addLink(current, env.getPlace(width - width_interval, current.getCoordinate(1)));
+				
+			}else{
+				//On est à l'intérieur de la grille
+				
+				env.addLink(current, env.getPlace(current.getCoordinate(0), current.getCoordinate(1) - height_interval));
+				env.addLink(current, env.getPlace(current.getCoordinate(0), current.getCoordinate(1) + height_interval));
+				env.addLink(current, env.getPlace(current.getCoordinate(0) - width_interval, current.getCoordinate(1)));
+				env.addLink(current, env.getPlace(current.getCoordinate(0) + width_interval, current.getCoordinate(1)));
+				
+			}
+		}
 		
 		return env;
 	}
@@ -128,8 +234,8 @@ public class EnvironmentFactory{
 	 * @throws MultiplePlaceException
 	 * @throws UnknownPlaceException
 	 */
-	public static Environment generateUniformGrid(int nb_places, Bound bounds_x_y) throws MultiplePlaceException, UnknownPlaceException{
-		return generateUniformGrid(nb_places, bounds_x_y, bounds_x_y);
+	public static Environment generateUniformGrid2D(int nb_places, Bound bounds_x_y) throws MultiplePlaceException, UnknownPlaceException{
+		return generateUniformGrid2D(nb_places, bounds_x_y, bounds_x_y);
 	}
 	
 	/**
@@ -139,8 +245,8 @@ public class EnvironmentFactory{
 	 * @throws MultiplePlaceException
 	 * @throws UnknownPlaceException
 	 */
-	public static Environment generateUniformGrid(int nb_places) throws MultiplePlaceException, UnknownPlaceException{
-		return generateUniformGrid(nb_places, new Bound(0, 600));
+	public static Environment generateUniformGrid2D(int nb_places) throws MultiplePlaceException, UnknownPlaceException{
+		return generateUniformGrid2D(nb_places, new Bound(0, 600));
 	}
 	
 	public static Environment generateAlea(int nb_places, Bound... bounds) throws MultiplePlaceException, UnknownPlaceException{
@@ -160,7 +266,7 @@ public class EnvironmentFactory{
 		for (int i = 0; i < nb_places; i++){
 			
 			Place current = env.getPlace(i);
-			int nb_links = rand.nextInt(9) + 1;
+			int nb_links = rand.nextInt(4) + 1;
 			
 			for(int j=0; j<nb_links; j++){
 				env.addLink(current, env.alea());
@@ -168,5 +274,9 @@ public class EnvironmentFactory{
 		}
 		
 		return env;
+	}
+	
+	public static Environment generateAlea(int nb_places, ArrayList<Bound> bounds) throws MultiplePlaceException, UnknownPlaceException{
+		return generateAlea(nb_places, bounds.toArray(new Bound[1]));
 	}
 }

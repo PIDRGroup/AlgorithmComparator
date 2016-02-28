@@ -1,9 +1,9 @@
 package model;
 
-public class RBFS<E extends Number> extends Algorithm{
+public class RBFS extends Algorithm{
 
 	@Override
-	public void grow(Place source, Place destination) throws UnknownPlaceException {
+	public void grow(Environment world, Place source, Place destination) throws UnknownPlaceException {
 		
 		if(!world.isPlace(source))
 			throw new UnknownPlaceException(source);

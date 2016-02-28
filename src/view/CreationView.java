@@ -3,6 +3,7 @@ package view;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.InvocationTargetException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -11,6 +12,14 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import model.Algorithm;
+import model.Bound;
+import model.Environment;
+import model.EnvironmentFactory;
+import model.Experience;
+import model.MultiplePlaceException;
+import model.UnknownPlaceException;
 
 public class CreationView extends JPanel{
 	
@@ -61,7 +70,7 @@ public class CreationView extends JPanel{
 			panel_general.add(label_date);
 			
 			check_algos = new ArrayList<JCheckBox>();
-			check_algos.add(new JCheckBox("A*"));
+			check_algos.add(new JCheckBox("AStar"));
 			check_algos.add(new JCheckBox("Dijkstra"));
 			check_algos.add(new JCheckBox("GBFS"));
 			check_algos.add(new JCheckBox("RBFS"));
@@ -206,6 +215,31 @@ public class CreationView extends JPanel{
 					String err_mess = check();
 					if(err_mess.equals("")){
 						//TODO On lance l'expérience
+						ArrayList<Bound> b = new ArrayList<Bound>();
+						for(BoundView bv : bounds) b.add(bv.bound());
+						Environment env = null;
+						try {
+							env = EnvironmentFactory.generateAlea((int) (long) field_nodes.getValue(), b);
+						} catch (MultiplePlaceException | UnknownPlaceException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						Experience exp = new Experience(field_name.getText(), label_date.getText(), env, env.alea(), env.alea());
+						for(JCheckBox box : check_algos){
+							if(box.isSelected()){
+								Algorithm a;
+								try {
+									Class alg = Class.forName(box.getText());
+									a = (Algorithm) alg.getConstructor().newInstance();
+									exp.addAlgo(a);
+								} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+										| InvocationTargetException | NoSuchMethodException | SecurityException | ClassNotFoundException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+								
+							}
+						}
 					}else{
 						JOptionPane.showMessageDialog(btn_launch, err_mess, "Une erreur est survenue !", JOptionPane.ERROR_MESSAGE);
 					}

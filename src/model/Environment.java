@@ -170,6 +170,28 @@ public class Environment extends Observable{
 		return graph.keyList().get(index);
 	}
 	
+	public Place getPlace(int... coordinates) throws UnknownPlaceException{
+		
+		if(coordinates.length != nbDim())throw new UnknownPlaceException(new Place(coordinates));
+		
+		Place p = null;
+		ArrayList<Place> places = graph.keyList();
+		
+		for (int i = 0; i < places.size() && p == null; i++) {
+			Place current = places.get(i);
+			boolean eq = true;
+			
+			for (int j = 0; j < coordinates.length && eq == true; j++) {
+				if(current.getCoordinate(j) != coordinates[j]) eq = false;
+			}
+			
+			if(eq == true)p = current;
+			
+		}
+		
+		return p;
+	}
+	
 	/**
 	 * Retourne la liste de toutes les places du graphe
 	 * @return
