@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -47,6 +48,11 @@ public class Place {
 	 */
 	public Place(int... coordinates){
 		this(null, coordinates);
+	}
+	
+	public Place(ArrayList<Long> coordinates){
+		this.coordinates = new int[coordinates.size()];
+		for (int i = 0; i < this.coordinates.length; i++) this.coordinates[i] = coordinates.get(i).intValue();
 	}
 	
 	/**

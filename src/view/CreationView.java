@@ -19,11 +19,14 @@ import model.Environment;
 import model.EnvironmentFactory;
 import model.Experience;
 import model.MultiplePlaceException;
+import model.Place;
 import model.UnknownPlaceException;
 
 public class CreationView extends JPanel{
 	
 	private MainWindow parent;
+	
+	Place src, dest;
 	
 	private JButton btn_return;
 	private JPanel panel_general;
@@ -43,6 +46,10 @@ public class CreationView extends JPanel{
 		private JPanel panel_bounds;
 			private JScrollPane pane_bounds;
 			private ArrayList<BoundView> bounds;
+			
+		private JPanel panel_extremities;
+			private JButton btn_set_src;
+			private JButton btn_set_dest;
 		 
 		private JPanel panel_dimensionW;
 			private ButtonGroup group_bounds;
@@ -55,6 +62,8 @@ public class CreationView extends JPanel{
 				
 		public CreationView(MainWindow p){
 			parent=p;
+			src = new Place(0, 0);
+			dest = new Place(600, 600);
 			
 			label_name = new JLabel("Nom de l'expérience : ");
 			field_name = new JTextField();
@@ -134,8 +143,41 @@ public class CreationView extends JPanel{
 							bounds.remove(size-i);
 						}
 					}
+					
+					//On crée une nouvelle place par défaut d'arrivée et de départ
+					ArrayList<Long> l_src = new ArrayList<Long>(), l_dest = new ArrayList<Long>();
+					for (int i = 0; i < nb_dim; i++) {
+						l_src.add(new Long(0));
+						l_dest.add(new Long(600));
+					}
+					
+					src = new Place(l_src);
+					dest = new Place(l_dest);
 				}
 			});
+			
+			panel_extremities = new JPanel();
+			btn_set_src = new JButton("Départ");
+			btn_set_dest= new JButton("Arrivée");
+			
+			btn_set_src.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					ArrayList<Long> l = PopupExtremity.showPopup("Place de départ", slider_dimensions.getValue(), 0);
+					src = new Place(l);
+				}
+			});
+			
+			btn_set_dest.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					ArrayList<Long> l = PopupExtremity.showPopup("Place d'arrivée", slider_dimensions.getValue(), 600);	
+					dest = new Place(l);
+				}
+			});
+			
+			panel_extremities.add(btn_set_src);
+			panel_extremities.add(btn_set_dest);
 
 			panel_dimensionW = new JPanel();
 			panel_dimensionW.setBorder(new TitledBorder("Dimension W (dimension des contraintes)"));
@@ -195,9 +237,14 @@ public class CreationView extends JPanel{
 			panel_dimensionW.add(radio_avg);
 			panel_dimensionW.add(panel_fixed);
 			
+			JPanel center = new JPanel();
+			center.setLayout(new BorderLayout());
+			center.add(pane_bounds, BorderLayout.NORTH);
+			center.add(panel_extremities, BorderLayout.SOUTH);
+			
 			panel_env.setLayout(new BorderLayout());
 			panel_env.add(panel_nodes, BorderLayout.NORTH);
-			panel_env.add(pane_bounds, BorderLayout.CENTER);
+			panel_env.add(center, BorderLayout.CENTER);
 			panel_env.add(panel_dimensionW, BorderLayout.SOUTH);
 			
 			JPanel container = new JPanel();

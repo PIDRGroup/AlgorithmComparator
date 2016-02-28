@@ -13,7 +13,7 @@ import model.*;
  */
 public class PointCloud extends JPanel implements Observer{
 	
-	Environment env;
+	private Environment env;
 	private Algorithm algo;
 	private ArrayList<Point> points;
 	
@@ -21,6 +21,10 @@ public class PointCloud extends JPanel implements Observer{
 	public final static Color COLOR_POINT = Color.BLACK, COLOR_PATH = Color.GREEN, COLOR_EXPANDED = Color.LIGHT_GRAY;
 	
 	public PointCloud(Environment e, Algorithm alg, int width, int height){
+		
+		this.setBackground(Color.WHITE);
+		
+		points = new ArrayList<Point>();
 		algo = alg;
 		this.setSize(new Dimension(width, height));
 		
@@ -37,6 +41,8 @@ public class PointCloud extends JPanel implements Observer{
 				points.add(new Point(p.getCoordinate(0), p.getCoordinate(1)));
 			}
 		}
+		
+		this.setPreferredSize(new Dimension(width, height));
 	}
 
 	@Override
@@ -64,7 +70,7 @@ public class PointCloud extends JPanel implements Observer{
 		}
 		
 		//On change la couleur des points du chemin
-		g.setColor(COLOR_PATH);
+		/*g.setColor(COLOR_PATH);
 		if(env.nbDim() == 1){
 			int middle = (int) (this.getSize().getHeight() / 2);
 			for(Place p : algo.getPath()){
@@ -76,6 +82,6 @@ public class PointCloud extends JPanel implements Observer{
 			for(Place p : algo.getPath()){
 				g.drawRect(p.getCoordinate(0), p.getCoordinate(1), 1, 1);
 			}
-		}
+		}*/
 	}
 }

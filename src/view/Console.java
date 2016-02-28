@@ -1,5 +1,7 @@
 package view;
 
+import javax.swing.JFrame;
+
 import model.*;
 
 public class Console {
@@ -19,9 +21,17 @@ public class Console {
 			System.out.println("Point de départ : " + exp.getSrc());
 			System.out.println("Point d'arrivée : " + exp.getDest());
 			
+			JFrame frame = new JFrame("test");
+			frame.setContentPane(new PointCloud(env, null, 500, 700));
+			frame.setVisible(true);
+			frame.pack();
+			
 			System.out.println("Calcul du chemin");
 			exp.addAlgo(astar);
+			long a = System.currentTimeMillis();
 			exp.launch();
+			long b = System.currentTimeMillis();
+			System.out.println("TIME : " + ((b-a)/1000));
 			
 			System.out.println(astar.getPath());
 			
