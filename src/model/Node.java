@@ -25,6 +25,10 @@ public class Node{
 		return this.path_cost;
 	}
 	
+	public void setpathcost(double path_cost){
+		this.path_cost = path_cost;
+	}
+	
 	public ArrayList<Node> getsolvation(){
 		return this.solvation;
 	}
