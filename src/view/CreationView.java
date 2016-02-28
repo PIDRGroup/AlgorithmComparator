@@ -42,6 +42,11 @@ public class CreationView extends JPanel{
 			private JLabel label_nodes, label_dimensions, label_slider;
 			private JFormattedTextField field_nodes;
 			private JSlider slider_dimensions;
+			
+		private JPanel panel_env_shape;
+			private ButtonGroup group_shape;
+			private JRadioButton radio_grid;
+			private JRadioButton radio_alea;
 		
 		private JPanel panel_bounds;
 			private JScrollPane pane_bounds;
@@ -96,6 +101,33 @@ public class CreationView extends JPanel{
 			panel_env = new JPanel();
 			panel_env.setBorder(new TitledBorder("Environnement"));
 			
+			panel_env_shape = new JPanel();
+			group_shape = new ButtonGroup();
+			radio_grid = new JRadioButton("Grille 2D");
+			radio_grid.setSelected(true);
+			radio_alea = new JRadioButton("Semi-aléatoire");
+			group_shape.add(radio_alea);
+			group_shape.add(radio_grid);
+			panel_env_shape.add(radio_grid);
+			panel_env_shape.add(radio_alea);
+			
+			radio_grid.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					slider_dimensions.setMaximum(2);
+					for (int i = 0; i < bounds.size()-2; i++) {
+						bounds.remove(bounds.size()-1);
+					}
+				}
+			});
+			
+			radio_alea.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					slider_dimensions.setMaximum(50);
+				}
+			});
+			
 			panel_nodes = new JPanel();
 			label_nodes = new JLabel("Nombre de noeuds : ");
 			NumberFormat integerFieldFormatter = NumberFormat.getIntegerInstance();
@@ -104,7 +136,7 @@ public class CreationView extends JPanel{
 			field_nodes.setValue(new Long(5000));
 			field_nodes.setPreferredSize(new Dimension(50, 25));
 			label_dimensions = new JLabel("Nombre de dimensions : ");
-			slider_dimensions = new JSlider(1, 50, 2);
+			slider_dimensions = new JSlider(1, 2, 2);
 			label_slider = new JLabel("2");
 			
 			panel_nodes.add(label_nodes);
@@ -237,13 +269,18 @@ public class CreationView extends JPanel{
 			panel_dimensionW.add(radio_avg);
 			panel_dimensionW.add(panel_fixed);
 			
+			JPanel north = new JPanel();
+			north.setLayout(new BorderLayout());
+			north.add(panel_env_shape, BorderLayout.NORTH);
+			north.add(panel_nodes, BorderLayout.SOUTH);
+			
 			JPanel center = new JPanel();
 			center.setLayout(new BorderLayout());
 			center.add(pane_bounds, BorderLayout.NORTH);
 			center.add(panel_extremities, BorderLayout.SOUTH);
 			
 			panel_env.setLayout(new BorderLayout());
-			panel_env.add(panel_nodes, BorderLayout.NORTH);
+			panel_env.add(north, BorderLayout.NORTH);
 			panel_env.add(center, BorderLayout.CENTER);
 			panel_env.add(panel_dimensionW, BorderLayout.SOUTH);
 			
@@ -261,14 +298,16 @@ public class CreationView extends JPanel{
 				public void actionPerformed(ActionEvent arg0) {
 					String err_mess = check();
 					if(err_mess.equals("")){
-						//TODO On lance l'expérience
+						//On lance l'expérience
 						ArrayList<Bound> b = new ArrayList<Bound>();
 						for(BoundView bv : bounds) b.add(bv.bound());
 						Environment env = null;
 						try {
-							env = EnvironmentFactory.generateAlea((int) (long) field_nodes.getValue(), b);
+							if(radio_alea.isSelected())
+								env = EnvironmentFactory.generateAlea((int) (long) field_nodes.getValue(), b);
+							else if(radio_grid.isSelected())
+								env = EnvironmentFactory.generateUniformGrid2D((int) (long) field_nodes.getValue(), b.get(0), b.get(1));
 						} catch (MultiplePlaceException | UnknownPlaceException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 						Experience exp = new Experience(field_name.getText(), label_date.getText(), env, env.alea(), env.alea());
@@ -276,17 +315,23 @@ public class CreationView extends JPanel{
 							if(box.isSelected()){
 								Algorithm a;
 								try {
-									Class alg = Class.forName(box.getText());
+									Class alg = Class.forName("model."+box.getText());
 									a = (Algorithm) alg.getConstructor().newInstance();
 									exp.addAlgo(a);
 								} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 										| InvocationTargetException | NoSuchMethodException | SecurityException | ClassNotFoundException e) {
-									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
 								
 							}
 						}
+						
+						try {
+							exp.launch();
+						} catch (UnknownPlaceException e) {
+							e.printStackTrace();
+						}
+						
 					}else{
 						JOptionPane.showMessageDialog(btn_launch, err_mess, "Une erreur est survenue !", JOptionPane.ERROR_MESSAGE);
 					}
@@ -368,6 +413,12 @@ public class CreationView extends JPanel{
 				if(min<0 || max<0){
 					err_mess+=" - Les bornes ne peuvent pas être négatives !\n";
 				}
+			}
+			
+			int nb_dim = slider_dimensions.getValue();
+			
+			if(src.getCoordinates().length != nb_dim){
+				err_mess+="Le nombre de dimensions des places aux extrémités n'est pas en accord avec le nombre de l'env !\n";
 			}
 			
 			return err_mess;
