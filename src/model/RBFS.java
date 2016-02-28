@@ -11,15 +11,20 @@ public class RBFS extends Algorithm{
 		if(!world.isPlace(destination))
 			throw new UnknownPlaceException(destination);
 		
-		estimated_time = 0;
-		nb_visited_nodes = 0;
+		
+		
 	}
 
+	int h(Place current){
+		return 0;
+	}
+	
 	@Override
 	public String getName() {
 		return "Recursive Best First Search";
 	}
 
+	
 	
 
 }

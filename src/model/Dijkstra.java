@@ -6,14 +6,12 @@ public class Dijkstra extends Algorithm{
 	
 	public Dijkstra(){
 		path = new ArrayList<Place>();
+		eval = new Evaluation();
 	}
 
 	@Override
 	public void grow(Environment world, Place src, Place dest) throws UnknownPlaceException {
-		
-		estimated_time = 0;
-		nb_visited_nodes = 0;
-		
+				
 		if(!world.isPlace(src))
 			throw new UnknownPlaceException(src);
 		
@@ -29,7 +27,6 @@ public class Dijkstra extends Algorithm{
 			try {
 				if ((dist = world.get(src, world.getPlace(i))) < Integer.MAX_VALUE){
 					distance.add(dist);
-					nb_visited_nodes++;
 					//On initialise les noeuds à une distance infini de la src
 				}else{
 					distance.add(new Double(Integer.MAX_VALUE));
@@ -50,6 +47,8 @@ public class Dijkstra extends Algorithm{
 			int min = Integer.MAX_VALUE;
 			int minnode = world.indexOf(dest);
 			
+			eval.new_while();
+			
 			//On cherche le noeud n'ont encore parcourus avec la plus petit distance à la src
 			for(int i = 0 ; i < world.size() ; i++){
 				if (!banlist.contains(i) && distance.get(i).intValue() < min){
@@ -67,7 +66,6 @@ public class Dijkstra extends Algorithm{
 					
 					//On fais une mise à jour de la distance à la source pour les noeuds connectés au noeud courant
 					if (!banlist.contains(i) && (newdistance = world.get(world.getPlace(minnode), world.getPlace(i))) < Integer.MAX_VALUE){
-						nb_visited_nodes++;
 						newdistance += distance.get(minnode).intValue(); 
 						if (newdistance < distance.get(i).intValue()){
 							/*Si la distance à la source d'un noeud connecté change,
@@ -76,6 +74,10 @@ public class Dijkstra extends Algorithm{
 							*/
 							distance.set(i, newdistance);
 							predecessor.set(i, minnode);
+							
+							if (world.getPlace(i).equals(dest)){
+								eval.gotasolution();
+							}
 						}
 					}
 				} catch (UnknownPlaceException e) {

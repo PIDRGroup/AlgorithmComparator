@@ -7,6 +7,7 @@ public class AStar extends Algorithm{
 	
 	public AStar(){
 		path = new ArrayList<Place>();
+		eval = new Evaluation();
 	}
 
 	@Override
@@ -17,9 +18,6 @@ public class AStar extends Algorithm{
 		
 		if(!world.isPlace(dest))
 			throw new UnknownPlaceException(dest);
-		
-		nb_visited_nodes = 0;
-		estimated_time = 0;
 		
 		ArrayList<Integer> noeudouvert = new ArrayList<Integer>();
 		ArrayList<Integer> noeudferme = new ArrayList<Integer>();
@@ -40,6 +38,8 @@ public class AStar extends Algorithm{
 			int min = Integer.MAX_VALUE;
 			int current = 0;
 			
+			eval.new_while();
+			
 			for (int i = 0; i < world.size(); i++){
 				//On recherche le noeud n'appartenant pas au noeud ouvert tel que f est minimal
 				if (f.get(i) < min && noeudouvert.contains(new Integer(i))){
@@ -54,6 +54,9 @@ public class AStar extends Algorithm{
 					current = predecesseur.get(current);
 					path.add(world.getPlace(current));
 				}
+				
+				eval.gotasolution();
+				
 				break;
 			}
 						
@@ -71,7 +74,6 @@ public class AStar extends Algorithm{
 					dist = (int) (g.get(current) + world.get(world.getPlace(current), world.getPlace(i)));
 					if (!noeudouvert.contains(new Integer(i))){
 						noeudouvert.add(i);
-						nb_visited_nodes++;
 					}else if (dist >= g.get(i)){
 						continue;
 					}

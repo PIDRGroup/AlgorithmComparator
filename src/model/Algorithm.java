@@ -5,11 +5,8 @@ import java.util.Observable;
 
 public abstract class Algorithm extends Observable{
 	
-	protected  ArrayList<Place> path;
-	
-	//Attrbuts pour juger de la performance de l'algo
-	protected long estimated_time;
-	protected int nb_visited_nodes;
+	protected ArrayList<Place> path;
+	protected Evaluation eval;
 	
 	/**
 	 * pply an algorithm to the environment
@@ -21,14 +18,6 @@ public abstract class Algorithm extends Observable{
 	
 	public ArrayList<Place> getPath(){
 		return path;
-	}
-	
-	public long getDuration(){
-		return estimated_time;
-	}
-	
-	public int getNbNodes(){
-		return nb_visited_nodes;
 	}
 	
 	public abstract String getName();

@@ -2,10 +2,11 @@ package model;
 
 import java.util.ArrayList;
 
-public class GBFS extends Algorithm{
+public class UniformCostSearch extends Algorithm{
 
-	public GBFS(){
+	public UniformCostSearch(){
 		this.path = new ArrayList<Place>();
+		this.eval = new Evaluation();
 	}
 	
 	@Override
@@ -18,6 +19,9 @@ public class GBFS extends Algorithm{
 		frontiere.add(new Node(source, 0,null));
 		
 		while(true){
+			
+			eval.new_while();
+			
 			if (frontiere.isEmpty()){
 				System.out.println("Frontière vide: Aucune solution n'a été trouvée");
 				break;
@@ -48,6 +52,7 @@ public class GBFS extends Algorithm{
 			Node currentnode=frontiere.get(0);
 			
 			if (currentnode.getstat() == destination){
+				eval.gotasolution();
 				break;
 			}
 			
