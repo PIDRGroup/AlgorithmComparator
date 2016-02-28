@@ -56,7 +56,7 @@ public class RBFS extends Algorithm{
 		}
 		
 		for (int i = 0; i < noeud.size(); i++){
-			noeud.get(i).setpathcost(max());
+			//noeud.get(i).setpathcost(max());
 		}
 		
 	}
