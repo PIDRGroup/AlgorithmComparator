@@ -31,8 +31,11 @@ public class IDAStar extends Algorithm{
 		
 		while(true){
 			t = search(src, 0, bound);
-			if (t == found) ;
-			if (t == Integer.MAX_VALUE) System.out.println("Aucun chemin trouvé!");
+			if (t == found) break;
+			if (t == Integer.MAX_VALUE) {
+				System.out.println("Aucun chemin trouvé!"); 
+				break;
+			}
 			bound = t;
 		}
 		
@@ -42,6 +45,7 @@ public class IDAStar extends Algorithm{
 		double f = g + h(node);
 		
 		if (f > bound){
+			path.add(node);
 			return f;
 		}
 		
