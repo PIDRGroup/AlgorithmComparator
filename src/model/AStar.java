@@ -24,18 +24,18 @@ public class AStar extends Algorithm{
 		noeudouvert.add(world.indexOf(src));
 		HashMap<Integer,Integer> predecesseur = new HashMap<Integer,Integer>();
 		
-		ArrayList<Integer> g = new ArrayList<Integer>();
-		ArrayList<Integer> f = new ArrayList<Integer>();
+		ArrayList<Double> g = new ArrayList<Double>();
+		ArrayList<Double> f = new ArrayList<Double>();
 		
 		for (int i =0; i < world.size(); i++){
-			g.add(Integer.MAX_VALUE);
-			f.add(Integer.MAX_VALUE);
+			g.add(Double.MAX_VALUE);
+			f.add(Double.MAX_VALUE);
 		}
-		g.set(world.indexOf(src), 0);
+		g.set(world.indexOf(src), 0.0);
 		f.set(world.indexOf(src), h(src));
 		
 		while (!noeudouvert.isEmpty()){
-			int min = Integer.MAX_VALUE;
+			double min = Double.MAX_VALUE;
 			int current = 0;
 			
 			eval.new_while();
@@ -62,7 +62,7 @@ public class AStar extends Algorithm{
 						
 			noeudouvert.remove(new Integer(current));
 			noeudferme.add(current);
-			int dist;
+			double dist;
 			
 			for (int i = 0; i < world.size(); i++){
 				if (world.get(world.getPlace(current), world.getPlace(i)) < Integer.MAX_VALUE){
@@ -90,7 +90,7 @@ public class AStar extends Algorithm{
 		}
 	}
 	
-	int h(Place current){
+	private double h(Place current){
 		return 0;
 	}
 
