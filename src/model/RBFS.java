@@ -32,14 +32,20 @@ public class RBFS extends Algorithm{
 		
 	}
 	
-	public void recursive_BFS(ArrayList<Node> noeud, Place current, int f_limit){
+	public void recursive_BFS(ArrayList<Node> noeud, Node current, double f_limit){
+		
+		if (current.getstat() == destination){
+			//return solution
+		}
+		
+		
 		ArrayList<Integer> successors = new ArrayList<Integer>();
 		
 		double dist;
 		
 		for (int i = 0; i < world.size(); i++){
 			try {
-				if((dist = world.get(current, world.getPlace(i))) < Integer.MAX_VALUE){
+				if((dist = world.get(current.getstat(), world.getPlace(i))) < Integer.MAX_VALUE){
 					successors.add(i);
 				}
 			} catch (UnknownPlaceException e) {
@@ -59,9 +65,28 @@ public class RBFS extends Algorithm{
 			//noeud.get(i).setpathcost(max());
 		}
 		
+		while(true){
+			
+			double min = Integer.MAX_VALUE;
+			Node current_best = new Node(null,0,null);
+			
+			for (int i = 0; i < noeud.size() ; i++){
+				if (noeud.get(i).getpathcost() < min){
+					current_best = noeud.get(i);
+					min = noeud.get(i).getpathcost();
+				}
+			}
+			
+			if (current_best.getpathcost() > f_limit){
+				// return faillure
+			}
+			
+			
+		}
+		
 	}
 
-	int h(Place current){
+	public double h(Place current){
 		return 0;
 	}
 	
