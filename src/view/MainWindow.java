@@ -6,10 +6,12 @@ public class MainWindow extends JFrame{
 	
 	private HomeView home;
 	private CreationView creation;
+	private ResultView results;
 	
 	public MainWindow(){
 		home = new HomeView(this);
 		creation = new CreationView(this);
+		results = new ResultView(this);
 		
 		this.setTitle("AlgoComparator - Accueil");
 		this.setContentPane(home);
@@ -34,7 +36,7 @@ public class MainWindow extends JFrame{
 	
 	public void switchRes(){
 		this.setTitle("AlgoComparator - Résultats");
-		
+		this.setContentPane(results);
 		this.pack();
 		this.validate();
 	}

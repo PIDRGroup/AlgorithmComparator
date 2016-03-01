@@ -60,7 +60,7 @@ public class GraphView extends JFrame{
 				
 				for (int i = 0; i < algorithms.size(); i++) {
 					Algorithm current = algorithms.get(i);
-					estimations += current.getName() + " : " + current.getDuration() + " ns (time), " + current.getNbNodes() + " nb visited nodes.\n";
+					//estimations += current.getName() + " : " + current.getDuration() + " ns (time), " + current.getNbNodes() + " nb visited nodes.\n";
 				}
 				
 				JOptionPane.showMessageDialog(btn_run, estimations, "Estimations", JOptionPane.NO_OPTION);

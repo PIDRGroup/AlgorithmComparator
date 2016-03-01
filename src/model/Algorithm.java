@@ -21,4 +21,5 @@ public abstract class Algorithm extends Observable{
 	}
 	
 	public abstract String getName();
+	public Evaluation getEval(){return eval;}
 }
