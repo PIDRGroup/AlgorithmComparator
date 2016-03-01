@@ -31,7 +31,10 @@ public class IDAStar extends Algorithm{
 		
 		while(true){
 			t = search(src, 0, bound);
-			if (t == found) break;
+			if (t == found){
+				path.add(src);
+				break;
+			}
 			if (t == Integer.MAX_VALUE) {
 				System.out.println("Aucun chemin trouvé!"); 
 				break;
@@ -42,6 +45,8 @@ public class IDAStar extends Algorithm{
 	}
 	
 	private double search(Place node, double g, double bound) throws UnknownPlaceException{
+		eval.new_while();
+		
 		double f = g + h(node);
 		
 		if (f > bound){
@@ -50,6 +55,8 @@ public class IDAStar extends Algorithm{
 		}
 		
 		if (node.equals(destination)){
+			path.add(node);
+			eval.gotasolution();
 			return found;
 		}
 		
@@ -60,7 +67,10 @@ public class IDAStar extends Algorithm{
 		for (int i = 0; i < world.size(); i++){
 			if ((dist = world.get(node, world.getPlace(i))) < Integer.MAX_VALUE){
 				t = search(world.getPlace(i), g + dist, bound);
-				if (t == found) return found;
+				if (t == found) {
+					path.add(world.getPlace(i));
+					return found;
+				}
 				if (t < min) min = t;
 			}
 		}
@@ -68,7 +78,7 @@ public class IDAStar extends Algorithm{
 		return min;
 	}
 
-	public double h(Place current){
+	private double h(Place current){
 		return 0;
 	}
 	
@@ -76,7 +86,7 @@ public class IDAStar extends Algorithm{
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
-		return "IDAStar";
+		return "IDA*";
 	}
 
 }
