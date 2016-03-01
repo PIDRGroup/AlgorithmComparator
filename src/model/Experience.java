@@ -54,4 +54,14 @@ public class Experience implements Serializable{
 	public Place getDest(){
 		return dest;
 	}
+	
+	public ArrayList<Evaluation> getEvals(){
+		ArrayList<Evaluation> list = new ArrayList<Evaluation>();
+		
+		for (Algorithm al : algos) {
+			list.add(al.getEval());
+		}
+		
+		return list;
+	}
 }

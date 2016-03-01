@@ -17,6 +17,7 @@ import model.Algorithm;
 import model.Bound;
 import model.Environment;
 import model.EnvironmentFactory;
+import model.Evaluation;
 import model.Experience;
 import model.MultiplePlaceException;
 import model.Place;
@@ -328,6 +329,7 @@ public class CreationView extends JPanel{
 						
 						try {
 							exp.launch();
+							ArrayList<Evaluation> evals = exp.getEvals();
 						} catch (UnknownPlaceException e) {
 							e.printStackTrace();
 						}
