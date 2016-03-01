@@ -56,6 +56,7 @@ public class CreationView extends JPanel{
 		private JPanel panel_extremities;
 			private JButton btn_set_src;
 			private JButton btn_set_dest;
+			private JCheckBox box_alea;
 		 
 		private JPanel panel_dimensionW;
 			private ButtonGroup group_bounds;
@@ -192,6 +193,7 @@ public class CreationView extends JPanel{
 			panel_extremities = new JPanel();
 			btn_set_src = new JButton("Départ");
 			btn_set_dest= new JButton("Arrivée");
+			box_alea = new JCheckBox("Aléatoire");
 			
 			btn_set_src.addActionListener(new ActionListener() {
 				@Override
@@ -211,6 +213,7 @@ public class CreationView extends JPanel{
 			
 			panel_extremities.add(btn_set_src);
 			panel_extremities.add(btn_set_dest);
+			panel_extremities.add(box_alea);
 
 			panel_dimensionW = new JPanel();
 			panel_dimensionW.setBorder(new TitledBorder("Dimension W (dimension des contraintes)"));
@@ -311,7 +314,11 @@ public class CreationView extends JPanel{
 						} catch (MultiplePlaceException | UnknownPlaceException e) {
 							e.printStackTrace();
 						}
-						Experience exp = new Experience(field_name.getText(), label_date.getText(), env, src, dest);
+						Experience exp = null;
+						if(box_alea.isSelected())
+							exp = new Experience(field_name.getText(), label_date.getText(), env, env.alea(), env.alea());
+						else
+							exp = new Experience(field_name.getText(), label_date.getText(), env, src, dest);
 						for(JCheckBox box : check_algos){
 							if(box.isSelected()){
 								Algorithm a;
@@ -323,7 +330,6 @@ public class CreationView extends JPanel{
 										| InvocationTargetException | NoSuchMethodException | SecurityException | ClassNotFoundException e) {
 									e.printStackTrace();
 								}
-								
 							}
 						}
 						
