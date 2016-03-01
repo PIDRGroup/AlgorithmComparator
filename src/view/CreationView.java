@@ -311,7 +311,7 @@ public class CreationView extends JPanel{
 						} catch (MultiplePlaceException | UnknownPlaceException e) {
 							e.printStackTrace();
 						}
-						Experience exp = new Experience(field_name.getText(), label_date.getText(), env, env.alea(), env.alea());
+						Experience exp = new Experience(field_name.getText(), label_date.getText(), env, src, dest);
 						for(JCheckBox box : check_algos){
 							if(box.isSelected()){
 								Algorithm a;
@@ -329,7 +329,7 @@ public class CreationView extends JPanel{
 						
 						try {
 							exp.launch();
-							ArrayList<Evaluation> evals = exp.getEvals();
+							parent.switchRes(exp);
 						} catch (UnknownPlaceException e) {
 							e.printStackTrace();
 						}

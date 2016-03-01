@@ -64,4 +64,12 @@ public class Experience implements Serializable{
 		
 		return list;
 	}
+	
+	public ArrayList<Algorithm> getAlgos(){
+		return algos;
+	}
+	
+	public Environment getEnv(){
+		return env;
+	}
 }

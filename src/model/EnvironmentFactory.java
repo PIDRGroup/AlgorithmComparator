@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -113,7 +114,7 @@ public class EnvironmentFactory{
 	 * @throws UnknownPlaceException 
 	 */
 	public static Environment generateUniformGrid2D(int nb_places, Bound bound_x, Bound bound_y) throws MultiplePlaceException, UnknownPlaceException{
-		Environment env = new Environment();
+		Environment env = new Environment(new ArrayList<Bound>(Arrays.asList(new Bound[]{bound_x, bound_y})));
 		
 		int total = (int) Math.pow(nb_places, 2);
 
@@ -250,7 +251,7 @@ public class EnvironmentFactory{
 	}
 	
 	public static Environment generateAlea(int nb_places, Bound... bounds) throws MultiplePlaceException, UnknownPlaceException{
-		Environment env = new Environment();
+		Environment env = new Environment(new ArrayList<Bound>(Arrays.asList(bounds)));
 		int nb_dim = bounds.length;
 				
 		//On crée tout d'abord les places

@@ -20,4 +20,8 @@ public class Bound {
 	public int max(){
 		return max;
 	}
+	
+	public int size(){
+		return max-min;
+	}
 }

@@ -18,7 +18,7 @@ public class PointCloud extends JPanel implements Observer{
 	private ArrayList<Point> points;
 	
 	//On définit la couleur des noeuds du chemin, des noeuds qui ont été développés et des noeuds qui n'ont pas été touchés.
-	public final static Color COLOR_POINT = Color.BLACK, COLOR_PATH = Color.GREEN, COLOR_EXPANDED = Color.LIGHT_GRAY;
+	public final static Color COLOR_POINT = Color.BLACK, COLOR_PATH = Color.RED, COLOR_EXPANDED = Color.LIGHT_GRAY;
 	
 	public PointCloud(Environment e, Algorithm alg, int width, int height){
 		
@@ -70,18 +70,18 @@ public class PointCloud extends JPanel implements Observer{
 		}
 		
 		//On change la couleur des points du chemin
-		/*g.setColor(COLOR_PATH);
+		g.setColor(COLOR_PATH);
 		if(env.nbDim() == 1){
 			int middle = (int) (this.getSize().getHeight() / 2);
 			for(Place p : algo.getPath()){
 				//Si c'est en 1D, on place tous les points sur une ligne
-				g.drawRect(p.getCoordinate(0), middle, 1, 1);
+				g.drawRect(p.getCoordinate(0), middle, 3, 3);
 			}
 		}else{
 			//On considère que c'est forcément un environnement 2D. On ne traite pas les cas où D > 2
 			for(Place p : algo.getPath()){
-				g.drawRect(p.getCoordinate(0), p.getCoordinate(1), 1, 1);
+				g.drawRect(p.getCoordinate(0), p.getCoordinate(1), 3, 3);
 			}
-		}*/
+		}
 	}
 }

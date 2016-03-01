@@ -1,8 +1,11 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Observable;
 import java.util.Random;
+
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 import sun.net.www.http.KeepAliveCache;
 
@@ -13,11 +16,17 @@ public class Environment extends Observable{
 	 * tandis que les places en valeur sont les successeurs de ces places.
 	 */
 	private MyMap<Place, Place> graph;
+	private ArrayList<Bound> bounds;
 	
-	public Environment(){
+	public Environment(ArrayList<Bound> b){
+		graph = new MyMap<Place, Place>();
+		bounds = b;
+	}
+
+	public Environment() {
 		graph = new MyMap<Place, Place>();
 	}
-	
+
 	/**
 	 * Méthode pour supprimer une place par sa position.
 	 * Supprime aussi tous les liens avec les autres places.
@@ -125,7 +134,7 @@ public class Environment extends Observable{
 	 * @return Copie en profondeur
 	 */
 	public Environment duplicate(){
-		Environment copy = new Environment();
+		Environment copy = new Environment(this.bounds);
 		
 		copy.graph = graph.dupplicate();
 		
@@ -210,5 +219,9 @@ public class Environment extends Observable{
 	 */
 	public Place alea(){
 		return graph.keyList().get((new Random()).nextInt(graph.keyList().size()));
+	}
+	
+	public Bound getBound(int i){
+		return bounds.get(i);
 	}
 }

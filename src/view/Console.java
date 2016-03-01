@@ -11,7 +11,7 @@ public class Console {
 			Bound b1 = new Bound(0, 500), b2 = new Bound(0, 700);
 			
 			System.out.println("Génération de l'environnement");
-			Environment env =  EnvironmentFactory.generateUniformGrid2D(50, b1, b2);
+			Environment env =  EnvironmentFactory.generateUniformGrid2D(10, b1, b2);
 
 			AStar astar = new AStar();
 			

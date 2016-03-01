@@ -2,16 +2,17 @@ package view;
 
 import javax.swing.JFrame;
 
+import model.Experience;
+
 public class MainWindow extends JFrame{
 	
 	private HomeView home;
 	private CreationView creation;
-	private ResultView results;
+	private EvaluationView results;
 	
 	public MainWindow(){
 		home = new HomeView(this);
 		creation = new CreationView(this);
-		results = new ResultView(this);
 		
 		this.setTitle("AlgoComparator - Accueil");
 		this.setContentPane(home);
@@ -34,8 +35,9 @@ public class MainWindow extends JFrame{
 		this.validate();
 	}
 	
-	public void switchRes(){
+	public void switchRes(Experience exp){
 		this.setTitle("AlgoComparator - Résultats");
+		results = new EvaluationView(this, exp);
 		this.setContentPane(results);
 		this.pack();
 		this.validate();
