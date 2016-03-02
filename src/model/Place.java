@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -10,7 +11,7 @@ import java.util.Random;
  * On peut aussi générer un ensemble de points par des contraintes.
  *
  */
-public class Place {
+public class Place implements Serializable{
 	
 	/**
 	 * Optionnel : label de la place

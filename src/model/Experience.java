@@ -1,14 +1,13 @@
 package model;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 
 /**
  * 
@@ -86,5 +85,13 @@ public class Experience implements Serializable{
 		oos.writeObject(this);
 		oos.flush();
 		oos.close();
+	}
+	
+	public static Experience load(String path) throws IOException, ClassNotFoundException{
+		FileInputStream fos = new FileInputStream(new File(path));
+		ObjectInputStream oos = new ObjectInputStream(fos);
+		Experience exp = (Experience) oos.readObject();
+		oos.close();
+		return exp;
 	}
 }

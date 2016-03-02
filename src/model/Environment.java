@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Observable;
@@ -9,7 +10,7 @@ import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 import sun.net.www.http.KeepAliveCache;
 
-public class Environment extends Observable{
+public class Environment extends Observable implements Serializable{
 	
 	/**
 	 * Les places en clés correspondent à l'ensemble des places du graphe, 

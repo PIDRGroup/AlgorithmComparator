@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +14,7 @@ import java.util.Set;
  * @param <T1> Type des clés
  * @param <T2> Type des valeurs
  */
-public class MyMap<E, F> {
+public class MyMap<E, F> implements Serializable{
 	
 	private ArrayList<E> keys;
 	private ArrayList<ArrayList<F>> values;

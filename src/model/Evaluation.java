@@ -1,6 +1,8 @@
 package model;
 
-public class Evaluation {
+import java.io.Serializable;
+
+public class Evaluation implements Serializable{
 	private int nb_while; // nb de recherche
 	private int first_solution; //nb de recherche avant de trouver une premiere solution
 	private int best_solution_fine_while;//nb de recherche pour trouvé le meilleur noeud

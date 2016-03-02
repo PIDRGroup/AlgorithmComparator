@@ -23,6 +23,8 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import model.Experience;
+
 public class HomeView extends JPanel{
 	
 	//Affichage de la liste des expériences disponibles dans le dossier par défaut
@@ -112,6 +114,19 @@ public class HomeView extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				parent.switchCreation();
+			}
+		});
+		
+		btn_load.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					parent.switchRes(Experience.load(field_selected_file.getText()));
+				} catch (ClassNotFoundException e1) {
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		

@@ -1,11 +1,13 @@
 package model;
 
+import java.io.Serializable;
+
 /**
  * 
  * Représente les bornes des coordonnées des places.
  *
  */
-public class Bound {
+public class Bound implements Serializable{
 	
 	public static final int INIT_BOUND = 300;
 	private int min, max;
