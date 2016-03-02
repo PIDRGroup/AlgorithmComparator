@@ -10,7 +10,10 @@ public class Node{
 	public Node(Place state, double path_cost, ArrayList<Node> solvation){
 		this.stat = state;
 		this.path_cost=path_cost;
-		this.solvation=solvation;
+		if(solvation != null)
+			this.solvation=solvation;
+		else
+			this.solvation=new ArrayList<Node>();
 	}
 	
 	public boolean isSuperior(Node noeud){

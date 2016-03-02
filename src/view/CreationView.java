@@ -25,6 +25,7 @@ import model.UnknownPlaceException;
 
 public class CreationView extends JPanel{
 	
+	
 	private MainWindow parent;
 	
 	Place src, dest;
@@ -70,7 +71,7 @@ public class CreationView extends JPanel{
 		public CreationView(MainWindow p){
 			parent=p;
 			src = new Place(0, 0);
-			dest = new Place(600, 600);
+			dest = new Place(Bound.INIT_BOUND, Bound.INIT_BOUND);
 			
 			label_name = new JLabel("Nom de l'expérience : ");
 			field_name = new JTextField();
@@ -88,8 +89,8 @@ public class CreationView extends JPanel{
 			check_algos = new ArrayList<JCheckBox>();
 			check_algos.add(new JCheckBox("AStar"));
 			check_algos.add(new JCheckBox("Dijkstra"));
-			check_algos.add(new JCheckBox("GBFS"));
-			check_algos.add(new JCheckBox("RBFS"));
+			check_algos.add(new JCheckBox("IDAStar"));
+			check_algos.add(new JCheckBox("UniformCostSearch"));
 			
 			panel_algo = new JPanel();
 			panel_algo.setBorder(new TitledBorder("Algorithmes"));
@@ -182,7 +183,7 @@ public class CreationView extends JPanel{
 					ArrayList<Long> l_src = new ArrayList<Long>(), l_dest = new ArrayList<Long>();
 					for (int i = 0; i < nb_dim; i++) {
 						l_src.add(new Long(0));
-						l_dest.add(new Long(600));
+						l_dest.add(new Long(Bound.INIT_BOUND));
 					}
 					
 					src = new Place(l_src);
@@ -195,6 +196,14 @@ public class CreationView extends JPanel{
 			btn_set_dest= new JButton("Arrivée");
 			box_alea = new JCheckBox("Aléatoire");
 			
+			box_alea.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					btn_set_src.setEnabled(!box_alea.isSelected());
+					btn_set_dest.setEnabled(!box_alea.isSelected());
+				}
+			});
+			
 			btn_set_src.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -206,7 +215,7 @@ public class CreationView extends JPanel{
 			btn_set_dest.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					ArrayList<Long> l = PopupExtremity.showPopup("Place d'arrivée", slider_dimensions.getValue(), 600);	
+					ArrayList<Long> l = PopupExtremity.showPopup("Place d'arrivée", slider_dimensions.getValue(), Bound.INIT_BOUND);	
 					dest = new Place(l);
 				}
 			});

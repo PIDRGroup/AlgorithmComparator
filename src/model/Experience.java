@@ -1,5 +1,10 @@
 package model;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,7 +48,9 @@ public class Experience implements Serializable{
 	
 	public void launch() throws UnknownPlaceException{
 		for(Algorithm a : algos){
+			System.out.println("LAUNCHING -- "+a.getName()+" -- ");
 			a.grow(env, source, dest);
+			System.out.println("FINISHED -- "+a.getName()+" -- ");
 		}
 	}
 	
@@ -71,5 +78,13 @@ public class Experience implements Serializable{
 	
 	public Environment getEnv(){
 		return env;
+	}
+	
+	public void save(String path) throws IOException{
+		FileOutputStream fos = new FileOutputStream(new File(path));
+		ObjectOutputStream oos = new ObjectOutputStream(fos);
+		oos.writeObject(this);
+		oos.flush();
+		oos.close();
 	}
 }

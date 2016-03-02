@@ -27,7 +27,7 @@ public class BoundView extends JPanel{
 		max = new JFormattedTextField(integerFieldFormatter);
 		
 		min.setValue(new Long(0));
-		max.setValue(new Long(600));
+		max.setValue(new Long(Bound.INIT_BOUND));
 		
 		this.setLayout(new GridLayout(1, 5));
 		this.add(desc);

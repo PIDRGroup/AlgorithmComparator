@@ -11,8 +11,6 @@ public class UniformCostSearch extends Algorithm{
 	
 	@Override
 	public void grow(Environment world, Place source, Place destination) throws UnknownPlaceException {
-		// TODO Auto-generated method stub
-
 		ArrayList<Node> frontiere = new ArrayList<Node>();
 		ArrayList<Integer> exploration = new ArrayList<Integer>();
 		
@@ -81,7 +79,7 @@ public class UniformCostSearch extends Algorithm{
 
 	@Override
 	public String getName() {
-		return "Greedy Best First Search";
+		return "Uniform Cost Search";
 	}
 
 }

@@ -16,13 +16,15 @@ public class PointCloud extends JPanel implements Observer{
 	private Environment env;
 	private Algorithm algo;
 	private ArrayList<Point> points;
+	private boolean show_links;
 	
 	//On définit la couleur des noeuds du chemin, des noeuds qui ont été développés et des noeuds qui n'ont pas été touchés.
-	public final static Color COLOR_POINT = Color.BLACK, COLOR_PATH = Color.RED, COLOR_EXPANDED = Color.LIGHT_GRAY;
+	public final static Color COLOR_POINT = Color.BLACK, COLOR_PATH = Color.GREEN, COLOR_EXPANDED = Color.LIGHT_GRAY, COLOR_LINE = Color.RED;
 	
 	public PointCloud(Environment e, Algorithm alg, int width, int height){
 		
 		this.setBackground(Color.WHITE);
+		show_links = false;
 		
 		points = new ArrayList<Point>();
 		algo = alg;
@@ -44,6 +46,11 @@ public class PointCloud extends JPanel implements Observer{
 		
 		this.setPreferredSize(new Dimension(width, height));
 	}
+	
+	public void showLinks(boolean sl){
+		show_links=sl;
+		repaint();
+	}
 
 	@Override
 	public void update(Observable o, Object arg) {
@@ -52,7 +59,9 @@ public class PointCloud extends JPanel implements Observer{
 	
 	@Override
 	public void paintComponent(Graphics g){
-		
+		this.setBackground(Color.WHITE);
+		g.setColor(Color.WHITE);
+		g.clearRect(0, 0, this.getWidth(), this.getHeight());
 		//On affiche tous les points de l'environnement
 		g.setColor(COLOR_POINT);
 		
@@ -60,12 +69,12 @@ public class PointCloud extends JPanel implements Observer{
 			int middle = (int) (this.getSize().getHeight() / 2);
 			for(Place p : env.getPlaces()){
 				//Si c'est en 1D, on place tous les points sur une ligne
-				g.drawRect(p.getCoordinate(0), middle, 1, 1);
+				g.fillRect(p.getCoordinate(0)-2, middle-2, 4, 4);
 			}
 		}else{
 			//On considère que c'est forcément un environnement 2D. On ne traite pas les cas où D > 2
 			for(Place p : env.getPlaces()){
-				g.drawRect(p.getCoordinate(0), p.getCoordinate(1), 1, 1);
+				g.fillRect(p.getCoordinate(0) - 2, p.getCoordinate(1) - 2, 4, 4);
 			}
 		}
 		
@@ -75,12 +84,27 @@ public class PointCloud extends JPanel implements Observer{
 			int middle = (int) (this.getSize().getHeight() / 2);
 			for(Place p : algo.getPath()){
 				//Si c'est en 1D, on place tous les points sur une ligne
-				g.drawRect(p.getCoordinate(0), middle, 3, 3);
+				g.fillRect(p.getCoordinate(0) - 4, middle - 4, 8, 8);
 			}
 		}else{
 			//On considère que c'est forcément un environnement 2D. On ne traite pas les cas où D > 2
 			for(Place p : algo.getPath()){
-				g.drawRect(p.getCoordinate(0), p.getCoordinate(1), 3, 3);
+				g.fillRect(p.getCoordinate(0) - 3, p.getCoordinate(1) - 3, 6, 6);
+			}
+		}
+		
+		g.setColor(COLOR_LINE);
+		//Si l'utilisateur le souhaite, on affiche les liens
+		if(show_links){
+			for (Place p : env.getPlaces()) {
+				try {
+					ArrayList<Place> links = env.getLinks(p);
+					for(Place l : links){
+						g.drawLine(p.getCoordinate(0), p.getCoordinate(1), l.getCoordinate(0), l.getCoordinate(1));
+					}
+				} catch (UnknownPlaceException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

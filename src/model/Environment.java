@@ -224,4 +224,8 @@ public class Environment extends Observable{
 	public Bound getBound(int i){
 		return bounds.get(i);
 	}
+	
+	public ArrayList<Place> getLinks(Place src) throws UnknownPlaceException{
+		return graph.valueList(src);
+	}
 }

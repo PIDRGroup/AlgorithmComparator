@@ -1,9 +1,10 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Observable;
 
-public abstract class Algorithm extends Observable{
+public abstract class Algorithm extends Observable implements Serializable{
 	
 	protected ArrayList<Place> path;
 	protected Evaluation eval;

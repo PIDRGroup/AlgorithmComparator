@@ -125,19 +125,21 @@ public class EnvironmentFactory{
 		int height_interval = height / nb_places;
 		
 		//On gère les problèmes d'arrondis
-		/*if(width_interval * nb_places < width){
+		if(width_interval * nb_places != width){
 			
-			//On n'aura pas de places sur le width. On augmente la taille
+			//On n'aura pas de places sur le width. On augmente la taille des limites.
+			width = width_interval * nb_places;
+			bound_x = new Bound(bound_x.min(), width);
 		
-		}else if(width_interval * nb_places > width){
-			
 		}
 		
-		if(height_interval * nb_places < height){
+		if(height_interval * nb_places != height){
 			
-		}else if(height_interval * nb_places > height){
+			//On n'aura pas de places sur le width. On augmente la taille des limites.
+			height = height_interval * nb_places;
+			bound_y = new Bound(bound_y.min(), height);
 			
-		}*/
+		}
 		
 		//On commence par créer le lot de places
 		for (int i = 0; i <= width; i+=width_interval) {

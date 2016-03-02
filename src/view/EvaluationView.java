@@ -1,12 +1,19 @@
 package view;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -59,6 +66,22 @@ public class EvaluationView extends JPanel{
 			}
 		});
 		
+		btn_save.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser jfc = new JFileChooser();
+				int res = jfc.showOpenDialog(btn_save);
+				if(res == JFileChooser.APPROVE_OPTION){
+					File f=jfc.getSelectedFile();
+					try {
+						exp.save(f.getAbsolutePath());
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
+		
 		tabbed_pane.addTab("", null);
 		tabbed_pane.addTab("", null);
 		tabbed_pane.addTab("", null);
@@ -79,6 +102,7 @@ class ResultView extends JPanel{
 	private PointCloud cloud;
 	private JLabel label_execution_time, label_execution_to_best, label_execution_to_first, label_nb_nodes;
 	private JTextArea area_path;
+	private JCheckBox box_show;
 	
 	public ResultView(Environment env, Algorithm alg, Evaluation ev){
 		this.setLayout(new BorderLayout());
@@ -100,13 +124,27 @@ class ResultView extends JPanel{
 		
 		area_path = new JTextArea(alg.getPath().toString());
 		area_path.setEditable(false);
+		area_path.setPreferredSize(new Dimension(300, 100));
+		area_path.setLineWrap(true);
+		area_path.setWrapStyleWord(true);
 		JScrollPane pane = new JScrollPane(area_path);
 		
 		panel_data.add(panel_general, BorderLayout.WEST);
 		panel_data.add(pane, BorderLayout.EAST);
 		
 		this.add(panel_data, BorderLayout.NORTH);
+		JPanel container = new JPanel();
 		cloud = new PointCloud(env, alg, env.getBound(0).size(), env.getBound(1).size());
-		this.add(cloud, BorderLayout.SOUTH);
+		box_show = new JCheckBox("Montrer les liens");
+		box_show.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				cloud.showLinks(box_show.isSelected());
+			}
+		});
+		container.add(cloud);
+		container.add(box_show);
+		container.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		this.add(container, BorderLayout.SOUTH);
 	}
 }

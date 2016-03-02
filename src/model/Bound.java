@@ -6,6 +6,8 @@ package model;
  *
  */
 public class Bound {
+	
+	public static final int INIT_BOUND = 300;
 	private int min, max;
 	
 	public Bound(int min, int max){
