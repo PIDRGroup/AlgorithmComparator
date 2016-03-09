@@ -47,8 +47,6 @@ public class Dijkstra extends Algorithm{
 			int min = Integer.MAX_VALUE;
 			int minnode = world.indexOf(dest);
 			
-			eval.new_while();
-			
 			//On cherche le noeud n'ont encore parcourus avec la plus petit distance à la src
 			for(int i = 0 ; i < world.size() ; i++){
 				if (!banlist.contains(i) && distance.get(i).intValue() < min){
@@ -76,7 +74,6 @@ public class Dijkstra extends Algorithm{
 							predecessor.set(i, minnode);
 							
 							if (world.getPlace(i).equals(dest)){
-								eval.gotasolution();
 							}
 						}
 					}

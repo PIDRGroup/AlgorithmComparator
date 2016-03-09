@@ -45,7 +45,6 @@ public class IDAStar extends Algorithm{
 	}
 	
 	private double search(Place node, double g, double bound) throws UnknownPlaceException{
-		eval.new_while();
 		
 		double f = g + h(node);
 		
@@ -56,7 +55,6 @@ public class IDAStar extends Algorithm{
 		
 		if (node.equals(destination)){
 			path.add(node);
-			eval.gotasolution();
 			return found;
 		}
 		

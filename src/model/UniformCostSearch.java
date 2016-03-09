@@ -18,7 +18,6 @@ public class UniformCostSearch extends Algorithm{
 		
 		while(true){
 			
-			eval.new_while();
 			
 			if (frontiere.isEmpty()){
 				System.out.println("Frontière vide: Aucune solution n'a été trouvée");
@@ -50,7 +49,6 @@ public class UniformCostSearch extends Algorithm{
 			Node currentnode=frontiere.get(0);
 			
 			if (currentnode.getstat() == destination){
-				eval.gotasolution();
 				break;
 			}
 			

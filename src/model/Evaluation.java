@@ -1,42 +1,70 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class Evaluation implements Serializable{
 	private int nb_while; // nb de recherche
-	private int first_solution; //nb de recherche avant de trouver une premiere solution
-	private int best_solution_fine_while;//nb de recherche pour trouvé le meilleur noeud
+	private Date beginning;
+	private ArrayList<Integer> nb_while_solutions;
+	private ArrayList<Double> cost_solutions;
+	private ArrayList<Date> date_solutions; 
+	
 	
 	public Evaluation() {
-		// TODO Auto-generated constructor stub
-		nb_while = 0;
-		first_solution = -1;
-		best_solution_fine_while = 0;
+		this.nb_while = 0;
+		this.nb_while_solutions = new ArrayList<Integer>();
+		this.cost_solutions = new ArrayList<Double>();
+		this.date_solutions = new ArrayList<Date>();
 	}
 	
-	public int getnb_while(){
-		return this.nb_while;
+	public void start(){
+		this.beginning = new Date();
 	}
 	
-	public int getfirst_solution(){
-		return this.first_solution;
-	}
-	
-	public int getbest_solution(){
-		return this.best_solution_fine_while;
-	}
-	
-	public void new_while(){
+	public void newWhile(){
 		this.nb_while++;
 	}
 	
-	public void gotasolution(){
-		if (first_solution == -1){
-			first_solution = nb_while;
+	public void gotASolution(Double costnewpath){
+		this.nb_while_solutions.add(nb_while);
+		this.cost_solutions.add(costnewpath);
+		this.date_solutions.add(new Date());
+	}
+	
+	public int getNbWhile(){
+		return nb_while;
+	}
+	
+	public Date getBeginning(){
+		return beginning;
+	}
+	
+	public ArrayList<Integer> getNbWhileSolutions(){
+		return nb_while_solutions;
+	}
+	
+	public ArrayList<Double> getCostSolutions(){
+		return cost_solutions;
+	}
+	
+	public ArrayList<Date> getDateSolutions(){
+		return date_solutions;
+	}
+	
+	public ArrayList<Long> getTimeSolutions(){
+		ArrayList<Long> time_solutions = new ArrayList<Long>();
+		Long beginning_time = this.beginning.getTime();
+		Long current;
+		
+		for(Date d : date_solutions){
+			current = d.getTime() - beginning_time;
+			time_solutions.add(current);
 		}
 		
-		best_solution_fine_while = nb_while;
-		
+		return time_solutions;
 	}
+	 
 	
 }

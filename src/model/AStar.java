@@ -38,7 +38,6 @@ public class AStar extends Algorithm{
 			double min = Double.MAX_VALUE;
 			int current = 0;
 			
-			eval.new_while();
 			
 			for (int i = 0; i < world.size(); i++){
 				//On recherche le noeud n'appartenant pas au noeud ouvert tel que f est minimal
@@ -55,7 +54,6 @@ public class AStar extends Algorithm{
 					path.add(world.getPlace(current));
 				}
 				
-				eval.gotasolution();
 				
 				break;
 			}
