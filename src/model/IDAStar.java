@@ -26,6 +26,8 @@ public class IDAStar extends Algorithm{
 		if(!world.isPlace(dest))
 			throw new UnknownPlaceException(dest);
 		
+		eval.start();
+		
 		double t;
 		double bound = h(src);
 		
@@ -46,6 +48,8 @@ public class IDAStar extends Algorithm{
 	
 	private double search(Place node, double g, double bound) throws UnknownPlaceException{
 		
+		eval.newWhile();
+		
 		double f = g + h(node);
 		
 		if (f > bound){
@@ -55,6 +59,7 @@ public class IDAStar extends Algorithm{
 		
 		if (node.equals(destination)){
 			path.add(node);
+			eval.gotASolution(bound);
 			return found;
 		}
 		

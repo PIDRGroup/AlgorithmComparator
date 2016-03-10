@@ -19,6 +19,8 @@ public class AStar extends Algorithm{
 		if(!world.isPlace(dest))
 			throw new UnknownPlaceException(dest);
 		
+		eval.start();
+		
 		ArrayList<Integer> noeudouvert = new ArrayList<Integer>();
 		ArrayList<Integer> noeudferme = new ArrayList<Integer>();
 		noeudouvert.add(world.indexOf(src));
@@ -35,9 +37,11 @@ public class AStar extends Algorithm{
 		f.set(world.indexOf(src), h(src));
 		
 		while (!noeudouvert.isEmpty()){
+			
+			eval.newWhile();
+			
 			double min = Double.MAX_VALUE;
 			int current = 0;
-			
 			
 			for (int i = 0; i < world.size(); i++){
 				//On recherche le noeud n'appartenant pas au noeud ouvert tel que f est minimal
@@ -48,12 +52,18 @@ public class AStar extends Algorithm{
 			}
 			
 			if (current == world.indexOf(dest)){
+				
+				double cost = 0.0;
+				
 				path.add(world.getPlace(current));
+				cost += f.get(current);
 				while (predecesseur.containsKey(current)){
 					current = predecesseur.get(current);
 					path.add(world.getPlace(current));
+					cost += f.get(current);
 				}
 				
+				eval.gotASolution(cost);
 				
 				break;
 			}

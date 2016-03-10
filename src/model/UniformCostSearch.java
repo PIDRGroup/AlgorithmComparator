@@ -11,6 +11,9 @@ public class UniformCostSearch extends Algorithm{
 	
 	@Override
 	public void grow(Environment world, Place source, Place destination) throws UnknownPlaceException {
+		
+		eval.start();
+		
 		ArrayList<Node> frontiere = new ArrayList<Node>();
 		ArrayList<Integer> exploration = new ArrayList<Integer>();
 		
@@ -18,6 +21,7 @@ public class UniformCostSearch extends Algorithm{
 		
 		while(true){
 			
+			eval.newWhile();
 			
 			if (frontiere.isEmpty()){
 				System.out.println("Frontière vide: Aucune solution n'a été trouvée");
@@ -49,6 +53,15 @@ public class UniformCostSearch extends Algorithm{
 			Node currentnode=frontiere.get(0);
 			
 			if (currentnode.getstat() == destination){
+				
+				path.add(destination);
+				eval.gotASolution(currentnode.getpathcost());
+				
+				ArrayList<Node> solution = currentnode.getsolvation();
+				for (Node n: solution){
+					path.add(n.getstat());
+				}
+				
 				break;
 			}
 			
@@ -73,6 +86,9 @@ public class UniformCostSearch extends Algorithm{
 				}	
 			}
 		}
+		
+		
+		
 	}
 
 	@Override
