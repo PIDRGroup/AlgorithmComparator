@@ -24,29 +24,30 @@ public class RBFS extends Algorithm{
 		if(!world.isPlace(destination))
 			throw new UnknownPlaceException(destination);
 		
+		
 		ArrayList<Node> noeud = new ArrayList<Node>();
 		
 		for (int i = 0; i < world.size(); i++){
-			noeud.add(new Node(world.getPlace(i),Integer.MAX_VALUE,null));
+			noeud.add(new Node(world.getPlace(i),Double.MAX_VALUE,null));
 		}
 		
 	}
 	
-	public void recursive_BFS(ArrayList<Node> noeud, Node current, double f_limit){
+	public Double recursive_BFS(ArrayList<Node> noeud, Node current, double f_limit){
 		
 		if (current.getstat() == destination){
-			//return solution
+			return current.getpathcost();
 		}
 		
 		
-		ArrayList<Integer> successors = new ArrayList<Integer>();
+		ArrayList<Node> successors = new ArrayList<Node>();
 		
 		double dist;
 		
-		for (int i = 0; i < world.size(); i++){
+		for (int i = 0; i < noeud.size(); i++){
 			try {
-				if((dist = world.get(current.getstat(), world.getPlace(i))) < Integer.MAX_VALUE){
-					successors.add(i);
+				if((dist = world.get(current.getstat(), noeud.get(i).getstat())) < Integer.MAX_VALUE){
+					successors.add(noeud.get(i));
 				}
 			} catch (UnknownPlaceException e) {
 				System.out.println("Problème de lecture du monde dans la fonction de récursivité de RBFS");;
@@ -61,25 +62,42 @@ public class RBFS extends Algorithm{
 			System.out.println("La liste des successeurs de RBFS est vide");
 		}
 		
-		for (int i = 0; i < noeud.size(); i++){
-			//noeud.get(i).setpathcost(max());
+		for (int i = 0; i < successors.size(); i++){
+			try {
+				successors.get(i).setG(current.getG()+world.get(current.getstat(), successors.get(i).getstat()));
+				successors.get(i).setpathcost(successors.get(i).getG()+h(successors.get(i).getstat()));
+			} catch (UnknownPlaceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}
 		
 		while(true){
 			
-			double min = Integer.MAX_VALUE;
-			Node current_best = new Node(null,0,null);
+			double min = Double.MAX_VALUE;
+			int currentsize;
+			ArrayList<Node> sortednode = new ArrayList<Node>();
+			Node current_best = null;
 			
-			for (int i = 0; i < noeud.size() ; i++){
-				if (noeud.get(i).getpathcost() < min){
-					current_best = noeud.get(i);
-					min = noeud.get(i).getpathcost();
+			for (int i = 0; i < 2; i ++){
+				
+				currentsize =successors.size();
+				
+				for (int j = 0; j < currentsize; j++){
+					if (successors.get(i).getpathcost() < min){
+						current_best = successors.get(i);
+						min = successors.get(i).getpathcost();
+					}
 				}
+				
+				sortednode.add(current_best);
+				successors.remove(current_best);
 			}
 			
-			if (current_best.getpathcost() > f_limit){
-				// return faillure
-			}
+			if (sortednode.get(0).getpathcost() > f_limit) return null;
+			
+			return recursive_BFS(noeud, sortednode.get(0), Math.min(f_limit, sortednode.get(1).getpathcost()));
 			
 			
 		}

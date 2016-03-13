@@ -4,12 +4,14 @@ import java.util.ArrayList;
 
 public class Node{
 	private Place stat;
-	private double path_cost;
+	private double f;
+	private double g;
 	private ArrayList<Node> solvation = new ArrayList<Node>();
 	
-	public Node(Place state, double path_cost, ArrayList<Node> solvation){
+	public Node(Place state, double f, ArrayList<Node> solvation){
 		this.stat = state;
-		this.path_cost=path_cost;
+		this.f=f;
+		this.g=Double.MAX_VALUE;
 		if(solvation != null)
 			this.solvation=solvation;
 		else
@@ -25,11 +27,19 @@ public class Node{
 	}
 	
 	public double getpathcost() {
-		return this.path_cost;
+		return this.f;
 	}
 	
-	public void setpathcost(double path_cost){
-		this.path_cost = path_cost;
+	public double getG(){
+		return this.g;
+	}
+	
+	public void setpathcost(double f){
+		this.f = f;
+	}
+	
+	public void setG(double g){
+		this.g = g;
 	}
 	
 	public ArrayList<Node> getsolvation(){

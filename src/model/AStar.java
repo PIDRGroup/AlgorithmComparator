@@ -21,46 +21,54 @@ public class AStar extends Algorithm{
 		
 		eval.start();
 		
-		ArrayList<Integer> noeudouvert = new ArrayList<Integer>();
-		ArrayList<Integer> noeudferme = new ArrayList<Integer>();
-		noeudouvert.add(world.indexOf(src));
-		HashMap<Integer,Integer> predecesseur = new HashMap<Integer,Integer>();
+		ArrayList<Node> noeudouvert = new ArrayList<Node>();
+		ArrayList<Node> noeudferme = new ArrayList<Node>();
+		Node source = new Node(src, h(src), null);
 		
-		ArrayList<Double> g = new ArrayList<Double>();
-		ArrayList<Double> f = new ArrayList<Double>();
+		source.setG(0.0);
+		noeudouvert.add(source);
+		
+		HashMap<Node,Node> predecesseur = new HashMap<Node,Node>();
+		
+		ArrayList<Node> noeud = new ArrayList<Node>();
 		
 		for (int i =0; i < world.size(); i++){
-			g.add(Double.MAX_VALUE);
-			f.add(Double.MAX_VALUE);
+			if (world.indexOf(src) == i){
+				noeud.add(source);
+			}
+			else noeud.add(new Node(world.getPlace(i), Double.MAX_VALUE, null));
 		}
-		g.set(world.indexOf(src), 0.0);
-		f.set(world.indexOf(src), h(src));
 		
 		while (!noeudouvert.isEmpty()){
 			
 			eval.newWhile();
 			
 			double min = Double.MAX_VALUE;
-			int current = 0;
+			Node current = null;
 			
-			for (int i = 0; i < world.size(); i++){
+			for (int i = 0; i < noeud.size(); i++){
 				//On recherche le noeud n'appartenant pas au noeud ouvert tel que f est minimal
-				if (f.get(i) < min && noeudouvert.contains(new Integer(i))){
-					min = f.get(i);
-					current = i;
+				if (noeud.get(i).getpathcost() < min && noeudouvert.contains(noeud.get(i))){
+					min = noeud.get(i).getpathcost();
+					current = noeud.get(i);
 				}
 			}
 			
-			if (current == world.indexOf(dest)){
+			if (current == null){
+				System.out.println("Le noeud courant est null");
+				break;
+			}
+			
+			if (current.getstat().equals(dest)){
 				
 				double cost = 0.0;
 				
-				path.add(world.getPlace(current));
-				cost += f.get(current);
+				path.add(current.getstat());
+				cost += current.getpathcost();
 				while (predecesseur.containsKey(current)){
 					current = predecesseur.get(current);
-					path.add(world.getPlace(current));
-					cost += f.get(current);
+					path.add(current.getstat());
+					cost += current.getpathcost();
 				}
 				
 				eval.gotASolution(cost);
@@ -68,27 +76,27 @@ public class AStar extends Algorithm{
 				break;
 			}
 						
-			noeudouvert.remove(new Integer(current));
+			noeudouvert.remove(current);
 			noeudferme.add(current);
 			double dist;
 			
-			for (int i = 0; i < world.size(); i++){
-				if (world.get(world.getPlace(current), world.getPlace(i)) < Integer.MAX_VALUE){
+			for (int i = 0; i < noeud.size(); i++){
+				if (world.get(current.getstat(), world.getPlace(i)) < Integer.MAX_VALUE){
 					
-					if (noeudferme.contains(new Integer(i))){
+					if (noeudferme.contains(noeud.get(i))){
 						continue;
 					}
 					
-					dist = (int) (g.get(current) + world.get(world.getPlace(current), world.getPlace(i)));
-					if (!noeudouvert.contains(new Integer(i))){
-						noeudouvert.add(i);
-					}else if (dist >= g.get(i)){
+					dist = current.getG() + world.get(current.getstat(), noeud.get(i).getstat());
+					if (!noeudouvert.contains(noeud.get(i))){
+						noeudouvert.add(noeud.get(i));
+					}else if (dist >= noeud.get(i).getG()){
 						continue;
 					}
 					
-					predecesseur.put(i,current);
-					g.set(i, dist);
-					f.set(i, g.get(i) + h(world.getPlace(i)));
+					predecesseur.put(noeud.get(i),current);
+					noeud.get(i).setG(dist);
+					noeud.get(i).setpathcost(noeud.get(i).getG()+ h (noeud.get(i).getstat()));
 				}
 			}
 		}
