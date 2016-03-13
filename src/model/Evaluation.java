@@ -6,14 +6,15 @@ import java.util.Date;
 
 public class Evaluation implements Serializable{
 	private int nb_while; // nb de recherche
+	private int nb_solution;
 	private Date beginning;
 	private ArrayList<Integer> nb_while_solutions;
 	private ArrayList<Double> cost_solutions;
 	private ArrayList<Date> date_solutions; 
 	
-	
 	public Evaluation() {
 		this.nb_while = 0;
+		this.nb_solution = 0;
 		this.nb_while_solutions = new ArrayList<Integer>();
 		this.cost_solutions = new ArrayList<Double>();
 		this.date_solutions = new ArrayList<Date>();
@@ -28,6 +29,7 @@ public class Evaluation implements Serializable{
 	}
 	
 	public void gotASolution(Double costnewpath){
+		this.nb_solution++;
 		this.nb_while_solutions.add(nb_while);
 		this.cost_solutions.add(costnewpath);
 		this.date_solutions.add(new Date());
@@ -35,6 +37,10 @@ public class Evaluation implements Serializable{
 	
 	public int getNbWhile(){
 		return nb_while;
+	}
+	
+	public int getNbSolution(){
+		return nb_solution;
 	}
 	
 	public Date getBeginning(){
