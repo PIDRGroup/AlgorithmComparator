@@ -23,6 +23,19 @@ public class EnvironmentFactory{
 	
 	//// Méthodes de chargement d'environnements à partir de fichiers ////
 	
+	public Environment generateFromSeed(Seed s) throws UnknownPlaceException{
+		Environment env = new Environment();
+		
+		Place current;
+		for (int i = 0; i < s.nbPlaces(); i++) {
+			current = s.nextPlace();
+			env.addPlace(current);
+			env.addLink(current, s.nextLink(env.getPlaces()));
+		}
+		
+		return env;
+	}
+	
 	
 	/**
 	 * Cette méthode permet de charger un environnement depuis un fichier.
