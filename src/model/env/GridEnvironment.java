@@ -1,6 +1,7 @@
 package model.env;
 
 import java.util.ArrayList;
+import java.util.Queue;
 
 import javax.swing.JFrame;
 
@@ -15,14 +16,17 @@ public class GridEnvironment extends Environment{
 	public GridEnvironment(Seed s) throws UnknownPlaceException{
 		graph = new MyMap<Place, Place>();
 		seed=s;
+		
+		seed.setType(TypeSeed.GRID);
+		
 		int size = s.getDimMax() - s.getDimMin();
-		int dist_between_2_points = size / s.getNbPlaces();
+		int dist_between_2_points = size / (s.getNbPlaces()-1);
 		
 		//S'il y a un problème d'arrondi, on replace la borne max afin de supprimer l'espace en trop
 		if(dist_between_2_points * s.getNbPlaces() != size){
 			s.setDimMax(dist_between_2_points * (s.getNbPlaces()-1) + s.getDimMin());
 		}
-		
+				
 		/*
 		 * Dans un hypercube, tous les points sont voisins des points qui ont exactement une coordonnée différente.
 		 * Or ici, on connait la distance entre les points ainsi que les bornes de l'espace attribué.
@@ -46,49 +50,63 @@ public class GridEnvironment extends Environment{
 		Pour chaque dimensions, on a au plus deux voisins (un avant et un après)
 		Etant donné qu'on part du coin avec les coordonnées minorantes, on ne construit que le 
 		voisin d'après, celui d'avant est déjà créé. Par contre on crée */
-		ArrayList<Place> new_neighbors;
+		ArrayList<Place> to_visit_queue = new ArrayList<Place>();
 		
-		for 
-			new_neighbors = new ArrayList<Place>();
+		to_visit_queue.add(0, p);
+
+		while(!to_visit_queue.isEmpty()){
+			
+			current = to_visit_queue.get(to_visit_queue.size()-1);
+			
 			//On commence par créer l'ensemble des voisins du point courant et les lier
-			for (int i = 0; i < p.getCoordinates().length; i++) {
+			for (int i = 0; i < current.getCoordinates().length; i++) {
 						
-				//On vérifie que la coordonnée que l'on va créer fait partie de l'environnement.
-				int previous = p.getCoordinate(i) - distance;
-				int next = p.getCoordinate(i) + distance;
+				//Pour la coordonnée courante, on va créer le voisin suivant et le précédent
+				int previous = current.getCoordinate(i) - distance;
+				int next = current.getCoordinate(i) + distance;
 				
+				//On vérifie que les coordonnées que l'on va créer font partie de l'environnement.
 				if(previous >= s.getDimMin()){
-					Place neigh = new Place(p.getCoordinates());
+					Place neigh = new Place(current.getCoordinates());
+					
+					//On change la seule coordonnée variable de la place
 					neigh.setCoordinate(i, previous);
 					
-					//On vérifie si la place existe déjà dans le graph
+					//Si la place n'est pas dans le graphe, on l'y ajoute et on la visitera (on ne l'a pas vu s'il n'est pas dans le graphe)
 					if(graph.indexOf(neigh) == -1){
 						graph.addKey(neigh);
-						new_neighbors.add(neigh);
+						to_visit_queue.add(0, neigh);
 					}
 					
 					//On crée le lien p --> previous (le lien previous --> p est créé par previous)
-					this.addLink(p, neigh);
+					this.addLink(current, neigh);
 				}
 				
 				if(next <= s.getDimMax()){
-					Place neigh = new Place(p.getCoordinates());
+					Place neigh = new Place(current.getCoordinates());
 					neigh.setCoordinate(i, next);
 					
-					//On vérifie si la place existe déjà dans le graph
+					//Si la place n'est pas dans le graphe, on l'y ajoute et on la visitera (on ne l'a pas vu s'il n'est pas dans le graphe)
 					if(graph.indexOf(neigh) == -1){
 						graph.addKey(neigh);
-						new_neighbors.add(neigh);
+						to_visit_queue.add(0, neigh);
 					}
 					
 					//On crée le lien p --> next (le lien next --> p est créé par next)
-					this.addLink(p, neigh);
+					this.addLink(current, neigh);
 				}
 			}
+			
+			//On le supprime des noeuds à visiter
+			to_visit_queue.remove(to_visit_queue.size()-1);
+		}
 	}
 	
-	public static void main(String[] args) {
-		Seed seed = new Seed(TypeSeed.GRID, System.nanoTime(), 12, 2, 0, 600);
+	public static void testGraphic(){
+		
+		System.out.println("===== Test graphique de génération de grille =====");
+		
+		Seed seed = new Seed(System.nanoTime(), 100, 2, 0, 600);
 		try {
 			GridEnvironment ge = new GridEnvironment(seed);
 			PointCloud pc = new PointCloud(ge, 600, 600);
@@ -98,8 +116,55 @@ public class GridEnvironment extends Environment{
 			jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			jf.setVisible(true);
 			System.out.println(ge);
+			System.out.println(ge.size());
+			System.out.println(seed.getDimMax());
 		} catch (UnknownPlaceException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static void testConsole() throws UnknownPlaceException{
+		System.out.println("===== Test console de génération de grille =====");
+		
+		ArrayList<Seed> seeds = new ArrayList<Seed>();
+		
+		//Graines d'environnement en 2D
+		seeds.add(new Seed(System.nanoTime(), 5, 2, 0, 6000));
+		seeds.add(new Seed(System.nanoTime(), 10, 2, 0, 6000));
+		seeds.add(new Seed(System.nanoTime(), 100, 2, 0, 6000));
+		seeds.add(new Seed(System.nanoTime(), 1000, 2, 0, 6000));
+		
+		//Graines d'environnement en 3D
+		seeds.add(new Seed(System.nanoTime(), 10, 3, 0, 6000));
+		seeds.add(new Seed(System.nanoTime(), 10, 3, 0, 6000));
+		seeds.add(new Seed(System.nanoTime(), 10, 3, 0, 6000));
+		
+		//Graines d'environnement en 10D
+		seeds.add(new Seed(System.nanoTime(), 10, 10, 0, 6000));
+		
+		long time;
+		GridEnvironment ge;
+		
+		for(int i = 0; i < seeds.size(); i++){
+			Seed s = seeds.get(i);
+			
+			time = System.currentTimeMillis();
+			ge = new GridEnvironment(s);
+			
+			System.out.print("TEST "+(i+1)+" : " +ge.size()+" places en "+s.getNbDim()+" dimensions = ");
+			System.out.print(((System.currentTimeMillis() - time)/1000)+" secondes\n");
+		}
+	}
+	
+	public static void main(String[] args) {
+		
+		//testGraphic();
+		
+		try {
+			testConsole();
+		} catch (UnknownPlaceException e) {
+			e.printStackTrace();
+		}
+		
 	}
 }

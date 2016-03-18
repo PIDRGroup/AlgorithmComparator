@@ -11,7 +11,7 @@ public class RandomEnvironment extends Environment{
 		Place current;
 		seed=s;
 		
-		
+		seed.setType(TypeSeed.RAND);
 	}
 
 }

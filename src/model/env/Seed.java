@@ -10,7 +10,9 @@ public class Seed {
 	private int nb_places;
 	private int nb_dim;
 	private int dim_min, dim_max;
-	private TypeSeed type;
+	
+	//Le type de la graine est redéfini dans le constructeur des environnements. On considère initialement que c'est une graine random.
+	private TypeSeed type = TypeSeed.RAND;
 	
 	public Seed(){
 		seed = System.nanoTime();
@@ -22,8 +24,7 @@ public class Seed {
 		type = TypeSeed.GRID;
 	}
 	
-	public Seed(TypeSeed ts, long s, int nbPlaces, int nb_dim, int dim_min, int dim_max){
-		type = ts;
+	public Seed(long s, int nbPlaces, int nb_dim, int dim_min, int dim_max){
 		seed = s;
 		this.nb_dim = nb_dim;
 		this.dim_min = dim_min;

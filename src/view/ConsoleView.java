@@ -12,39 +12,38 @@ public class ConsoleView {
 	public static void main(String[] args) throws UnknownPlaceException, IOException {
 		boolean stop = false;
 		String read;
-		int conversion;
+		int retour;
 		
 		while(!stop){
 			Environment env = null;
-			conversion = -1;
 			
-			while(conversion == -1){
-				menu("Environnement", "Créer un nouvel environnement", "Charger un enrironnement");
-				read = sc.nextLine();
-				conversion = convert(read, 2);
-				if(conversion == -1) System.out.println("Entrez un entier entre 1 et 2");
-			}
-			
-			if(conversion == 2){
+			retour = menu("Environnement", "Créer un nouvel environnement", "Charger un enrironnement");
+							
+			if(retour == 2){
 				//Chargement d'un environnement
-				conversion = -1;
+				retour = -1;
 				System.out.println("================== Chargement d'un environnement ==================");
-				System.out.print("Chemin du fichier de la graine : ");
-				String path = sc.nextLine();
+				String path;
 				
 				while(env == null){
 					try{
 						System.out.print("Chemin du fichier de la graine : ");
 						path = sc.nextLine();
+						System.out.println();
+						
 						Seed s = Seed.load(path);
 						if(s.getType() == TypeSeed.GRID)
 							env = new GridEnvironment(s);
-						else
+						else if(s.getType() == TypeSeed.RAND)
 							env = new RandomEnvironment(s);
 						
 					}catch(Exception e){
 						e.printStackTrace();
 						env = null;
+					}
+					
+					if(env == null){
+						System.err.println("Une erreur est survenue dans le chargement du fichier.");
 					}
 				}
 				
@@ -52,19 +51,19 @@ public class ConsoleView {
 				
 			}else{
 				//Création d'un environnement
-				conversion = -1;
+				retour = -1;
 				System.out.println("================== Création d'un environnement ==================");
+				int type = menu("Quel type de graphe désirez-vous créer ?", "Une grille", "Un graphe aléatoire");
 				int nb_places = getField("Nombre de places", 2);
 				int nb_dim = getField("Nombre de dimensions", 2);
 				int dim_inf = getField("Borne inf des dimensions", -Integer.MAX_VALUE);
 				int dim_sup = getField("Borne sup des dimensions", dim_inf);
-				boolean grid = getDual("En grille ou en aléatoire ? [1 - 2]");
 				
-				Seed s = new Seed((grid)?TypeSeed.GRID : TypeSeed.RAND, System.nanoTime(), nb_places, nb_dim, dim_inf, dim_sup);
+				Seed s = new Seed(System.nanoTime(), nb_places, nb_dim, dim_inf, dim_sup);
 				
-				if(grid){
+				if(type == 1){
 					env = new GridEnvironment(s);
-				}else{
+				}else if(type == 2){
 					env = new RandomEnvironment(s);
 				}
 				
@@ -85,7 +84,6 @@ public class ConsoleView {
 			
 			System.out.print("Voulez-vous recommencer une expérience ? [o/n] : ");
 			stop = sc.nextLine().equals("n");
-
 		}
 	}
 		
@@ -130,13 +128,52 @@ public class ConsoleView {
 		return choice == 1;
 	}
 
-	public static void menu(String title, String... options){
+	public static int menu(String title, String... options){
+		int read = -1;
 		System.out.println("================== "+ title +" ==================");
-		int i;
-		for (i = 0; i < options.length; i++) {
-			System.out.println("   - "+(i+1)+" : "+options[i]);
+		while(read < 1 || read > options.length){
+			int i;
+			for (i = 0; i < options.length; i++) {
+				System.out.println("   - "+(i+1)+" : "+options[i]);
+			}
+			System.out.print("\nVotre choix [de 1 à "+i+"] : ");
+			try{
+				read = Integer.parseInt(sc.nextLine());
+			}catch(Exception e){
+				System.err.println("Il faut entrer un chiffre !");
+				read=-1;
+			}
+			
+			if(read < 1 || read > options.length){
+				System.err.println("Entrez un entier entre 1 et "+options.length+" !");
+			}		
 		}
-		System.out.print("\nVotre choix [de 1 à "+i+"] : ");
+		
+		return read;
+	}
+	
+	public static int submenu(String title, String... options){
+		int read = -1;
+		System.out.println("	*** "+ title +" ***");
+		while(read < 1 || read > options.length){
+			int i;
+			for (i = 0; i < options.length; i++) {
+				System.out.println("   - "+(i+1)+" : "+options[i]);
+			}
+			System.out.print("\n	Votre choix [de 1 à "+i+"] : ");
+			try{
+				read = Integer.parseInt(sc.nextLine());
+			}catch(Exception e){
+				System.err.println("	Il faut entrer un chiffre !");
+				read=-1;
+			}
+			
+			if(read < 1 || read > options.length){
+				System.err.println("	Entrez un entier entre 1 et "+options.length+" !");
+			}		
+		}
+		
+		return read;
 	}
 	
 	public static int convert(String s, int limit){
