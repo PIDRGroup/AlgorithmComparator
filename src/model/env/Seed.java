@@ -81,11 +81,11 @@ public class Seed {
 	}
 	
 	public void isComplete() throws UnknownParameterException, InvalidNumberParametersException, IllegalParametersException{
-		if(seed == 0 || nb_places == 0 || nb_dim == 0 || dim_max == 0 || dim_min == 0){
+		if(seed == 0 || nb_places == 0 || nb_dim == 0){
 			throw new InvalidNumberParametersException();
 		}
 		
-		if(seed < 0 || nb_places < 0 || nb_dim < 0 || dim_min < 0 || dim_max < 0){
+		if(seed < 0 || nb_places < 0 || nb_dim < 0 || dim_max < dim_min){
 			throw new IllegalParametersException();
 		}
 		
@@ -117,8 +117,6 @@ public class Seed {
 	public String toString(){
 		return "seed="+seed+"\nplaces="+nb_places+"\ndimensions="+nb_dim+"\nmin="+dim_min+"\nmax="+dim_max+"\n";
 	}
-	
-	
 	
 	public long getSeed() {
 		return seed;
