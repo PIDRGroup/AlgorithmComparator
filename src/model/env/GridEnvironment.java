@@ -20,7 +20,7 @@ public class GridEnvironment extends Environment{
 		
 		//S'il y a un problème d'arrondi, on replace la borne max afin de supprimer l'espace en trop
 		if(dist_between_2_points * s.getNbPlaces() != size){
-			s.setDimMax(dist_between_2_points * s.getNbPlaces() + s.getDimMin());
+			s.setDimMax(dist_between_2_points * (s.getNbPlaces()-1) + s.getDimMin());
 		}
 		
 		/*
@@ -89,7 +89,7 @@ public class GridEnvironment extends Environment{
 	}
 	
 	public static void main(String[] args) {
-		Seed seed = new Seed(TypeSeed.GRID, System.nanoTime(), 13, 3, 0, 600);
+		Seed seed = new Seed(TypeSeed.GRID, System.nanoTime(), 12, 2, 0, 600);
 		try {
 			GridEnvironment ge = new GridEnvironment(seed);
 			PointCloud pc = new PointCloud(ge, 600, 600);
@@ -98,6 +98,7 @@ public class GridEnvironment extends Environment{
 			jf.pack();
 			jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			jf.setVisible(true);
+			System.out.println(ge);
 		} catch (UnknownPlaceException e) {
 			e.printStackTrace();
 		}
