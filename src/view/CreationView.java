@@ -16,7 +16,7 @@ import javax.swing.event.ChangeListener;
 import model.Algorithm;
 import model.Bound;
 import model.Environment;
-import model.EnvironmentFactory;
+import model.EnvironmentManager;
 import model.Evaluation;
 import model.Experience;
 import model.MultiplePlaceException;
@@ -317,9 +317,9 @@ public class CreationView extends JPanel{
 						Environment env = null;
 						try {
 							if(radio_alea.isSelected())
-								env = EnvironmentFactory.generateAlea((int) (long) field_nodes.getValue(), b);
+								env = EnvironmentManager.generateAlea((int) (long) field_nodes.getValue(), b);
 							else if(radio_grid.isSelected())
-								env = EnvironmentFactory.generateUniformGrid2D((int) (long) field_nodes.getValue(), b.get(0), b.get(1));
+								env = EnvironmentManager.generateUniformGrid2D((int) (long) field_nodes.getValue(), b.get(0), b.get(1));
 						} catch (MultiplePlaceException | UnknownPlaceException e) {
 							e.printStackTrace();
 						}

@@ -13,7 +13,7 @@ import java.util.Random;
  * Classe pour générer ou charger des environnements
  *
  */
-public class EnvironmentFactory{
+public class EnvironmentManager{
 	
 	/**
 	 * Générateur de nombres pseudo-aléatoires pour les fonctions de génération.
@@ -23,7 +23,7 @@ public class EnvironmentFactory{
 	
 	//// Méthodes de chargement d'environnements à partir de fichiers ////
 	
-	public Environment generateFromSeed(Seed s) throws UnknownPlaceException{
+	public static Environment generateAleaFromSeed(Seed s) throws UnknownPlaceException{
 		Environment env = new Environment();
 		
 		Place current;
@@ -35,7 +35,6 @@ public class EnvironmentFactory{
 		
 		return env;
 	}
-	
 	
 	/**
 	 * Cette méthode permet de charger un environnement depuis un fichier.
