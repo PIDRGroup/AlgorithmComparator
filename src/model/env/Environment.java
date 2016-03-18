@@ -1,32 +1,16 @@
-package model;
+package model.env;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Observable;
-import java.util.Random;
+import java.util.*;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
-
-import sun.net.www.http.KeepAliveCache;
-
-public class Environment extends Observable implements Serializable{
+public abstract class Environment extends Observable implements Serializable{
 	
 	/**
 	 * Les places en clés correspondent à l'ensemble des places du graphe, 
 	 * tandis que les places en valeur sont les successeurs de ces places.
 	 */
-	private MyMap<Place, Place> graph;
-	private ArrayList<Bound> bounds;
-	
-	public Environment(ArrayList<Bound> b){
-		graph = new MyMap<Place, Place>();
-		bounds = b;
-	}
-
-	public Environment() {
-		graph = new MyMap<Place, Place>();
-	}
+	protected MyMap<Place, Place> graph;
+	protected Seed seed;
 
 	/**
 	 * Méthode pour supprimer une place par sa position.
@@ -37,7 +21,6 @@ public class Environment extends Observable implements Serializable{
 	 */
 	public void delete(int... positions) throws UnknownPlaceException{
 		Place target = new Place(positions);
-		
 		this.delete(target);
 	}
 	
@@ -60,7 +43,6 @@ public class Environment extends Observable implements Serializable{
 		for(Place key : graph.keyList()){
 			graph.remove(key, target);
 		}
-		
 	}
 	
 	/**
@@ -130,18 +112,6 @@ public class Environment extends Observable implements Serializable{
 		return graph.keyList().size();
 	}
 	
-	/**
-	 * Crée une copie en profondeur d'un environnement
-	 * @return Copie en profondeur
-	 */
-	public Environment duplicate(){
-		Environment copy = new Environment(this.bounds);
-		
-		copy.graph = graph.dupplicate();
-		
-		return copy;
-	}
-	
 	public String toString(){
 		String s = "";
 		
@@ -169,15 +139,6 @@ public class Environment extends Observable implements Serializable{
 	
 	public int indexOf(Place p){
 		return graph.indexOf(p);
-	}
-	
-	/**
-	 * Renvoie la place dont l'indice est passé en paramètre
-	 * @param index
-	 * @return
-	 */
-	public Place getPlace(int index){
-		return graph.keyList().get(index);
 	}
 	
 	public Place getPlace(int... coordinates) throws UnknownPlaceException{
@@ -211,7 +172,7 @@ public class Environment extends Observable implements Serializable{
 	}
 	
 	public int nbDim(){
-		return graph.keyList().get(0).getCoordinates().length;
+		return seed.getNbDim();
 	}
 	
 	/**
@@ -222,11 +183,11 @@ public class Environment extends Observable implements Serializable{
 		return graph.keyList().get((new Random()).nextInt(graph.keyList().size()));
 	}
 	
-	public Bound getBound(int i){
-		return bounds.get(i);
-	}
-	
 	public ArrayList<Place> getLinks(Place src) throws UnknownPlaceException{
 		return graph.valueList(src);
+	}
+
+	public Seed getSeed() {
+		return seed;
 	}
 }

@@ -1,4 +1,4 @@
-package model;
+package model.algo;
 
 import java.util.ArrayList;
 import java.util.Date;

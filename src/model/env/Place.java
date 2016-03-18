@@ -1,4 +1,4 @@
-package model;
+package model.env;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -114,6 +114,10 @@ public class Place implements Serializable{
 		return coordinates[x];
 	}
 	
+	public void setCoordinate(int dim, int value){
+		coordinates[dim] = value;
+	}
+	
 	/**
 	 * Retourne le label ou une chaine vide si la place n'a pas de label
 	 * @return Le label de la place
@@ -171,7 +175,7 @@ public class Place implements Serializable{
 		
 		for (int i = 0; i < coordinates.length; i++) {
 			s+=coordinates[i];
-			if(i != coordinates.length-1) s+=", ";
+			if(i != coordinates.length-1) s+=",";
 		}
 		
 		return s+")";

@@ -1,7 +1,11 @@
-package model;
+package model.algo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import model.env.Environment;
+import model.env.Place;
+import model.env.UnknownPlaceException;
 
 public class AStar extends Algorithm{
 	

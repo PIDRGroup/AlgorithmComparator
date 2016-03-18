@@ -19,10 +19,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 
-import model.Algorithm;
-import model.Environment;
-import model.Evaluation;
 import model.Experience;
+import model.algo.Algorithm;
+import model.algo.Evaluation;
+import model.env.Environment;
 
 public class EvaluationView extends JPanel{
 	
@@ -134,7 +134,8 @@ class ResultView extends JPanel{
 		
 		this.add(panel_data, BorderLayout.NORTH);
 		JPanel container = new JPanel();
-		cloud = new PointCloud(env, alg, env.getBound(0).size(), env.getBound(1).size());
+		int size = env.getSeed().getDimMax() - env.getSeed().getDimMin();
+		cloud = new PointCloud(env, alg, size, size);
 		box_show = new JCheckBox("Montrer les liens");
 		box_show.addActionListener(new ActionListener() {
 			@Override

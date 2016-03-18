@@ -1,6 +1,10 @@
-package model;
+package model.algo;
 
 import java.util.ArrayList;
+
+import model.env.Environment;
+import model.env.Place;
+import model.env.UnknownPlaceException;
 
 public class RBFS extends Algorithm{
 

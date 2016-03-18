@@ -13,15 +13,14 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import model.Algorithm;
-import model.Bound;
-import model.Environment;
-import model.EnvironmentManager;
-import model.Evaluation;
 import model.Experience;
-import model.MultiplePlaceException;
-import model.Place;
-import model.UnknownPlaceException;
+import model.algo.Algorithm;
+import model.algo.Evaluation;
+import model.env.Bound;
+import model.env.Environment;
+import model.env.MultiplePlaceException;
+import model.env.Place;
+import model.env.UnknownPlaceException;
 
 public class CreationView extends JPanel{
 	
@@ -315,14 +314,11 @@ public class CreationView extends JPanel{
 						ArrayList<Bound> b = new ArrayList<Bound>();
 						for(BoundView bv : bounds) b.add(bv.bound());
 						Environment env = null;
-						try {
-							if(radio_alea.isSelected())
+							/*if(radio_alea.isSelected())
 								env = EnvironmentManager.generateAlea((int) (long) field_nodes.getValue(), b);
 							else if(radio_grid.isSelected())
 								env = EnvironmentManager.generateUniformGrid2D((int) (long) field_nodes.getValue(), b.get(0), b.get(1));
-						} catch (MultiplePlaceException | UnknownPlaceException e) {
-							e.printStackTrace();
-						}
+							*/
 						Experience exp = null;
 						if(box_alea.isSelected())
 							exp = new Experience(field_name.getText(), label_date.getText(), env, env.alea(), env.alea());

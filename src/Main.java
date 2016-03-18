@@ -1,6 +1,6 @@
 import java.io.IOException;
 
-import model.UnknownPlaceException;
+import model.env.UnknownPlaceException;
 import view.*;
 
 public class Main {

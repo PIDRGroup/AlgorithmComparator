@@ -9,6 +9,12 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import model.algo.Algorithm;
+import model.algo.Evaluation;
+import model.env.Environment;
+import model.env.Place;
+import model.env.UnknownPlaceException;
+
 /**
  * 
  * Représente une expérience avec son environnement et les algorithmes qui se déroulent dessus.

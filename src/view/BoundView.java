@@ -10,7 +10,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import model.Bound;
+import model.env.Bound;
 
 public class BoundView extends JPanel{
 	private JLabel desc, l_min, l_max;

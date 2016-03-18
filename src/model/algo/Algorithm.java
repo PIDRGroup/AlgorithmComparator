@@ -1,8 +1,12 @@
-package model;
+package model.algo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Observable;
+
+import model.env.Environment;
+import model.env.Place;
+import model.env.UnknownPlaceException;
 
 public abstract class Algorithm extends Observable implements Serializable{
 	

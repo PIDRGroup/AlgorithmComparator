@@ -1,12 +1,10 @@
 package view;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
-import javax.swing.JFrame;
-
 import model.*;
+import model.env.*;
 
 public class ConsoleView {
 	private static Scanner sc = new Scanner(System.in);
@@ -17,7 +15,9 @@ public class ConsoleView {
 		int conversion;
 		
 		while(!stop){
+			Environment env = null;
 			conversion = -1;
+			
 			while(conversion == -1){
 				menu("Environnement", "Charger un enrironnement", "Créer un nouvel environnement");
 				read = sc.nextLine();
@@ -27,6 +27,25 @@ public class ConsoleView {
 			
 			if(conversion == 1){
 				//Chargement d'un environnement
+				conversion = -1;
+				System.out.println("================== Chargement d'un environnement ==================");
+				System.out.print("CHemin du fichier de la graine : ");
+				String path = sc.nextLine();
+				
+				while(env == null){
+					try{
+						Seed s = Seed.load(path);
+						if(s.getType() == TypeSeed.GRID)
+							env = new GridEnvironment(s);
+						else
+							env = new RandomEnvironment(s);
+						
+					}catch(Exception e){
+						env = null;
+					}
+				}
+				
+				System.out.println("L'environnement a bn été généré !\n"+env.getSeed());
 				
 			}else{
 				//Création d'un environnement
@@ -39,12 +58,11 @@ public class ConsoleView {
 				boolean grid = getDual("En grille ou en aléatoire ? [1 - 2]");
 				//boolean oriented = getDual("Le graphe est-il orienté ? [1 = oui, 2 = non]");
 				
-				Environment env = null;
-				Seed s = new Seed(System.nanoTime(), nb_places, nb_places, dim_inf, dim_sup);
+				Seed s = new Seed((grid)?TypeSeed.GRID : TypeSeed.RAND, System.nanoTime(), nb_places, nb_dim, dim_inf, dim_sup);
 				if(grid){
-					System.out.println("Option non-implémentée");
+					env = new GridEnvironment(s);
 				}else{
-					env = EnvironmentManager.generateAleaFromSeed(s);
+					env = new RandomEnvironment(s);
 				}
 				
 				read="";

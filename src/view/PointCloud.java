@@ -4,6 +4,10 @@ import java.awt.*;
 import java.util.*;
 import javax.swing.JPanel;
 import model.*;
+import model.algo.Algorithm;
+import model.env.Environment;
+import model.env.Place;
+import model.env.UnknownPlaceException;
 
 /**
  * 
@@ -20,6 +24,22 @@ public class PointCloud extends JPanel implements Observer{
 	
 	//On définit la couleur des noeuds du chemin, des noeuds qui ont été développés et des noeuds qui n'ont pas été touchés.
 	public final static Color COLOR_POINT = Color.BLACK, COLOR_PATH = Color.GREEN, COLOR_EXPANDED = Color.LIGHT_GRAY, COLOR_LINE = Color.RED;
+	
+	//Constructeur pour vérifier les environnements
+	public PointCloud(Environment env, int width, int height){
+		this.setBackground(Color.WHITE);
+		show_links = true;
+		points = new ArrayList<Point>();
+		this.env = env;
+		
+		//On considère que c'est forcément un environnement 2D. On ne traite pas les cas où D > 2
+		for(Place p : env.getPlaces()){
+			points.add(new Point(p.getCoordinate(0), p.getCoordinate(1)));
+		}
+		
+		this.setPreferredSize(new Dimension(width, height));
+		this.repaint();
+	}
 	
 	public PointCloud(Environment e, Algorithm alg, int width, int height){
 		
@@ -80,13 +100,13 @@ public class PointCloud extends JPanel implements Observer{
 		
 		//On change la couleur des points du chemin
 		g.setColor(COLOR_PATH);
-		if(env.nbDim() == 1){
+		if(algo != null && env.nbDim() == 1){
 			int middle = (int) (this.getSize().getHeight() / 2);
 			for(Place p : algo.getPath()){
 				//Si c'est en 1D, on place tous les points sur une ligne
 				g.fillRect(p.getCoordinate(0) - 4, middle - 4, 8, 8);
 			}
-		}else{
+		}else if(algo != null){
 			//On considère que c'est forcément un environnement 2D. On ne traite pas les cas où D > 2
 			for(Place p : algo.getPath()){
 				g.fillRect(p.getCoordinate(0) - 3, p.getCoordinate(1) - 3, 6, 6);
