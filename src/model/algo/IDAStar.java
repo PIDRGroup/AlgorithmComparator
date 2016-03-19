@@ -72,10 +72,10 @@ public class IDAStar extends Algorithm{
 		double dist;
 		
 		for (int i = 0; i < world.size(); i++){
-			if ((dist = world.get(node, world.getPlace(i))) < Integer.MAX_VALUE){
-				t = search(world.getPlace(i), g + dist, bound);
+			if ((dist = world.get(node, world.getByIndex(i))) < Integer.MAX_VALUE){
+				t = search(world.getByIndex(i), g + dist, bound);
 				if (t == found) {
-					path.add(world.getPlace(i));
+					path.add(world.getByIndex(i));
 					return found;
 				}
 				if (t < min) min = t;

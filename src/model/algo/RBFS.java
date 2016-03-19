@@ -32,7 +32,7 @@ public class RBFS extends Algorithm{
 		ArrayList<Node> noeud = new ArrayList<Node>();
 		
 		for (int i = 0; i < world.size(); i++){
-			noeud.add(new Node(world.getPlace(i),Double.MAX_VALUE,null));
+			noeud.add(new Node(world.getByIndex(i),Double.MAX_VALUE,null));
 		}
 		
 	}

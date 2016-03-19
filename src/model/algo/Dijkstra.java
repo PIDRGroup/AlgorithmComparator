@@ -31,7 +31,7 @@ public class Dijkstra extends Algorithm{
 		
 		for (int i = 0; i < world.size(); i++){
 			try {
-				if ((dist = world.get(src, world.getPlace(i))) < Integer.MAX_VALUE){
+				if ((dist = world.get(src, world.getByIndex(i))) < Integer.MAX_VALUE){
 					distance.add(dist);
 					//On initialise les noeuds à une distance infini de la src
 				}else{
@@ -70,7 +70,7 @@ public class Dijkstra extends Algorithm{
 				try {
 					
 					//On fais une mise à jour de la distance à la source pour les noeuds connectés au noeud courant
-					if (!banlist.contains(i) && (newdistance = world.get(world.getPlace(minnode), world.getPlace(i))) < Integer.MAX_VALUE){
+					if (!banlist.contains(i) && (newdistance = world.get(world.getByIndex(minnode), world.getByIndex(i))) < Integer.MAX_VALUE){
 						newdistance += distance.get(minnode).intValue(); 
 						if (newdistance < distance.get(i).intValue()){
 							/*Si la distance à la source d'un noeud connecté change,
@@ -79,7 +79,7 @@ public class Dijkstra extends Algorithm{
 							*/
 							distance.set(i, newdistance);
 							predecessor.set(i, minnode);
-							if(world.getPlace(i).equals(dest)){
+							if(world.getByIndex(i).equals(dest)){
 								eval.gotASolution(newdistance);
 							}
 						}
@@ -96,9 +96,9 @@ public class Dijkstra extends Algorithm{
 		int current = world.indexOf(dest);
 		
 		//On rétablit le plus court chemin jusqu'à la dest d'après la liste des prédécesseurs
-		while (!world.getPlace(current).equals(src)){
+		while (!world.getByIndex(current).equals(src)){
 			int pred = predecessor.get(current);
-			path.add(world.getPlace(pred));
+			path.add(world.getByIndex(pred));
 			current = pred;
 		}
 		

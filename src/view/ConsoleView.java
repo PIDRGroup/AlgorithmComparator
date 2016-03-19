@@ -1,10 +1,14 @@
 package view;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Scanner;
 
 import model.*;
 import model.env.*;
+import model.algo.*;
+import model.algo.Algorithm;
 
 public class ConsoleView {
 	private static Scanner sc = new Scanner(System.in);
@@ -15,10 +19,10 @@ public class ConsoleView {
 		int retour;
 		
 		while(!stop){
-			Environment env = null;
 			
+			/* ********* On commence par créer l'environnement ********* */
+			Environment env = null;
 			retour = menu("Environnement", "Créer un nouvel environnement", "Charger un enrironnement");
-							
 			if(retour == 2){
 				//Chargement d'un environnement
 				retour = -1;
@@ -36,7 +40,7 @@ public class ConsoleView {
 							env = new GridEnvironment(s);
 						else if(s.getType() == TypeSeed.RAND)
 							env = new RandomEnvironment(s);
-						
+												
 					}catch(Exception e){
 						e.printStackTrace();
 						env = null;
@@ -47,13 +51,13 @@ public class ConsoleView {
 					}
 				}
 				
-				System.out.println("L'environnement a bien été généré !\n"+env.getSeed());
+				System.out.println("L'environnement a bien été chargé !\n");
 				
 			}else{
 				//Création d'un environnement
 				retour = -1;
 				System.out.println("================== Création d'un environnement ==================");
-				int type = menu("Quel type de graphe désirez-vous créer ?", "Une grille", "Un graphe aléatoire");
+				int type = submenu("Quel type de graphe désirez-vous créer ?", "Une grille", "Un graphe aléatoire");
 				int nb_places = getField("Nombre de places", 2);
 				int nb_dim = getField("Nombre de dimensions", 2);
 				int dim_inf = getField("Borne inf des dimensions", -Integer.MAX_VALUE);
@@ -66,7 +70,7 @@ public class ConsoleView {
 				}else if(type == 2){
 					env = new RandomEnvironment(s);
 				}
-				
+								
 				read="";
 				while(!read.equals("n") && !read.equals("o")){
 					System.out.print("Désirez-vous sauvegarder la graine de l'environnement ? [o-n] : ");
@@ -81,9 +85,58 @@ public class ConsoleView {
 					s.save(path);
 				}
 			}
+						
+			/* ********* Puis on crée les algorithmes ********* */
+			ArrayList<Integer> selected_algos = multipleMenu("Sélection des algorithmes", "Dijkstra", "A*", "IDA*", "RBFS", "SMA*", "UCS");
+			ArrayList<Algorithm> algos = new ArrayList<Algorithm>();
 			
-			System.out.print("Voulez-vous recommencer une expérience ? [o/n] : ");
-			stop = sc.nextLine().equals("n");
+			for (int i = 0; i < selected_algos.size(); i++) {
+				switch(selected_algos.get(i).intValue()){
+					case 1:
+						algos.add(new Dijkstra());
+						break;
+					case 2:
+						algos.add(new AStar());
+						break;
+					case 3:
+						algos.add(new IDAStar());
+						break;
+					case 4:
+						algos.add(new RBFS());
+						break;
+					case 5:
+						algos.add(new SMAStar());
+						break;
+					case 6:
+						algos.add(new UniformCostSearch());
+						break;
+				}
+			}
+			
+			/* ********* Maintenant, on lance l'expérience ********* */
+			Calendar c = Calendar.getInstance();
+			String date = c.get(Calendar.DAY_OF_MONTH)+"/"+(c.get(Calendar.MONTH)+1)+"/"+c.get(Calendar.YEAR);
+			Experience exp = new Experience("EXP du "+date, date, env);
+			exp.addAlgos(algos);
+			
+			System.out.println("================== LANCEMENT DE L'EXPERIENCE ! ==================");
+			exp.launch();
+			
+			for(Algorithm algo : exp.getAlgos())
+				System.out.println(algo.getEval());
+			
+			/* ********* Enfin on demande à l'utilisateur s'il veut recommencer ********* */
+			
+			read = "";
+			while(!read.equals("n") && !read.equals("o")){
+				System.out.print("Voulez-vous recommencer une expérience ? [o/n] : ");
+				read = sc.nextLine();
+				
+				if(!read.equals("n") && !read.equals("o")){
+					System.err.println("Entrez o ou n !");
+				}
+			}
+			stop = read.equals("n");
 		}
 	}
 		
@@ -174,6 +227,50 @@ public class ConsoleView {
 		}
 		
 		return read;
+	}
+	
+	public static ArrayList<Integer> multipleMenu(String title, String... options){
+		boolean stop = false;
+		ArrayList<Integer> vals = null;
+		
+		System.out.println("================== "+ title +" ==================");
+		
+		System.out.println("Ce menu est à choix multiple. Vous pouvez renseigner plusieurs choix séparés par des espaces.");
+		
+		while(!stop){
+			int i;
+			for (i = 0; i < options.length; i++) {
+				System.out.println("   - "+(i+1)+" : "+options[i]);
+			}
+			System.out.print("\nVos choix [entre 1 à "+i+"] : ");
+			
+			String read = sc.nextLine();
+			String[] parts = read.split(" ");
+			vals = new ArrayList<Integer>();
+			boolean err = false;
+			
+			for (int j = 0; j < parts.length; j++) {
+				try{
+					int val = Integer.parseInt(parts[j]);
+					
+					if(val < 1 || val > options.length){
+						System.err.println("Entrez un entier entre 1 et "+i+" !");
+						err = true;
+						break;
+					}else{
+						vals.add(val);
+					}
+				}catch(Exception e){
+					System.err.println("Il faut entrer un chiffre !");
+					err = true;
+					break; //On sort de la boucle
+				}
+			}
+			
+			stop = !err;
+		}
+		
+		return vals;
 	}
 	
 	public static int convert(String s, int limit){

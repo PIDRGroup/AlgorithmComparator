@@ -190,4 +190,12 @@ public abstract class Environment extends Observable implements Serializable{
 	public Seed getSeed() {
 		return seed;
 	}
+	
+	public int degre(Place p){
+		return graph.valueList(p).size();
+	}
+	
+	public Place getByIndex(int index){
+		return graph.keyList().get(index);
+	}
 }

@@ -20,7 +20,8 @@ public class GridEnvironment extends Environment{
 		seed.setType(TypeSeed.GRID);
 		
 		int size = s.getDimMax() - s.getDimMin();
-		int dist_between_2_points = size / (s.getNbPlaces()-1);
+		int dist_between_2_points = (int) Math.ceil(size / (double) (s.getNbPlaces()-2));
+		
 		
 		//S'il y a un problème d'arrondi, on replace la borne max afin de supprimer l'espace en trop
 		if(dist_between_2_points * s.getNbPlaces() != size){
@@ -53,7 +54,7 @@ public class GridEnvironment extends Environment{
 		ArrayList<Place> to_visit_queue = new ArrayList<Place>();
 		
 		to_visit_queue.add(0, p);
-
+		
 		while(!to_visit_queue.isEmpty()){
 			
 			current = to_visit_queue.get(to_visit_queue.size()-1);
@@ -75,7 +76,8 @@ public class GridEnvironment extends Environment{
 					//Si la place n'est pas dans le graphe, on l'y ajoute et on la visitera (on ne l'a pas vu s'il n'est pas dans le graphe)
 					if(graph.indexOf(neigh) == -1){
 						graph.addKey(neigh);
-						to_visit_queue.add(0, neigh);
+						if(degre(neigh) < seed.getNbDim() * 2)
+							to_visit_queue.add(0, neigh);
 					}
 					
 					//On crée le lien p --> previous (le lien previous --> p est créé par previous)
@@ -89,7 +91,8 @@ public class GridEnvironment extends Environment{
 					//Si la place n'est pas dans le graphe, on l'y ajoute et on la visitera (on ne l'a pas vu s'il n'est pas dans le graphe)
 					if(graph.indexOf(neigh) == -1){
 						graph.addKey(neigh);
-						to_visit_queue.add(0, neigh);
+						if(degre(neigh) < seed.getNbDim() * 2)
+							to_visit_queue.add(0, neigh);
 					}
 					
 					//On crée le lien p --> next (le lien next --> p est créé par next)
@@ -106,10 +109,11 @@ public class GridEnvironment extends Environment{
 		
 		System.out.println("===== Test graphique de génération de grille =====");
 		
-		Seed seed = new Seed(System.nanoTime(), 100, 2, 0, 600);
+		Seed seed = new Seed(System.nanoTime(), 100, 2, 0, 6000);
 		try {
 			GridEnvironment ge = new GridEnvironment(seed);
-			PointCloud pc = new PointCloud(ge, 600, 600);
+			System.out.println(ge.size());
+			PointCloud pc = new PointCloud(ge, 1000, 1000);
 			JFrame jf = new JFrame("Test grille");
 			jf.setContentPane(pc);
 			jf.pack();
@@ -131,16 +135,16 @@ public class GridEnvironment extends Environment{
 		//Graines d'environnement en 2D
 		seeds.add(new Seed(System.nanoTime(), 5, 2, 0, 6000));
 		seeds.add(new Seed(System.nanoTime(), 10, 2, 0, 6000));
-		seeds.add(new Seed(System.nanoTime(), 100, 2, 0, 6000));
-		seeds.add(new Seed(System.nanoTime(), 1000, 2, 0, 6000));
+		seeds.add(new Seed(System.nanoTime(), 100, 2, 0, 605043021));
+		//seeds.add(new Seed(System.nanoTime(), 1000, 2, 0, 100000));
 		
 		//Graines d'environnement en 3D
+		seeds.add(new Seed(System.nanoTime(), 5, 3, 0, 6000));
 		seeds.add(new Seed(System.nanoTime(), 10, 3, 0, 6000));
-		seeds.add(new Seed(System.nanoTime(), 10, 3, 0, 6000));
-		seeds.add(new Seed(System.nanoTime(), 10, 3, 0, 6000));
+		//seeds.add(new Seed(System.nanoTime(), 100, 3, 0, 6000));
 		
 		//Graines d'environnement en 10D
-		seeds.add(new Seed(System.nanoTime(), 10, 10, 0, 6000));
+		seeds.add(new Seed(System.nanoTime(), 5, 5, 0, 6000));
 		
 		long time;
 		GridEnvironment ge;
@@ -152,19 +156,36 @@ public class GridEnvironment extends Environment{
 			ge = new GridEnvironment(s);
 			
 			System.out.print("TEST "+(i+1)+" : " +ge.size()+" places en "+s.getNbDim()+" dimensions = ");
-			System.out.print(((System.currentTimeMillis() - time)/1000)+" secondes\n");
+			System.out.print(((System.currentTimeMillis() - time))+" ms\n");
 		}
 	}
 	
 	public static void main(String[] args) {
 		
-		//testGraphic();
-		
-		try {
-			testConsole();
-		} catch (UnknownPlaceException e) {
-			e.printStackTrace();
+		if(args.length == 0){
+			try {
+				testConsole();
+			} catch (UnknownPlaceException e) {
+				e.printStackTrace();
+			}
+			System.exit(0);
 		}
 		
+		switch (args[1]) {
+			case "graphenv":
+				testGraphic();
+				break;
+				
+			case "consenv":
+				try {
+					testConsole();
+				} catch (UnknownPlaceException e) {
+					e.printStackTrace();
+				}
+				break;
+	
+			default:
+				break;
+		}
 	}
 }

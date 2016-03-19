@@ -75,15 +75,15 @@ public class UniformCostSearch extends Algorithm{
 			currentsolvation.add(currentnode);
 			
 			for (int i = 0; i < world.size(); i++){
-				if((dist = world.get(currentnode.getstat(), world.getPlace(i))) < Integer.MAX_VALUE){
+				if((dist = world.get(currentnode.getstat(), world.getByIndex(i))) < Integer.MAX_VALUE){
 					double newpathcost = currentpathcost+dist;
 					
 					if (!(exploration.contains(i)||frontiere.contains(i))){
-						frontiere.add(new Node(world.getPlace(i), newpathcost,currentsolvation));
+						frontiere.add(new Node(world.getByIndex(i), newpathcost,currentsolvation));
 					}else{
 						for (int j = 0; j < frontiere.size(); j++){
-							if (frontiere.get(j).isSuperior(new Node(world.getPlace(i), newpathcost, null))){
-								frontiere.set(j,new Node(world.getPlace(i),newpathcost,currentsolvation));
+							if (frontiere.get(j).isSuperior(new Node(world.getByIndex(i), newpathcost, null))){
+								frontiere.set(j,new Node(world.getByIndex(i),newpathcost,currentsolvation));
 							}
 						}
 					}

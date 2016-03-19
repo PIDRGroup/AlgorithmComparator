@@ -40,7 +40,7 @@ public class AStar extends Algorithm{
 			if (world.indexOf(src) == i){
 				noeud.add(source);
 			}
-			else noeud.add(new Node(world.getPlace(i), Double.MAX_VALUE, null));
+			else noeud.add(new Node(world.getByIndex(i), Double.MAX_VALUE, null));
 		}
 		
 		while (!noeudouvert.isEmpty()){
@@ -85,7 +85,7 @@ public class AStar extends Algorithm{
 			double dist;
 			
 			for (int i = 0; i < noeud.size(); i++){
-				if (world.get(current.getstat(), world.getPlace(i)) < Integer.MAX_VALUE){
+				if (world.get(current.getstat(), world.getByIndex(i)) < Integer.MAX_VALUE){
 					
 					if (noeudferme.contains(noeud.get(i))){
 						continue;

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import model.algo.Algorithm;
 import model.algo.Evaluation;
+import model.algo.Log;
 import model.env.Environment;
 import model.env.Place;
 import model.env.UnknownPlaceException;
@@ -48,13 +49,22 @@ public class Experience implements Serializable{
 	}
 	
 	public void addAlgo(Algorithm a){
-		algos.add(a);
+		if(!algos.contains(a))
+			algos.add(a);
+	}
+	
+	public void addAlgos(ArrayList<Algorithm> alg){
+		for(Algorithm a : alg){
+			this.addAlgo(a);
+		}
 	}
 	
 	public void launch() throws UnknownPlaceException{
 		for(Algorithm a : algos){
 			System.out.println("LAUNCHING -- "+a.getName()+" -- ");
 			a.grow(env, source, dest);
+			Log l = new Log(a);
+			System.out.println(l);
 			System.out.println("FINISHED -- "+a.getName()+" -- ");
 		}
 	}

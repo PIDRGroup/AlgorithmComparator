@@ -16,16 +16,16 @@ public class Log {
 		ArrayList<Double> cost_solutions = eval.getCostSolutions();
 		ArrayList<Long> time_solutions = eval.getTimeSolutions();
 		
-		this.lignes = this.name_algo+" a fournit "+ eval.getNbSolution()+" résultats:\n";
-		for (int i =1 ; i < eval.getNbSolution()+1; i++){
-			lignes += "**"+i+"** Solution de distance "+nb_while_solutions.get(i)+" ";
+		this.lignes = this.name_algo+" a fournit "+ eval.getNbSolution()+" resultats:\n";
+		for (int i =0 ; i < eval.getNbSolution(); i++){
+			lignes += "**"+(i+1)+"** Solution de distance "+nb_while_solutions.get(i)+" ";
 			lignes += "obtenu au bout de "+time_solutions.get(i)+ " mms";
-			lignes += "et après "+cost_solutions.get(i)+" tours de boucle";
+			lignes += "et apres "+cost_solutions.get(i)+" tours de boucle\n";
 		}
 	}
 	
 	@Override
 	public String toString(){
-		return lignes;	
+		return lignes;
 	}
 }
