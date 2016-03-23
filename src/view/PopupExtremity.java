@@ -26,7 +26,7 @@ public class PopupExtremity extends JDialog{
 		validate = false;
 		JPanel container = new JPanel();
 		container.setLayout(new BorderLayout());
-		container.add(new JLabel("Indiquer les coordonnées de votre place : "), BorderLayout.NORTH);
+		container.add(new JLabel("Indiquer les coordonnï¿½es de votre place : "), BorderLayout.NORTH);
 		
 		JPanel sub_container = new JPanel();
 		sub_container.setLayout(new GridLayout(0, 5));
@@ -53,7 +53,7 @@ public class PopupExtremity extends JDialog{
 		
 		
 		btn_validate = new JButton("OK !");
-		PopupExtremity access = this;
+		final PopupExtremity access = this;
 		
 		btn_validate.addActionListener(new ActionListener() {
 			@Override

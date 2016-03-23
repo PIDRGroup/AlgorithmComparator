@@ -34,12 +34,12 @@ public class EvaluationView extends JPanel{
 	private JButton btn_return, btn_save, btn_home;
 	private ArrayList<ResultView> eva_views;
 	
-	public EvaluationView(MainWindow parent, Experience exp){
+	public EvaluationView(final MainWindow parent, final Experience exp){
 		this.parent = parent;
 		evals = exp.getEvals();
 		algos = exp.getAlgos();
 		
-		btn_return = new JButton("Nouvelle expérience");
+		btn_return = new JButton("Nouvelle expï¿½rience");
 		btn_save = new JButton("Sauvegarder");
 		btn_home = new JButton("Accueil");
 		
@@ -107,9 +107,9 @@ class ResultView extends JPanel{
 	public ResultView(Environment env, Algorithm alg, Evaluation ev){
 		this.setLayout(new BorderLayout());
 		
-		label_execution_time = new JLabel(ev.getNbWhile()+" exécutions au total");
-		label_execution_to_best = new JLabel(ev.getTimeSolutions().get(ev.getTimeSolutions().size()-1)+" exécutions jusqu'au meilleur");
-		label_execution_to_first = new JLabel(ev.getTimeSolutions().get(0)+"exécutions jusqu'au premier");
+		label_execution_time = new JLabel(ev.getNbWhile()+" exï¿½cutions au total");
+		label_execution_to_best = new JLabel(ev.getTimeSolutions().get(ev.getTimeSolutions().size()-1)+" exï¿½cutions jusqu'au meilleur");
+		label_execution_to_first = new JLabel(ev.getTimeSolutions().get(0)+"exï¿½cutions jusqu'au premier");
 		label_nb_nodes = new JLabel(alg.getPath().size()+" noeuds dans le chemin");
 		
 		panel_data = new JPanel();

@@ -27,27 +27,27 @@ import model.Experience;
 
 public class HomeView extends JPanel{
 	
-	//Affichage de la liste des expériences disponibles dans le dossier par défaut
+	//Affichage de la liste des expï¿½riences disponibles dans le dossier par dï¿½faut
 	private JPanel panel_container;
 	private JList<String> list_experiences;
 	private JScrollPane pane_experiences;
 	
-	//Sélection du fichier de test avec drag and drop
+	//Sï¿½lection du fichier de test avec drag and drop
 	private JPanel panel_browse;
 	private JTextField field_selected_file;
 	private JButton btn_browse;
 	private JFileChooser file_chooser;
 	
-	//Création - chargement d'une expérience
+	//Crï¿½ation - chargement d'une expï¿½rience
 	private JPanel panel_main;
 	private JButton btn_new, btn_load;
 	
 	private MainWindow parent;
 	
-	public HomeView(MainWindow parent){
+	public HomeView(final MainWindow parent){
 		this.parent = parent;
 		
-		//La liste des expériences dans un text area
+		//La liste des expï¿½riences dans un text area
 		list_experiences = new JList<String>();
 		list_experiences.setPreferredSize(new Dimension(600, 250));
 		
@@ -56,7 +56,7 @@ public class HomeView extends JPanel{
 		pane_experiences.setMinimumSize(new Dimension(600, 250));
 		pane_experiences.setMaximumSize(new Dimension(600, 250));
 		
-		//La zone de sélection de fichier
+		//La zone de sï¿½lection de fichier
 		btn_browse = new JButton("Parcourir");
 		field_selected_file = new JTextField();
 		field_selected_file.setPreferredSize(new Dimension(400, 25));
@@ -82,7 +82,7 @@ public class HomeView extends JPanel{
 			}
 		}));
 		file_chooser = new JFileChooser();
-		file_chooser.setFileFilter(new FileNameExtensionFilter("Fichiers de résultats d'expérience (.xp, .exp)", "xp", "exp"));
+		file_chooser.setFileFilter(new FileNameExtensionFilter("Fichiers de rï¿½sultats d'expï¿½rience (.xp, .exp)", "xp", "exp"));
 		
 		btn_browse.addActionListener(new ActionListener() {
 			@Override
@@ -97,18 +97,18 @@ public class HomeView extends JPanel{
 		panel_browse.add(field_selected_file);
 		panel_browse.add(btn_browse);
 		
-		//On crée la zonebox
+		//On crï¿½e la zonebox
 		panel_container = new JPanel();
-		TitledBorder border = new TitledBorder("Expériences sauvegardées");
+		TitledBorder border = new TitledBorder("Expï¿½riences sauvegardï¿½es");
 		panel_container.setBorder(border);
 		
 		panel_container.setLayout(new BorderLayout());
 		panel_container.add(pane_experiences, BorderLayout.NORTH);
 		panel_container.add(panel_browse, BorderLayout.SOUTH);
 		
-		//On crée les boutons principaux.
-		btn_new = new JButton("Créer une nouvelle expérience");
-		btn_load = new JButton("Charger l'expérience sélectionée");
+		//On crï¿½e les boutons principaux.
+		btn_new = new JButton("Crï¿½er une nouvelle expï¿½rience");
+		btn_load = new JButton("Charger l'expï¿½rience sï¿½lectionï¿½e");
 		
 		btn_new.addActionListener(new ActionListener() {
 			@Override
