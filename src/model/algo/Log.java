@@ -19,7 +19,7 @@ public class Log {
 		this.lignes = this.name_algo+" a fournit "+ eval.getNbSolution()+" resultats:\n";
 		for (int i =0 ; i < eval.getNbSolution(); i++){
 			lignes += "**"+(i+1)+"** Solution de distance "+nb_while_solutions.get(i)+" ";
-			lignes += "obtenu au bout de "+time_solutions.get(i)+ " mms";
+			lignes += "obtenu au bout de "+time_solutions.get(i)+ " ms ";
 			lignes += "et apres "+cost_solutions.get(i)+" tours de boucle\n";
 		}
 	}
