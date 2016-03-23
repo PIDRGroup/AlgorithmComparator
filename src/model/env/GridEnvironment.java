@@ -1,9 +1,11 @@
 package model.env;
 
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Queue;
 
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 
 import view.PointCloud;
 
@@ -105,26 +107,25 @@ public class GridEnvironment extends Environment{
 		}
 	}
 	
-	public static void testGraphic(){
+	public static void testGraphic() throws UnknownPlaceException{
 		
 		System.out.println("===== Test graphique de génération de grille =====");
 		
-		Seed seed = new Seed(System.nanoTime(), 100, 2, 0, 6000);
-		try {
-			GridEnvironment ge = new GridEnvironment(seed);
-			System.out.println(ge.size());
-			PointCloud pc = new PointCloud(ge, 1000, 1000);
-			JFrame jf = new JFrame("Test grille");
-			jf.setContentPane(pc);
-			jf.pack();
-			jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			jf.setVisible(true);
-			System.out.println(ge);
-			System.out.println(ge.size());
-			System.out.println(seed.getDimMax());
-		} catch (UnknownPlaceException e) {
-			e.printStackTrace();
-		}
+		int size = 600;
+		Seed seed = new Seed(System.nanoTime(), 100, 2, 0, size);
+		GridEnvironment ge = new GridEnvironment(seed);
+		System.out.println(ge.size());
+		PointCloud pc = new PointCloud(ge, size, size);
+		JFrame jf = new JFrame("Test grille");
+		JScrollPane jsp = new JScrollPane(pc);
+		jsp.setPreferredSize(new Dimension(600, 600));
+		jf.setContentPane(jsp);
+		jf.pack();
+		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		jf.setVisible(true);
+		System.out.println(ge);
+		System.out.println(ge.size());
+		System.out.println(seed.getDimMax());
 	}
 	
 	public static void testConsole() throws UnknownPlaceException{
@@ -165,6 +166,7 @@ public class GridEnvironment extends Environment{
 		if(args.length == 0){
 			try {
 				testConsole();
+				//testGraphic();
 			} catch (UnknownPlaceException e) {
 				e.printStackTrace();
 			}
@@ -173,7 +175,11 @@ public class GridEnvironment extends Environment{
 		
 		switch (args[1]) {
 			case "graphenv":
+			try {
 				testGraphic();
+			} catch (UnknownPlaceException e1) {
+				e1.printStackTrace();
+			}
 				break;
 				
 			case "consenv":
