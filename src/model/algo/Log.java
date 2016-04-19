@@ -1,7 +1,7 @@
 package model.algo;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.io.*;
+import java.util.*;
 
 public class Log {
 	String name_algo;
@@ -22,6 +22,18 @@ public class Log {
 			lignes += "obtenu au bout de "+time_solutions.get(i)+ " ms ";
 			lignes += "et apres "+cost_solutions.get(i)+" tours de boucle\n";
 		}
+	}
+	
+	/**
+	 * Rajoute le log à la fin du fichier dont le chemin est passé en paramètre.
+	 * @param path : chemin
+	 * @throws IOException 
+	 */
+	public void write(String path) throws IOException{
+		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(path)));
+		bw.newLine();
+		bw.write(this.lignes);
+		bw.close();
 	}
 	
 	@Override

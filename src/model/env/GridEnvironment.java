@@ -22,7 +22,7 @@ public class GridEnvironment extends Environment{
 		seed.setType(TypeSeed.GRID);
 		
 		int size = s.getDimMax() - s.getDimMin();
-		int dist_between_2_points = (int) Math.ceil(size / (double) (s.getNbPlaces()-2));
+		int dist_between_2_points = (int) Math.ceil(size / (double) (s.nbPlaces()[0]-2));
 		
 		
 		//S'il y a un problème d'arrondi, on replace la borne max afin de supprimer l'espace en trop
@@ -37,74 +37,130 @@ public class GridEnvironment extends Environment{
 		 * La condition d'arrêt correspond au dépassement de l'espace du problème.
 		 */
 		//On crée la place originelle
-		ArrayList<Long> coordinates = new ArrayList<Long>();
-		for (int i = 0; i < s.getNbDim(); i++) coordinates.add((long) s.getDimMin());
-		Place origin = new Place(coordinates);
+		int[] coord = new int[s.getNbDim()];
+		for (int i = 0; i < coord.length; i++) coord[i] = s.getDimMin();
 		
-		graph.addKey(origin);
-		grow(origin, s, dist_between_2_points);
+		//On ajoute les places
+		grow(s, dist_between_2_points, 0, coord, 0);
+		
+		//On ajoute les liens
+		links(s.getNbDim());
 	}
 	
-	public void grow(Place p, Seed s, int distance) throws UnknownPlaceException{
+	public void links(int nb_dim) throws UnknownPlaceException{
+		ArrayList<Place> places = graph.keyList();
+		int[] size_dims = seed.nbPlaces();
 		
-		Place current;
-		
-		/* Pour chaque dimensions, on crée le voisin si celui-ci est dans les bornes.
-		Pour chaque dimensions, on a au plus deux voisins (un avant et un après)
-		Etant donné qu'on part du coin avec les coordonnées minorantes, on ne construit que le 
-		voisin d'après, celui d'avant est déjà créé. Par contre on crée */
-		ArrayList<Place> to_visit_queue = new ArrayList<Place>();
-		
-		to_visit_queue.add(0, p);
-		
-		while(!to_visit_queue.isEmpty()){
-			
-			current = to_visit_queue.get(to_visit_queue.size()-1);
-			
-			//On commence par créer l'ensemble des voisins du point courant et les lier
-			for (int i = 0; i < current.getCoordinates().length; i++) {
-						
-				//Pour la coordonnée courante, on va créer le voisin suivant et le précédent
-				int previous = current.getCoordinate(i) - distance;
-				int next = current.getCoordinate(i) + distance;
-				
-				//On vérifie que les coordonnées que l'on va créer font partie de l'environnement.
-				if(previous >= s.getDimMin()){
-					Place neigh = new Place(current.getCoordinates());
-					
-					//On change la seule coordonnée variable de la place
-					neigh.setCoordinate(i, previous);
-					
-					//Si la place n'est pas dans le graphe, on l'y ajoute et on la visitera (on ne l'a pas vu s'il n'est pas dans le graphe)
-					if(graph.indexOf(neigh) == -1){
-						graph.addKey(neigh);
-						if(degre(neigh) < seed.getNbDim() * 2)
-							to_visit_queue.add(0, neigh);
-					}
-					
-					//On crée le lien p --> previous (le lien previous --> p est créé par previous)
-					this.addLink(current, neigh);
+		//Pour chaque place
+		for (int i = 0; i < places.size(); i++) {
+			//Pour chaque coordonnée de la place, on chercher son successeur
+			Place current = places.get(i);
+			int ecart = 1;
+			for (int j = 0; j < size_dims.length; j++) {
+				if(i+ecart>=places.size())
+					break;
+				if((i + ecart) % size_dims[j] != 0 || ecart == size_dims[j]){
+					Place neighbor = places.get(i + ecart);
+					this.addLink(current, neighbor);
+					this.addLink(neighbor, current);
 				}
-				
-				if(next <= s.getDimMax()){
-					Place neigh = new Place(current.getCoordinates());
-					neigh.setCoordinate(i, next);
-					
-					//Si la place n'est pas dans le graphe, on l'y ajoute et on la visitera (on ne l'a pas vu s'il n'est pas dans le graphe)
-					if(graph.indexOf(neigh) == -1){
-						graph.addKey(neigh);
-						if(degre(neigh) < seed.getNbDim() * 2)
-							to_visit_queue.add(0, neigh);
-					}
-					
-					//On crée le lien p --> next (le lien next --> p est créé par next)
-					this.addLink(current, neigh);
-				}
+				ecart = ecart * size_dims[nb_dim- j - 1];
 			}
-			
-			//On le supprime des noeuds à visiter
-			to_visit_queue.remove(to_visit_queue.size()-1);
 		}
+	}
+	
+	public int grow(Seed s, int distance, int current_dim, int[] coords, int linked) throws UnknownPlaceException{
+		
+		int n = s.nbPlaces()[current_dim];
+		
+		if(current_dim < s.getNbDim() - 1){
+			for (int i = 0; i < n; i++) {
+				linked=grow(s, distance, current_dim+1, coords, linked);
+				coords[current_dim] += distance;
+			}
+			coords[current_dim] = s.getDimMin(); //on réinitialise la dimension courante
+			return linked;
+		}else{
+			int[] size_dims = seed.nbPlaces();
+			
+			for (int i = 0; i < n; i++) {
+				Place p = new Place(coords);
+				graph.addKey(p);
+//				linked++;
+//				
+//				int ecart = 0, j=0;
+//				while((linked - ecart - 1) >= 0){
+//					this.addLink(p, graph.keyList().get(linked - ecart - 1));
+//					this.addLink(graph.keyList().get(linked - ecart - 1), p);
+//					ecart = (ecart == 0) ? size_dims[s.getNbDim()- j - 1] : ecart * size_dims[s.getNbDim()- j - 1];
+//					j++;
+//				}
+				
+				coords[current_dim] += distance;
+			}
+			coords[current_dim] = s.getDimMin(); //on réinitialise la dimension courante
+			
+			return linked;
+		}
+		
+//		Place current;
+//		
+//		/* Pour chaque dimensions, on crée le voisin si celui-ci est dans les bornes.
+//		Pour chaque dimensions, on a au plus deux voisins (un avant et un après)
+//		Etant donné qu'on part du coin avec les coordonnées minorantes, on ne construit que le 
+//		voisin d'après, celui d'avant est déjà créé. Par contre on crée */
+//		ArrayList<Place> to_visit_queue = new ArrayList<Place>();
+//		
+//		to_visit_queue.add(0, p);
+//		
+//		while(!to_visit_queue.isEmpty()){
+//			
+//			current = to_visit_queue.get(to_visit_queue.size()-1);
+//			
+//			//On commence par créer l'ensemble des voisins du point courant et les lier
+//			for (int i = 0; i < current.getCoordinates().length; i++) {
+//						
+//				//Pour la coordonnée courante, on va créer le voisin suivant et le précédent
+//				int previous = current.getCoordinate(i) - distance;
+//				int next = current.getCoordinate(i) + distance;
+//				
+//				//On vérifie que les coordonnées que l'on va créer font partie de l'environnement.
+//				if(previous >= s.getDimMin()){
+//					Place neigh = new Place(current.getCoordinates());
+//					
+//					//On change la seule coordonnée variable de la place
+//					neigh.setCoordinate(i, previous);
+//					
+//					//Si la place n'est pas dans le graphe, on l'y ajoute et on la visitera (on ne l'a pas vu s'il n'est pas dans le graphe)
+//					if(graph.indexOf(neigh) == -1){
+//						graph.addKey(neigh);
+//						if(degre(neigh) < seed.getNbDim() * 2)
+//							to_visit_queue.add(0, neigh);
+//					}
+//					
+//					//On crée le lien p --> previous (le lien previous --> p est créé par previous)
+//					this.addLink(current, neigh);
+//				}
+//				
+//				if(next <= s.getDimMax()){
+//					Place neigh = new Place(current.getCoordinates());
+//					neigh.setCoordinate(i, next);
+//					
+//					//Si la place n'est pas dans le graphe, on l'y ajoute et on la visitera (on ne l'a pas vu s'il n'est pas dans le graphe)
+//					if(graph.indexOf(neigh) == -1){
+//						graph.addKey(neigh);
+//						if(degre(neigh) < seed.getNbDim() * 2)
+//							to_visit_queue.add(0, neigh);
+//					}
+//					
+//					//On crée le lien p --> next (le lien next --> p est créé par next)
+//					this.addLink(current, neigh);
+//				}
+//			}
+//			
+//			//On le supprime des noeuds à visiter
+//			to_visit_queue.remove(to_visit_queue.size()-1);
+//		}
 	}
 	
 	public static void testGraphic() throws UnknownPlaceException{
@@ -112,7 +168,7 @@ public class GridEnvironment extends Environment{
 		System.out.println("===== Test graphique de génération de grille =====");
 		
 		int size = 600;
-		Seed seed = new Seed(System.nanoTime(), new int[]{100}, 2, 0, size);
+		Seed seed = new Seed(System.nanoTime(), new int[]{10, 10}, 2, 0, size);
 		GridEnvironment ge = new GridEnvironment(seed);
 		System.out.println(ge.size());
 		PointCloud pc = new PointCloud(ge, size, size);
@@ -133,19 +189,20 @@ public class GridEnvironment extends Environment{
 		
 		ArrayList<Seed> seeds = new ArrayList<Seed>();
 		
-		//Graines d'environnement en 2D
-		seeds.add(new Seed(System.nanoTime(), new int[]{5}, 2, 0, 6000));
-		seeds.add(new Seed(System.nanoTime(), new int[]{10}, 2, 0, 6000));
-		seeds.add(new Seed(System.nanoTime(), new int[]{100}, 2, 0, 605043021));
-		//seeds.add(new Seed(System.nanoTime(), 1000, 2, 0, 100000));
-		
-		//Graines d'environnement en 3D
-		seeds.add(new Seed(System.nanoTime(), new int[]{5}, 3, 0, 6000));
-		seeds.add(new Seed(System.nanoTime(), new int[]{10}, 3, 0, 6000));
-		//seeds.add(new Seed(System.nanoTime(), 100, 3, 0, 6000));
-		
-		//Graines d'environnement en 10D
-		seeds.add(new Seed(System.nanoTime(), new int[]{5}, 5, 0, 6000));
+		//On fait varier le nombre de dimensions
+		ArrayList<Integer> dims = new ArrayList<Integer>();
+		for(int dim = 2; dim <= 5; dim++){
+			//On fait varier le nombre de points
+			while(dims.size() < dim) dims.add(0);
+			
+			for(int points = 10; points <= 100; points*=10){
+				//On crée des grilles régulières
+				for (int i = 0; i < dim; i++)dims.set(i, points);
+				
+				Seed s = new Seed(System.nanoTime(), dims, dim, -6000, 12000);
+				seeds.add(s);
+			}
+		}
 		
 		long time;
 		GridEnvironment ge;
@@ -166,7 +223,6 @@ public class GridEnvironment extends Environment{
 		if(args.length == 0){
 			try {
 				testConsole();
-				//testGraphic();
 			} catch (UnknownPlaceException e) {
 				e.printStackTrace();
 			}

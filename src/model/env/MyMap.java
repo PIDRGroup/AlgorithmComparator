@@ -24,19 +24,6 @@ public class MyMap<E, F> implements Serializable{
 		values = new ArrayList<ArrayList<F>>();
 	}
 	
-	public boolean containsKey(E key){
-		return keys.contains(key);
-	}
-	
-	/**
-	 * Supprime la clé et les valeurs associées
-	 * @param key
-	 */
-	public void remove(E key){
-		values.remove(keys.indexOf(key));
-		keys.remove(key);
-	}
-	
 	/**
 	 * Ajoute vala aux suivants de key.
 	 * L'objet key doit exister au préalable
@@ -58,15 +45,6 @@ public class MyMap<E, F> implements Serializable{
 	}
 	
 	/**
-	 * Supprime l'élément target des éléments associés à key
-	 * @param key
-	 * @param target
-	 */
-	public void remove(E key, F target){
-		values.get(keys.indexOf(key)).remove(target);
-	}
-	
-	/**
 	 * Renvoie la liste des clés.
 	 * @return
 	 */
@@ -83,27 +61,6 @@ public class MyMap<E, F> implements Serializable{
 	}
 	
 	/**
-	 * Réalise une copie en semi-profondeur de l'objet
-	 * @return
-	 */
-	public MyMap<E, F> dupplicate(){
-		MyMap<E, F> copy = new MyMap<E, F>();
-		
-		copy.keys = new ArrayList<E>();
-		copy.values = new ArrayList<ArrayList<F>>();
-		for(int i=0; i<keys.size(); i++){
-			copy.keys.add(keys.get(i));
-			copy.values.add(new ArrayList<F>());
-			
-			for(F val : values.get(i)){
-				copy.values.get(i).add(val);
-			}
-		}
-		
-		return copy;
-	}
-
-	/**
 	 * Retourne l'index de l'élément dans la liste des clés.
 	 * -1 si l'élément n'est pas présent
 	 * @return
@@ -111,5 +68,4 @@ public class MyMap<E, F> implements Serializable{
 	public int indexOf(E key){
 		return keys.indexOf(key);
 	}
-	
 }

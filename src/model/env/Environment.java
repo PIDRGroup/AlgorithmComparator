@@ -11,39 +11,6 @@ public abstract class Environment extends Observable implements Serializable{
 	 */
 	protected MyMap<Place, Place> graph;
 	protected Seed seed;
-
-	/**
-	 * Méthode pour supprimer une place par sa position.
-	 * Supprime aussi tous les liens avec les autres places.
-	 * 
-	 * @param positions Coordonnées de la place à supprimer
-	 * @throws UnknownPlaceException Si l'indice n'appartient pas à la matrice
-	 */
-	public void delete(int... positions) throws UnknownPlaceException{
-		Place target = new Place(positions);
-		this.delete(target);
-	}
-	
-	/**
-	 * Méthode pour supprimer une place par sa position.
-	 * Supprime aussi tous les liens avec les autres places.
-	 * 
-	 * @param target Place à supprimer
-	 * @throws UnknownPlaceException
-	 */
-	public void delete(Place target) throws UnknownPlaceException{
-		
-		if(!graph.containsKey(target))
-			throw new UnknownPlaceException(target);
-		
-		//On supprime la place du graphe
-		graph.remove(target);
-		
-		//On supprime les liens de la place
-		for(Place key : graph.keyList()){
-			graph.remove(key, target);
-		}
-	}
 	
 	/**
 	 * Méthode pour créer un lien entre uen source et une destination
@@ -53,13 +20,7 @@ public abstract class Environment extends Observable implements Serializable{
 	 * @param dest Place destination
 	 * @throws UnknownPlaceException 
 	 */
-	public void addLink(Place src, Place dest) throws UnknownPlaceException{
-		if(!graph.containsKey(src))
-			throw new UnknownPlaceException(src);
-		
-		if(!graph.containsKey(dest))
-			throw new UnknownPlaceException(dest);
-				
+	public void addLink(Place src, Place dest){	
 		graph.put(src, dest);
 	}
 	
@@ -76,13 +37,7 @@ public abstract class Environment extends Observable implements Serializable{
 	 * @return Poids du lien (distance entre les deux places)
 	 * @throws UnknownPlaceException Si les places n'appartiennent pas au graph
 	 */
-	public double get(Place src, Place dest) throws UnknownPlaceException{
-		if(!graph.containsKey(src))
-			throw new UnknownPlaceException(src);
-		
-		if(!graph.containsKey(dest))
-			throw new UnknownPlaceException(dest);
-		
+	public double get(Place src, Place dest) throws UnknownPlaceException{		
 		//Si val vaut null, la distance est infinie
 		ArrayList<Place> l = graph.valueList(src);
 		

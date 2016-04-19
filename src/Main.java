@@ -23,8 +23,8 @@ public class Main {
 				MainWindow.main(null);
 				break;
 				
-			case "--server":
-				System.out.println("Option non-implémentée");
+			case "--bench":
+				BenchmarkingView.main(null);
 				break;
 				
 			case "--test":
@@ -48,7 +48,7 @@ public class Main {
 	}
 	
 	public static void usage(){
-		System.err.println("Usage : java -jar AlgorithmComparator [--console | --view | --server | --test [graphenv | consenv] ]");
+		System.err.println("Usage : java -jar AlgorithmComparator [--console | --view | --bench | --test [graphenv | consenv] ]");
 		System.exit(1);
 	}
 }

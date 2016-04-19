@@ -148,8 +148,24 @@ public class ConsoleView {
 			System.out.println("================== LANCEMENT DE L'EXPERIENCE ! ==================");
 			exp.launch();
 			
-			for(Algorithm algo : exp.getAlgos())
-				System.out.println(algo.getEval());
+			System.out.print("Voulez-vous sauvegarder les logs ? [o-n] : ");
+			read = "";
+			while(!read.equals("o") && !read.equals("n")){
+				read = sc.nextLine();
+				if(!read.equals("o") && !read.equals("n"))
+					System.err.println("Mauvaise entrée. Recommencez.");
+			}
+			
+			if(read.equals("o")){
+				System.out.print("Entrez le chemin du fichier à écrire : ");
+				read = sc.nextLine();
+				
+				Log log;
+				for(Algorithm algo : exp.getAlgos()){
+					log = new Log(algo);
+					log.write(read);
+				}
+			}
 			
 			/* ********* Enfin on demande à l'utilisateur s'il veut recommencer ********* */
 			

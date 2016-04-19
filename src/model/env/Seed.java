@@ -30,7 +30,18 @@ public class Seed {
 		this.dim_min = dim_min;
 		this.dim_max = dim_max;
 		generator = new Random(seed);
-		nb_places = nbPlaces;
+		nb_places = new int[nbPlaces.length];
+		for (int i = 0; i < nbPlaces.length; i++) nb_places[i] = nbPlaces[i];
+	}
+	
+	public Seed(long s, ArrayList<Integer> nbPlaces, int nb_dim, int dim_min, int dim_max){
+		seed = s;
+		this.nb_dim = nb_dim;
+		this.dim_min = dim_min;
+		this.dim_max = dim_max;
+		generator = new Random(seed);
+		nb_places = new int[nbPlaces.size()];
+		for (int i = 0; i < nbPlaces.size(); i++) nb_places[i] = nbPlaces.get(i);
 	}
 
 	public void save(String path) throws IOException{
