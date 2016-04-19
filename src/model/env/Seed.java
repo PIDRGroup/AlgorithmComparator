@@ -7,7 +7,7 @@ import java.util.Random;
 public class Seed {
 	private long seed;
 	private Random generator;
-	private int nb_places;
+	private int nb_places[];
 	private int nb_dim;
 	private int dim_min, dim_max;
 	
@@ -17,14 +17,14 @@ public class Seed {
 	public Seed(){
 		seed = System.nanoTime();
 		generator = new Random(seed);
-		nb_places =  1000;
+		nb_places =  new int[]{1000};
 		nb_dim = 2;
 		dim_min = 0;
 		dim_max = 600;
 		type = TypeSeed.GRID;
 	}
 	
-	public Seed(long s, int nbPlaces, int nb_dim, int dim_min, int dim_max){
+	public Seed(long s, int nbPlaces[], int nb_dim, int dim_min, int dim_max){
 		seed = s;
 		this.nb_dim = nb_dim;
 		this.dim_min = dim_min;
@@ -55,7 +55,11 @@ public class Seed {
 					break;
 					
 				case "places":
-					s.setNbPlaces(Integer.parseInt(els[1]));
+					String[] dim_string = els[1].split(";");
+					int dims[] = new int[dim_string.length];
+					for (int i = 0; i < dims.length; i++) dims[i] = Integer.parseInt(dim_string[i]);
+					
+					s.setNbPlaces(dims);
 					break;
 					
 				case "dimensions":
@@ -82,12 +86,21 @@ public class Seed {
 	}
 	
 	public void isComplete() throws UnknownParameterException, InvalidNumberParametersException, IllegalParametersException{
-		if(seed == 0 || nb_places == 0 || nb_dim == 0){
+		if(seed == 0 || nb_dim == 0){
 			throw new InvalidNumberParametersException();
 		}
 		
-		if(seed < 0 || nb_places < 0 || nb_dim < 0 || dim_max < dim_min){
+		if(seed < 0  || nb_dim < 0 || dim_max < dim_min){
 			throw new IllegalParametersException();
+		}
+		
+		for (int i = 0; i < nb_places.length; i++) {
+			if(nb_places[i] == 0)
+				throw new InvalidNumberParametersException();
+			
+			if(nb_places[i] < 0){
+				throw new IllegalParametersException();
+			}
 		}
 		
 		generator = new Random(seed);
@@ -111,12 +124,18 @@ public class Seed {
 		return places.get(i);
 	}
 	
-	public int nbPlaces(){
+	public int[] nbPlaces(){
 		return nb_places;
 	}
 	
 	public String toString(){
-		return "seed="+seed+"\nplaces="+nb_places+"\ndimensions="+nb_dim+"\nmin="+dim_min+"\nmax="+dim_max+"\n";
+		String places = "";
+		for (int i = 0; i < nb_places.length; i++) places+=nb_places[i]+" ";
+		//On supprime le dernier ;
+		places = places.trim();
+		places = places.replaceAll(" ", ";");
+		
+		return "seed="+seed+"\nplaces="+places+"\ndimensions="+nb_dim+"\nmin="+dim_min+"\nmax="+dim_max+"\n";
 	}
 	
 	public long getSeed() {
@@ -128,10 +147,13 @@ public class Seed {
 	}
 
 	public int getNbPlaces() {
-		return nb_places;
+		int ret = 0;
+		for (int i = 0; i < nb_places.length; i++) ret+=nb_places[i];
+
+		return ret;
 	}
 
-	public void setNbPlaces(int nb_places) {
+	public void setNbPlaces(int[] nb_places) {
 		this.nb_places = nb_places;
 	}
 

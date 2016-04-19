@@ -112,7 +112,7 @@ public class GridEnvironment extends Environment{
 		System.out.println("===== Test graphique de génération de grille =====");
 		
 		int size = 600;
-		Seed seed = new Seed(System.nanoTime(), 100, 2, 0, size);
+		Seed seed = new Seed(System.nanoTime(), new int[]{100}, 2, 0, size);
 		GridEnvironment ge = new GridEnvironment(seed);
 		System.out.println(ge.size());
 		PointCloud pc = new PointCloud(ge, size, size);
@@ -134,18 +134,18 @@ public class GridEnvironment extends Environment{
 		ArrayList<Seed> seeds = new ArrayList<Seed>();
 		
 		//Graines d'environnement en 2D
-		seeds.add(new Seed(System.nanoTime(), 5, 2, 0, 6000));
-		seeds.add(new Seed(System.nanoTime(), 10, 2, 0, 6000));
-		seeds.add(new Seed(System.nanoTime(), 100, 2, 0, 605043021));
+		seeds.add(new Seed(System.nanoTime(), new int[]{5}, 2, 0, 6000));
+		seeds.add(new Seed(System.nanoTime(), new int[]{10}, 2, 0, 6000));
+		seeds.add(new Seed(System.nanoTime(), new int[]{100}, 2, 0, 605043021));
 		//seeds.add(new Seed(System.nanoTime(), 1000, 2, 0, 100000));
 		
 		//Graines d'environnement en 3D
-		seeds.add(new Seed(System.nanoTime(), 5, 3, 0, 6000));
-		seeds.add(new Seed(System.nanoTime(), 10, 3, 0, 6000));
+		seeds.add(new Seed(System.nanoTime(), new int[]{5}, 3, 0, 6000));
+		seeds.add(new Seed(System.nanoTime(), new int[]{10}, 3, 0, 6000));
 		//seeds.add(new Seed(System.nanoTime(), 100, 3, 0, 6000));
 		
 		//Graines d'environnement en 10D
-		seeds.add(new Seed(System.nanoTime(), 5, 5, 0, 6000));
+		seeds.add(new Seed(System.nanoTime(), new int[]{5}, 5, 0, 6000));
 		
 		long time;
 		GridEnvironment ge;

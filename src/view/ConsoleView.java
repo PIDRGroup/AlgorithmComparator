@@ -58,12 +58,38 @@ public class ConsoleView {
 				retour = -1;
 				System.out.println("================== Création d'un environnement ==================");
 				int type = submenu("Quel type de graphe désirez-vous créer ?", "Une grille", "Un graphe aléatoire");
-				int nb_places = getField("Nombre de places", 2);
 				int nb_dim = getField("Nombre de dimensions", 2);
+				System.out.print("  - Les dimensions sont-elles régulières ? [o-n] : ");
+				String r = sc.nextLine();
+				while (!r.equals("o") && !r.equals("n")){
+					System.out.println();
+					System.out.print("Mauvaise entrée. Entrez o (oui) ou n (non) : ");
+					r = sc.nextLine();
+				}
+				
+				int dimensions[] = new int[nb_dim];
+				
+				boolean regulier = r.equals("o");
+				int nb_places;
+				if(regulier){
+					nb_places = getField("Nombre de places", 2);
+					
+					for(int i=0; i<nb_dim; i++){
+						dimensions[i] = nb_places;
+					}
+				}else{
+					
+					for(int i=0; i<nb_dim; i++){
+						nb_places = getField("Nombre de places de la dimension "+i, 2);
+						dimensions[i] = nb_places;
+					}
+					
+				}
+				
 				int dim_inf = getField("Borne inf des dimensions", -Integer.MAX_VALUE);
 				int dim_sup = getField("Borne sup des dimensions", dim_inf);
 				
-				Seed s = new Seed(System.nanoTime(), nb_places, nb_dim, dim_inf, dim_sup);
+				Seed s = new Seed(System.nanoTime(), dimensions, nb_dim, dim_inf, dim_sup);
 				
 				if(type == 1){
 					env = new GridEnvironment(s);
