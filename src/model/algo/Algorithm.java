@@ -32,4 +32,8 @@ public abstract class Algorithm extends Observable implements Serializable{
 	public boolean equals(Object o){
 		return this.getName().equals(((Algorithm)o).getName());
 	}
+	
+	public void clearEval(){
+		eval = new Evaluation();
+	}
 }

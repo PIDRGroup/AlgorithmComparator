@@ -2,7 +2,6 @@ package model.env;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
-import java.util.Queue;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -81,7 +80,6 @@ public class GridEnvironment extends Environment{
 			coords[current_dim] = s.getDimMin(); //on réinitialise la dimension courante
 			return linked;
 		}else{
-			int[] size_dims = seed.nbPlaces();
 			
 			for (int i = 0; i < n; i++) {
 				Place p = new Place(coords);
@@ -191,7 +189,7 @@ public class GridEnvironment extends Environment{
 		
 		//On fait varier le nombre de dimensions
 		ArrayList<Integer> dims = new ArrayList<Integer>();
-		for(int dim = 2; dim <= 5; dim++){
+		for(int dim = 2; dim <= 3; dim++){
 			//On fait varier le nombre de points
 			while(dims.size() < dim) dims.add(0);
 			
@@ -203,6 +201,9 @@ public class GridEnvironment extends Environment{
 				seeds.add(s);
 			}
 		}
+		
+		seeds.remove(seeds.size()-1);
+		seeds.add(new Seed(System.nanoTime(), new int[]{100, 1000}, 2, -6000, 12000));
 		
 		long time;
 		GridEnvironment ge;

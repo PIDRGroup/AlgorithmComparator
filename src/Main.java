@@ -5,7 +5,7 @@ import model.env.UnknownPlaceException;
 import view.*;
 
 public class Main {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws UnknownPlaceException, IOException {
 		if(args.length != 1 && args.length != 2){
 			usage();
 		}
@@ -24,7 +24,7 @@ public class Main {
 				break;
 				
 			case "--bench":
-				BenchmarkingView.main(null);
+				BenchmarkingView.main(args);
 				break;
 				
 			case "--test":
@@ -48,7 +48,7 @@ public class Main {
 	}
 	
 	public static void usage(){
-		System.err.println("Usage : java -jar AlgorithmComparator [--console | --view | --bench | --test [graphenv | consenv] ]");
+		System.err.println("Usage : java -jar AlgorithmComparator [--console | --view | --bench [all] | --test [graphenv | consenv] ]");
 		System.exit(1);
 	}
 }

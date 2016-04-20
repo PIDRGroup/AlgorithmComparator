@@ -1,7 +1,12 @@
 package model.algo;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.*;
+
+import model.env.Environment;
 
 public class Log {
 	String name_algo;
@@ -16,11 +21,30 @@ public class Log {
 		ArrayList<Double> cost_solutions = eval.getCostSolutions();
 		ArrayList<Long> time_solutions = eval.getTimeSolutions();
 		
-		this.lignes = this.name_algo+" a fournit "+ eval.getNbSolution()+" resultats:\n";
+		this.lignes = this.name_algo.toUpperCase()+":\n";
+		
 		for (int i =0 ; i < eval.getNbSolution(); i++){
-			lignes += "**"+(i+1)+"** Solution de distance "+nb_while_solutions.get(i)+" ";
-			lignes += "obtenu au bout de "+time_solutions.get(i)+ " ms ";
-			lignes += "et apres "+cost_solutions.get(i)+" tours de boucle\n";
+			lignes += "**"+(i+1)+"** dist="+nb_while_solutions.get(i)+", ";
+			lignes += "t="+time_solutions.get(i)+ " ms, ";
+			lignes += "nb_boucles="+cost_solutions.get(i)+"\n";
+		}
+	}
+	
+	public Log(Algorithm algo, Environment env){
+		this.name_algo = algo.getName();
+		this.eval = algo.getEval();
+		
+		ArrayList<Integer> nb_while_solutions = eval.getNbWhileSolutions();
+		ArrayList<Double> cost_solutions = eval.getCostSolutions();
+		ArrayList<Long> time_solutions = eval.getTimeSolutions();
+		
+		this.lignes = this.name_algo.toUpperCase()+":\n";
+		this.lignes+="N="+env.size()+", dim="+env.nbDim()+"\n";
+		
+		for (int i =0 ; i < eval.getNbSolution(); i++){
+			lignes += "**"+(i+1)+"** dist="+nb_while_solutions.get(i)+", ";
+			lignes += "t="+time_solutions.get(i)+ " ms, ";
+			lignes += "nb_boucles="+cost_solutions.get(i)+"\n";
 		}
 	}
 	
@@ -30,10 +54,7 @@ public class Log {
 	 * @throws IOException 
 	 */
 	public void write(String path) throws IOException{
-		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(path)));
-		bw.newLine();
-		bw.write(this.lignes);
-		bw.close();
+		Files.write(Paths.get(path), this.lignes.getBytes(), StandardOpenOption.APPEND);
 	}
 	
 	@Override

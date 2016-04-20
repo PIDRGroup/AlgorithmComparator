@@ -48,6 +48,18 @@ public class Experience implements Serializable{
 		this.algos = new ArrayList<Algorithm>();
 	}
 	
+	public Experience(String name, String date){
+		this.name=name;
+		this.date=date;
+		this.algos = new ArrayList<Algorithm>();
+	}
+	
+	public void setEnv(Environment e){
+		env=e;
+		source=e.alea();
+		dest=e.alea();
+	}
+	
 	public void addAlgo(Algorithm a){
 		if(!algos.contains(a))
 			algos.add(a);
