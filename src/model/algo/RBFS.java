@@ -28,29 +28,41 @@ public class RBFS extends Algorithm{
 		if(!world.isPlace(destination))
 			throw new UnknownPlaceException(destination);
 		
-		
 		ArrayList<Node> noeud = new ArrayList<Node>();
+		Node current;
+		Node sourcenode = null;
 		
 		for (int i = 0; i < world.size(); i++){
-			noeud.add(new Node(world.getByIndex(i),Double.MAX_VALUE,null));
+			
+			if (this.world.getByIndex(i).equals(source)){
+				current = new Node(world.getByIndex(i),h(source),null);
+				current.setG(0);
+				sourcenode = current;
+			}else{
+				current = new Node(world.getByIndex(i),world.get(source, world.getByIndex(i)),null);
+			}	
+				noeud.add(current);
 		}
+		
+		eval.start();
+		recursive_BFS(noeud, sourcenode, Double.MAX_VALUE);
 		
 	}
 	
 	public Double recursive_BFS(ArrayList<Node> noeud, Node current, double f_limit){
-		
+				
 		if (current.getstat() == destination){
+			
+			eval.gotASolution(0.0);
+			
 			return current.getpathcost();
 		}
 		
-		
 		ArrayList<Node> successors = new ArrayList<Node>();
-		
-		double dist;
 		
 		for (int i = 0; i < noeud.size(); i++){
 			try {
-				if((dist = world.get(current.getstat(), noeud.get(i).getstat())) < Integer.MAX_VALUE){
+				if(world.get(current.getstat(), noeud.get(i).getstat()) < Double.MAX_VALUE){
 					successors.add(noeud.get(i));
 				}
 			} catch (UnknownPlaceException e) {
@@ -71,7 +83,6 @@ public class RBFS extends Algorithm{
 				successors.get(i).setG(current.getG()+world.get(current.getstat(), successors.get(i).getstat()));
 				successors.get(i).setpathcost(successors.get(i).getG()+h(successors.get(i).getstat()));
 			} catch (UnknownPlaceException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -86,18 +97,22 @@ public class RBFS extends Algorithm{
 			
 			for (int i = 0; i < 2; i ++){
 				
-				currentsize =successors.size();
+				currentsize = successors.size();
 				
 				for (int j = 0; j < currentsize; j++){
 					if (successors.get(i).getpathcost() < min){
 						current_best = successors.get(i);
 						min = successors.get(i).getpathcost();
 					}
-				}
-				
+					
+				}				
 				sortednode.add(current_best);
+				
 				successors.remove(current_best);
+				
 			}
+			
+			
 			
 			if (sortednode.get(0).getpathcost() > f_limit) return null;
 			
@@ -109,7 +124,7 @@ public class RBFS extends Algorithm{
 	}
 
 	public double h(Place current){
-		return 0;
+		return current.distanceEuclidienne(this.destination);
 	}
 	
 	@Override

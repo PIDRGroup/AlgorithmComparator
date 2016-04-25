@@ -8,6 +8,7 @@ import model.env.Place;
 import model.env.UnknownPlaceException;
 
 public class AStar extends Algorithm{
+	Place dest;
 	
 	public AStar(){
 		path = new ArrayList<Place>();
@@ -23,6 +24,8 @@ public class AStar extends Algorithm{
 		if(!world.isPlace(dest))
 			throw new UnknownPlaceException(dest);
 		
+		this.dest = dest;
+		
 		eval.start();
 		
 		ArrayList<Node> noeudouvert = new ArrayList<Node>();
@@ -31,6 +34,7 @@ public class AStar extends Algorithm{
 		
 		source.setG(0.0);
 		noeudouvert.add(source);
+		this.eval.newNoeudEnvisage();
 		
 		HashMap<Node,Node> predecesseur = new HashMap<Node,Node>();
 		
@@ -44,8 +48,6 @@ public class AStar extends Algorithm{
 		}
 		
 		while (!noeudouvert.isEmpty()){
-			
-			eval.newWhile();
 			
 			double min = Double.MAX_VALUE;
 			Node current = null;
@@ -72,7 +74,6 @@ public class AStar extends Algorithm{
 				while (predecesseur.containsKey(current)){
 					current = predecesseur.get(current);
 					path.add(current.getstat());
-					cost += current.getpathcost();
 				}
 				
 				eval.gotASolution(cost);
@@ -90,10 +91,10 @@ public class AStar extends Algorithm{
 					if (noeudferme.contains(noeud.get(i))){
 						continue;
 					}
-					
 					dist = current.getG() + world.get(current.getstat(), noeud.get(i).getstat());
 					if (!noeudouvert.contains(noeud.get(i))){
 						noeudouvert.add(noeud.get(i));
+						this.eval.newNoeudEnvisage();
 					}else if (dist >= noeud.get(i).getG()){
 						continue;
 					}
@@ -111,7 +112,7 @@ public class AStar extends Algorithm{
 	}
 	
 	private double h(Place current){
-		return 0;
+		return current.distanceEuclidienne(this.dest);
 	}
 
 	@Override

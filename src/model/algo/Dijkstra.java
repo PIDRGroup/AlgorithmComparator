@@ -39,6 +39,7 @@ public class Dijkstra extends Algorithm{
 					//On initialise les noeuds adjacents à la src, par leur distance à la src
 				}
 				predecessor.add(world.indexOf(src));
+				this.eval.newNoeudEnvisage();
 				//On ajoute à chaque noeud comme prédécesseur, eux-mêmes
 			} catch (UnknownPlaceException e) {
 				System.out.println("Erreur dans le grow de Dijkstra: initialisation");
@@ -48,8 +49,6 @@ public class Dijkstra extends Algorithm{
 		
 		while(banlist.size() != world.size()){
 			// Tant que tous les noeuds n'ont pas été parcourus
-			
-			eval.newWhile();
 			
 			int min = Integer.MAX_VALUE;
 			int minnode = world.indexOf(dest);
@@ -64,9 +63,11 @@ public class Dijkstra extends Algorithm{
 			
 			//On indique qu'on l'a parcouru
 			banlist.add(minnode);
+			this.eval.newNoeudEnvisage();
+			
 			double newdistance;
 			
-			for (int i = 0; i < world.size() ; i++){
+			for (int i = 0; i < world.size(); i++){
 				try {
 					
 					//On fais une mise à jour de la distance à la source pour les noeuds connectés au noeud courant

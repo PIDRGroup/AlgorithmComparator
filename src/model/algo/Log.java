@@ -17,16 +17,23 @@ public class Log {
 		this.name_algo = algo.getName();
 		this.eval = algo.getEval();
 		
-		ArrayList<Integer> nb_while_solutions = eval.getNbWhileSolutions();
 		ArrayList<Double> cost_solutions = eval.getCostSolutions();
 		ArrayList<Long> time_solutions = eval.getTimeSolutions();
+		ArrayList<Integer> premiere_visite_solutions = eval.getPremiereVisiteSolutions();
+		ArrayList<Integer> visite_solutions = eval.getVisiteNoeudSolutions();
+		ArrayList<Integer> noeud_envisage_solutions = eval.getNoeudEnvisageSolutions();
 		
-		this.lignes = this.name_algo.toUpperCase()+":\n";
+		this.lignes = this.name_algo.toUpperCase()+": ";
+		this.lignes += "nb_total_1er_visite="+this.eval.getPremiereVisite()+", ";
+		this.lignes += "nb_total_visite="+this.eval.getVisiteNoeud()+", ";
+		this.lignes += "nb_total_noeud_env="+this.eval.getNoeudEnvisage()+"\n";
 		
 		for (int i =0 ; i < eval.getNbSolution(); i++){
-			lignes += "**"+(i+1)+"** dist="+nb_while_solutions.get(i)+", ";
-			lignes += "t="+time_solutions.get(i)+ " ms, ";
-			lignes += "nb_boucles="+cost_solutions.get(i)+"\n";
+			lignes += "**"+(i+1)+"** dist="+cost_solutions.get(i)+", ";
+			lignes += "t="+time_solutions.get(i)+ " ms\n";
+			lignes += "***** nb_1er_visite="+premiere_visite_solutions.get(i)+", ";
+			lignes += "nb_visite="+visite_solutions.get(i)+", "; 
+			lignes += "nb_noeud_env="+noeud_envisage_solutions.get(i)+"\n";
 		}
 	}
 	
@@ -34,22 +41,29 @@ public class Log {
 		this.name_algo = algo.getName();
 		this.eval = algo.getEval();
 		
-		ArrayList<Integer> nb_while_solutions = eval.getNbWhileSolutions();
 		ArrayList<Double> cost_solutions = eval.getCostSolutions();
 		ArrayList<Long> time_solutions = eval.getTimeSolutions();
+		ArrayList<Integer> premiere_visite_solutions = eval.getPremiereVisiteSolutions();
+		ArrayList<Integer> visite_solutions = eval.getVisiteNoeudSolutions();
+		ArrayList<Integer> noeud_envisage_solutions = eval.getNoeudEnvisageSolutions();
 		
 		this.lignes = this.name_algo.toUpperCase()+":\n";
+		this.lignes += "nb_total_1er_visite="+this.eval.getPremiereVisite()+"\n";
+		this.lignes += "nb_total_visite="+this.eval.getVisiteNoeud()+"\n";
+		this.lignes += "nb_total_noeud_env="+this.eval.getNoeudEnvisage()+"\n";
 		this.lignes+="N="+env.size()+", dim="+env.nbDim()+"\n";
 		
 		for (int i =0 ; i < eval.getNbSolution(); i++){
-			lignes += "**"+(i+1)+"** dist="+nb_while_solutions.get(i)+", ";
-			lignes += "t="+time_solutions.get(i)+ " ms, ";
-			lignes += "nb_boucles="+cost_solutions.get(i)+"\n";
+			lignes += "**"+(i+1)+"** dist="+cost_solutions.get(i)+", ";
+			lignes += "t="+time_solutions.get(i)+ " ms\n";
+			lignes += "***** nb_1er_visite="+premiere_visite_solutions.get(i)+", ";
+			lignes += "nb_visite="+visite_solutions.get(i)+", "; 
+			lignes += "nb_noeud_env="+noeud_envisage_solutions.get(i)+"\n";
 		}
 	}
 	
 	/**
-	 * Rajoute le log à la fin du fichier dont le chemin est passé en paramètre.
+	 * Rajoute le log ï¿½ la fin du fichier dont le chemin est passï¿½ en paramï¿½tre.
 	 * @param path : chemin
 	 * @throws IOException 
 	 */

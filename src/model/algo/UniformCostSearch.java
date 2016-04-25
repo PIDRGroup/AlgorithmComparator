@@ -25,8 +25,6 @@ public class UniformCostSearch extends Algorithm{
 		
 		while(true){
 			
-			eval.newWhile();
-			
 			if (frontiere.isEmpty()){
 				System.out.println("Frontière vide: Aucune solution n'a été trouvée");
 				break;
@@ -56,6 +54,8 @@ public class UniformCostSearch extends Algorithm{
 			frontiere=buffer;
 			Node currentnode=frontiere.get(0);
 			
+			System.out.println(frontiere.get(0).getstat());
+			
 			if (currentnode.getstat() == destination){
 				
 				path.add(destination);
@@ -76,9 +76,18 @@ public class UniformCostSearch extends Algorithm{
 			
 			for (int i = 0; i < world.size(); i++){
 				if((dist = world.get(currentnode.getstat(), world.getByIndex(i))) < Integer.MAX_VALUE){
-					double newpathcost = currentpathcost+dist;
 					
-					if (!(exploration.contains(i)||frontiere.contains(i))){
+					double newpathcost = currentpathcost+dist;
+					boolean isInFrontiere = false;
+					
+					for (Node n : frontiere){
+						if (n.getstat().equals(world.getByIndex(i))){
+							isInFrontiere = true;
+							break;
+						}
+					}
+					
+					if (!(exploration.contains(i)||isInFrontiere)){
 						frontiere.add(new Node(world.getByIndex(i), newpathcost,currentsolvation));
 					}else{
 						for (int j = 0; j < frontiere.size(); j++){

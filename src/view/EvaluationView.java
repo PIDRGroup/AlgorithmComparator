@@ -107,7 +107,7 @@ class ResultView extends JPanel{
 	public ResultView(Environment env, Algorithm alg, Evaluation ev){
 		this.setLayout(new BorderLayout());
 		
-		label_execution_time = new JLabel(ev.getNbWhile()+" ex�cutions au total");
+		//label_execution_time = new JLabel(ev.getNbWhile()+" ex�cutions au total");
 		label_execution_to_best = new JLabel(ev.getTimeSolutions().get(ev.getTimeSolutions().size()-1)+" ex�cutions jusqu'au meilleur");
 		label_execution_to_first = new JLabel(ev.getTimeSolutions().get(0)+"ex�cutions jusqu'au premier");
 		label_nb_nodes = new JLabel(alg.getPath().size()+" noeuds dans le chemin");
