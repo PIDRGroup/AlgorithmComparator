@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
+import model.env.Place;
+
 public class Evaluation implements Serializable{
 	private int nb_solution;
 	private int premiere_visite_noeud;
@@ -11,10 +13,12 @@ public class Evaluation implements Serializable{
 	private int noeud_envisage;
 	private Date beginning;
 	private ArrayList<Double> cost_solutions;
+	private ArrayList<Integer> nb_noeud_solutions;
 	private ArrayList<Date> date_solutions; 
 	private ArrayList<Integer> premiere_visite_solutions;
 	private ArrayList<Integer> visite_noeud_solutions;
 	private ArrayList<Integer> noeud_visitee_solutions;
+	private ArrayList<Place> noeud_visite;
 	
 	public Evaluation() {
 		this.nb_solution = 0;
@@ -22,22 +26,23 @@ public class Evaluation implements Serializable{
 		this.visite_noeud = 0;
 		this.noeud_envisage = 0;
 		this.cost_solutions = new ArrayList<Double>();
+		this.nb_noeud_solutions = new ArrayList<Integer>();
 		this.date_solutions = new ArrayList<Date>();
 		this.premiere_visite_solutions = new ArrayList<Integer>();
 		this.visite_noeud_solutions = new ArrayList<Integer>();
 		this.noeud_visitee_solutions = new ArrayList<Integer>();
+		this.noeud_visite = new ArrayList<Place>();
 	}
 	
 	public void start(){
 		this.beginning = new Date();
 	}
 	
-	public void newPremiereVisite(){
-		this.premiere_visite_noeud++;
-		this.newVisite();
-	}
-	
-	public void newVisite(){
+	public void newVisite(Place place){
+		if (!this.noeud_visite.contains(place)){
+			this.premiere_visite_noeud++;
+			this.noeud_visite.add(place);
+		}		
 		this.visite_noeud++;
 	}
 	
@@ -45,9 +50,10 @@ public class Evaluation implements Serializable{
 		this.noeud_envisage++;
 	}
 	
-	public void gotASolution(Double costnewpath){
+	public void gotASolution(Double costnewpath, Integer nbnoeud){
 		this.nb_solution++;
 		this.cost_solutions.add(costnewpath);
+		this.nb_noeud_solutions.add(nbnoeud);
 		this.date_solutions.add(new Date());
 		this.premiere_visite_solutions.add(this.premiere_visite_noeud);
 		this.visite_noeud_solutions.add(this.visite_noeud);
@@ -76,6 +82,10 @@ public class Evaluation implements Serializable{
 	
 	public ArrayList<Double> getCostSolutions(){
 		return this.cost_solutions;
+	}
+	
+	public ArrayList<Integer> getNbNoeudSolutions(){
+		return this.nb_noeud_solutions;
 	}
 	
 	public ArrayList<Date> getDateSolutions(){

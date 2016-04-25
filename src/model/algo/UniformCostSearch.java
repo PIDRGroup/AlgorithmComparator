@@ -37,7 +37,7 @@ public class UniformCostSearch extends Algorithm{
 			for (int i = 0; i < size; i++){
 				
 				Node node = new Node(null,0,null);
-				double min = Integer.MAX_VALUE;
+				double min = Double.MAX_VALUE;
 				
 				for (int j = 0; j < frontiere.size();j++ ){
 					if((dist = frontiere.get(j).getpathcost()) < min){
@@ -53,18 +53,20 @@ public class UniformCostSearch extends Algorithm{
 			
 			frontiere=buffer;
 			Node currentnode=frontiere.get(0);
+			frontiere.remove(0);
 			
-			System.out.println(frontiere.get(0).getstat());
+			//System.out.println(frontiere);
 			
 			if (currentnode.getstat() == destination){
 				
 				path.add(destination);
-				eval.gotASolution(currentnode.getpathcost());
 				
 				ArrayList<Node> solution = currentnode.getsolvation();
 				for (Node n: solution){
 					path.add(n.getstat());
 				}
+				
+				eval.gotASolution(currentnode.getpathcost(), path.size());
 				
 				break;
 			}
@@ -75,26 +77,25 @@ public class UniformCostSearch extends Algorithm{
 			currentsolvation.add(currentnode);
 			
 			for (int i = 0; i < world.size(); i++){
-				if((dist = world.get(currentnode.getstat(), world.getByIndex(i))) < Integer.MAX_VALUE){
+				if((dist = world.get(currentnode.getstat(), world.getByIndex(i))) < Double.MAX_VALUE){
 					
 					double newpathcost = currentpathcost+dist;
 					boolean isInFrontiere = false;
+					int indice = 0;
 					
-					for (Node n : frontiere){
-						if (n.getstat().equals(world.getByIndex(i))){
+					for (int j = 0; j < frontiere.size(); j++){
+						if (frontiere.get(j).getstat().equals(world.getByIndex(i))){
 							isInFrontiere = true;
+							indice = j;
 							break;
 						}
 					}
 					
 					if (!(exploration.contains(i)||isInFrontiere)){
 						frontiere.add(new Node(world.getByIndex(i), newpathcost,currentsolvation));
-					}else{
-						for (int j = 0; j < frontiere.size(); j++){
-							if (frontiere.get(j).isSuperior(new Node(world.getByIndex(i), newpathcost, null))){
-								frontiere.set(j,new Node(world.getByIndex(i),newpathcost,currentsolvation));
-							}
-						}
+					}else if(isInFrontiere && frontiere.get(indice).isSuperior(new Node(world.getByIndex(i), newpathcost, null))){
+						frontiere.set(indice,new Node(world.getByIndex(i),newpathcost,currentsolvation));
+						System.out.println("Je vais la");
 					}
 				}	
 			}

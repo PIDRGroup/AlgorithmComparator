@@ -6,15 +6,15 @@ import java.util.*;
 public abstract class Environment extends Observable implements Serializable{
 	
 	/**
-	 * Les places en clés correspondent à l'ensemble des places du graphe, 
+	 * Les places en clï¿½s correspondent ï¿½ l'ensemble des places du graphe, 
 	 * tandis que les places en valeur sont les successeurs de ces places.
 	 */
 	protected MyMap<Place, Place> graph;
 	protected Seed seed;
 	
 	/**
-	 * Méthode pour créer un lien entre uen source et une destination
-	 * passées en paramètres
+	 * Mï¿½thode pour crï¿½er un lien entre uen source et une destination
+	 * passï¿½es en paramï¿½tres
 	 * 
 	 * @param src Place source
 	 * @param dest Place destination
@@ -29,7 +29,7 @@ public abstract class Environment extends Observable implements Serializable{
 	}
 	
 	/**
-	 * Méthode pour récupérer la valeur d'un lien entre une source et une destination.
+	 * Mï¿½thode pour rï¿½cupï¿½rer la valeur d'un lien entre une source et une destination.
 	 * Si la valeur est de MAX_VALUE, alors le lien n'existe pas.
 	 * 
 	 * @param src Place source
@@ -52,14 +52,14 @@ public abstract class Environment extends Observable implements Serializable{
 			}
 		}
 		
-		val = (val == 0) ? Integer.MAX_VALUE : val;
+		val = (val == 0) ? Double.MAX_VALUE : val;
 		
 		return val;
 	}
 	
 	/**
 	 * Nombre de places.
-	 * Celle-ci étant forcément carrée, on ne renvoie qu'un entier.
+	 * Celle-ci ï¿½tant forcï¿½ment carrï¿½e, on ne renvoie qu'un entier.
 	 * 
 	 * @return Taille de la matrice.
 	 */
@@ -84,8 +84,8 @@ public abstract class Environment extends Observable implements Serializable{
 	}
 	
 	/**
-	 * Vérifie si une place fait partie de l'environnement
-	 * @param place Place à checker
+	 * Vï¿½rifie si une place fait partie de l'environnement
+	 * @param place Place ï¿½ checker
 	 * @return Vrai si la place existe, faux sinon
 	 */
 	public boolean isPlace(Place place){

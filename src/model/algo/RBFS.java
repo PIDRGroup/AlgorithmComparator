@@ -50,11 +50,9 @@ public class RBFS extends Algorithm{
 	}
 	
 	public Double recursive_BFS(ArrayList<Node> noeud, Node current, double f_limit){
-				
-		if (current.getstat() == destination){
-			
-			eval.gotASolution(0.0);
-			
+		
+		if (current.getstat() == destination){			
+			eval.gotASolution(0.0, 0);
 			return current.getpathcost();
 		}
 		

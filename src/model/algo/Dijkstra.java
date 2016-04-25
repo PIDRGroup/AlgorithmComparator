@@ -31,32 +31,33 @@ public class Dijkstra extends Algorithm{
 		
 		for (int i = 0; i < world.size(); i++){
 			try {
-				if ((dist = world.get(src, world.getByIndex(i))) < Integer.MAX_VALUE){
+				if ((dist = world.get(src, world.getByIndex(i))) < Double.MAX_VALUE){
 					distance.add(dist);
 					//On initialise les noeuds à une distance infini de la src
 				}else{
-					distance.add(new Double(Integer.MAX_VALUE));
+					distance.add(new Double(Double.MAX_VALUE));
 					//On initialise les noeuds adjacents à la src, par leur distance à la src
 				}
+				
 				predecessor.add(world.indexOf(src));
-				this.eval.newNoeudEnvisage();
 				//On ajoute à chaque noeud comme prédécesseur, eux-mêmes
+				
 			} catch (UnknownPlaceException e) {
 				System.out.println("Erreur dans le grow de Dijkstra: initialisation");
-				e.printStackTrace();
 			}
 		}
 		
 		while(banlist.size() != world.size()){
 			// Tant que tous les noeuds n'ont pas été parcourus
 			
-			int min = Integer.MAX_VALUE;
+			double min = Double.MAX_VALUE;
 			int minnode = world.indexOf(dest);
 			
 			//On cherche le noeud n'ont encore parcourus avec la plus petit distance à la src
 			for(int i = 0 ; i < world.size() ; i++){
-				if (!banlist.contains(i) && distance.get(i).intValue() < min){
-					min = distance.get(i).intValue();
+				if (!banlist.contains(i) && distance.get(i) < min){
+					eval.newVisite(world.getByIndex(i));
+					min = distance.get(i);
 					minnode = i;
 				}
 			}
@@ -72,6 +73,7 @@ public class Dijkstra extends Algorithm{
 					
 					//On fais une mise à jour de la distance à la source pour les noeuds connectés au noeud courant
 					if (!banlist.contains(i) && (newdistance = world.get(world.getByIndex(minnode), world.getByIndex(i))) < Integer.MAX_VALUE){
+						this.eval.newVisite(world.getByIndex(i));
 						newdistance += distance.get(minnode).intValue(); 
 						if (newdistance < distance.get(i).intValue()){
 							/*Si la distance à la source d'un noeud connecté change,
@@ -80,28 +82,31 @@ public class Dijkstra extends Algorithm{
 							*/
 							distance.set(i, newdistance);
 							predecessor.set(i, minnode);
+							
 							if(world.getByIndex(i).equals(dest)){
-								eval.gotASolution(newdistance);
+								
+								path.add(dest);
+								
+								int current = world.indexOf(dest);
+								
+								//On rétablit le plus court chemin jusqu'à la dest d'après la liste des prédécesseurs
+								while (!world.getByIndex(current).equals(src)){
+									int pred = predecessor.get(current);
+									path.add(world.getByIndex(pred));
+									current = pred;
+								}
+								eval.gotASolution(newdistance, path.size());
 							}
 						}
 					}
 				} catch (UnknownPlaceException e) {
 					System.out.println("Erreur dans le grow de Dijkstra: mise à jour des noeuds voisins");
-					e.printStackTrace();
+					break;
 				}
 			}
 		}
 	
-		path.add(dest);
 		
-		int current = world.indexOf(dest);
-		
-		//On rétablit le plus court chemin jusqu'à la dest d'après la liste des prédécesseurs
-		while (!world.getByIndex(current).equals(src)){
-			int pred = predecessor.get(current);
-			path.add(world.getByIndex(pred));
-			current = pred;
-		}
 		
 	}
 

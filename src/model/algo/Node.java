@@ -21,7 +21,7 @@ public class Node{
 	}
 	
 	public boolean isSuperior(Node noeud){
-		return this.getstat() == noeud.getstat() && this.getpathcost() < noeud.getpathcost();
+		return this.getpathcost() > noeud.getpathcost();
 	}
 
 	public Place getstat(){

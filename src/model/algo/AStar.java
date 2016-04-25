@@ -35,6 +35,7 @@ public class AStar extends Algorithm{
 		source.setG(0.0);
 		noeudouvert.add(source);
 		this.eval.newNoeudEnvisage();
+		this.eval.newVisite(src);
 		
 		HashMap<Node,Node> predecesseur = new HashMap<Node,Node>();
 		
@@ -55,6 +56,7 @@ public class AStar extends Algorithm{
 			for (int i = 0; i < noeud.size(); i++){
 				//On recherche le noeud n'appartenant pas au noeud ouvert tel que f est minimal
 				if (noeud.get(i).getpathcost() < min && noeudouvert.contains(noeud.get(i))){
+					this.eval.newVisite(noeud.get(i).getstat());
 					min = noeud.get(i).getpathcost();
 					current = noeud.get(i);
 				}
@@ -71,12 +73,13 @@ public class AStar extends Algorithm{
 				
 				path.add(current.getstat());
 				cost += current.getpathcost();
+				
 				while (predecesseur.containsKey(current)){
 					current = predecesseur.get(current);
 					path.add(current.getstat());
 				}
 				
-				eval.gotASolution(cost);
+				eval.gotASolution(cost, path.size());
 				
 				break;
 			}
@@ -87,6 +90,8 @@ public class AStar extends Algorithm{
 			
 			for (int i = 0; i < noeud.size(); i++){
 				if (world.get(current.getstat(), world.getByIndex(i)) < Integer.MAX_VALUE){
+					
+					this.eval.newVisite(world.getByIndex(i));
 					
 					if (noeudferme.contains(noeud.get(i))){
 						continue;

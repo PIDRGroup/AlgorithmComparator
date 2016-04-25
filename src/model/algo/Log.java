@@ -18,6 +18,7 @@ public class Log {
 		this.eval = algo.getEval();
 		
 		ArrayList<Double> cost_solutions = eval.getCostSolutions();
+		ArrayList<Integer> nb_noeud_solutions = eval.getNbNoeudSolutions();
 		ArrayList<Long> time_solutions = eval.getTimeSolutions();
 		ArrayList<Integer> premiere_visite_solutions = eval.getPremiereVisiteSolutions();
 		ArrayList<Integer> visite_solutions = eval.getVisiteNoeudSolutions();
@@ -30,6 +31,7 @@ public class Log {
 		
 		for (int i =0 ; i < eval.getNbSolution(); i++){
 			lignes += "**"+(i+1)+"** dist="+cost_solutions.get(i)+", ";
+			lignes += "noeud="+nb_noeud_solutions.get(i)+", ";
 			lignes += "t="+time_solutions.get(i)+ " ms\n";
 			lignes += "***** nb_1er_visite="+premiere_visite_solutions.get(i)+", ";
 			lignes += "nb_visite="+visite_solutions.get(i)+", "; 

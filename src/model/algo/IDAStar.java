@@ -10,13 +10,13 @@ public class IDAStar extends Algorithm{
 	
 	private Environment world;
 	private Place destination;
-	private ArrayList<Place> noeudvisitee;
+	private ArrayList<Place> noeudenvisage;
 	final int found = -1; 
 	
 	public IDAStar(){
 		path = new ArrayList<Place>();
 		eval = new Evaluation(); 
-		noeudvisitee = new ArrayList<Place>();
+		noeudenvisage = new ArrayList<Place>();
 	}
 
 	@Override
@@ -41,6 +41,7 @@ public class IDAStar extends Algorithm{
 			t = search(src, 0, bound);
 			if (t == found){
 				this.path.add(src);
+				this.eval.gotASolution(bound, path.size());
 				break;
 			}
 			if (t == Integer.MAX_VALUE) {
@@ -54,21 +55,18 @@ public class IDAStar extends Algorithm{
 	
 	private double search(Place node, double g, double bound) throws UnknownPlaceException{
 		
-		if (!this.noeudvisitee.contains(node)){
-			this.noeudvisitee.add(node);
+		if (!this.noeudenvisage.contains(node)){
+			this.noeudenvisage.add(node);
 			this.eval.newNoeudEnvisage();
 		}
 		
 		double f = g + h(node);
 		
 		if (f > bound){
-			this.path.add(node);
 			return f;
 		}
 		
 		if (node.equals(destination)){
-			this.path.add(node);
-			this.eval.gotASolution(bound);
 			return found;
 		}
 		
@@ -78,7 +76,11 @@ public class IDAStar extends Algorithm{
 		
 		for (int i = 0; i < world.size(); i++){
 			if ((dist = world.get(node, world.getByIndex(i))) < Integer.MAX_VALUE){
+				
+				this.eval.newVisite(world.getByIndex(i));
+				
 				t = search(world.getByIndex(i), g + dist, bound);
+				
 				if (t == found) {
 					this.path.add(world.getByIndex(i));
 					return found;
