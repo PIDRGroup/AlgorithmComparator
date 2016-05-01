@@ -36,6 +36,10 @@ public class Node{
 		return this.g;
 	}
 	
+	public ArrayList<Node> getsolvation(){
+		return this.solvation;
+	}
+	
 	public void setpathcost(double f){
 		this.f = f;
 	}
@@ -44,8 +48,8 @@ public class Node{
 		this.g = g;
 	}
 	
-	public ArrayList<Node> getsolvation(){
-		return this.solvation;
+	public void setSolvation(ArrayList<Node> solvation){
+		this.solvation = solvation;
 	}
 
 

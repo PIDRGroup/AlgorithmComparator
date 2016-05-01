@@ -22,8 +22,6 @@ public class Dijkstra extends Algorithm{
 		if(!world.isPlace(dest))
 			throw new UnknownPlaceException(dest);
 		
-		eval.start();
-		
 		ArrayList<Double> distance = new ArrayList<Double>();
 		ArrayList<Integer> predecessor = new ArrayList<Integer>();
 		ArrayList<Integer> banlist = new ArrayList<Integer>();
@@ -46,6 +44,8 @@ public class Dijkstra extends Algorithm{
 				System.out.println("Erreur dans le grow de Dijkstra: initialisation");
 			}
 		}
+		
+		this.eval.start();
 		
 		while(banlist.size() != world.size()){
 			// Tant que tous les noeuds n'ont pas été parcourus
@@ -72,7 +72,7 @@ public class Dijkstra extends Algorithm{
 				try {
 					
 					//On fais une mise à jour de la distance à la source pour les noeuds connectés au noeud courant
-					if (!banlist.contains(i) && (newdistance = world.get(world.getByIndex(minnode), world.getByIndex(i))) < Integer.MAX_VALUE){
+					if (!banlist.contains(i) && (newdistance = world.get(world.getByIndex(minnode), world.getByIndex(i))) < Double.MAX_VALUE){
 						this.eval.newVisite(world.getByIndex(i));
 						newdistance += distance.get(minnode).intValue(); 
 						if (newdistance < distance.get(i).intValue()){

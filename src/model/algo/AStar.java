@@ -26,7 +26,6 @@ public class AStar extends Algorithm{
 		
 		this.dest = dest;
 		
-		eval.start();
 		
 		ArrayList<Node> noeudouvert = new ArrayList<Node>();
 		ArrayList<Node> noeudferme = new ArrayList<Node>();
@@ -48,6 +47,10 @@ public class AStar extends Algorithm{
 			else noeud.add(new Node(world.getByIndex(i), Double.MAX_VALUE, null));
 		}
 		
+		this.eval.start();
+		
+		double previouscost = Double.MAX_VALUE;
+		
 		while (!noeudouvert.isEmpty()){
 			
 			double min = Double.MAX_VALUE;
@@ -67,6 +70,8 @@ public class AStar extends Algorithm{
 				break;
 			}
 			
+			//Version normale
+			
 			if (current.getstat().equals(dest)){
 				
 				double cost = 0.0;
@@ -79,9 +84,32 @@ public class AStar extends Algorithm{
 					path.add(current.getstat());
 				}
 				
-				eval.gotASolution(cost, path.size());
+				this.eval.gotASolution(cost, path.size());
 				
 				break;
+			}
+				
+			//Version augmentee
+			
+			if (world.get(current.getstat(), dest) < Double.MAX_VALUE){
+				
+				double cost = 0.0;
+				int count = 1;
+				cost += current.getpathcost()+ world.get(current.getstat(), dest);
+				
+				if(cost < previouscost){
+					previouscost = cost;
+					
+					
+					while (predecesseur.containsKey(current)){
+						current = predecesseur.get(current);
+						count++;
+					}
+					
+					this.eval.gotASolution(cost , count);
+				}
+				
+						
 			}
 						
 			noeudouvert.remove(current);
@@ -89,7 +117,7 @@ public class AStar extends Algorithm{
 			double dist;
 			
 			for (int i = 0; i < noeud.size(); i++){
-				if (world.get(current.getstat(), world.getByIndex(i)) < Integer.MAX_VALUE){
+				if (world.get(current.getstat(), world.getByIndex(i)) < Double.MAX_VALUE){
 					
 					this.eval.newVisite(world.getByIndex(i));
 					
@@ -112,7 +140,7 @@ public class AStar extends Algorithm{
 		}
 		
 		if (noeudouvert.isEmpty()){
-			System.out.println("Aucun chemin trouvé!");
+			System.out.println("Liste noeud ouvert vide");
 		}
 	}
 	

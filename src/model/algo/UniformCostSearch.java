@@ -16,12 +16,14 @@ public class UniformCostSearch extends Algorithm{
 	@Override
 	public void grow(Environment world, Place source, Place destination) throws UnknownPlaceException {
 		
-		eval.start();
-		
 		ArrayList<Node> frontiere = new ArrayList<Node>();
 		ArrayList<Integer> exploration = new ArrayList<Integer>();
 		
-		frontiere.add(new Node(source, 0,null));
+		frontiere.add(new Node(source, 0, null));
+		
+		this.eval.start();
+		
+		double previouscost = Double.MAX_VALUE;
 		
 		while(true){
 			
@@ -36,10 +38,13 @@ public class UniformCostSearch extends Algorithm{
 			
 			for (int i = 0; i < size; i++){
 				
-				Node node = new Node(null,0,null);
+				Node node = null;
 				double min = Double.MAX_VALUE;
 				
 				for (int j = 0; j < frontiere.size();j++ ){
+					
+					this.eval.newVisite(frontiere.get(j).getstat());
+					
 					if((dist = frontiere.get(j).getpathcost()) < min){
 						min = dist;
 						node = frontiere.get(j);
@@ -54,8 +59,7 @@ public class UniformCostSearch extends Algorithm{
 			frontiere=buffer;
 			Node currentnode=frontiere.get(0);
 			frontiere.remove(0);
-			
-			//System.out.println(frontiere);
+			this.eval.newNoeudEnvisage();
 			
 			if (currentnode.getstat() == destination){
 				
@@ -71,19 +75,44 @@ public class UniformCostSearch extends Algorithm{
 				break;
 			}
 			
+			if (world.get(currentnode.getstat(), destination) < Double.MAX_VALUE){
+				
+				double cost = 0.0;
+				int count = currentnode.getsolvation().size()+1;
+				cost += currentnode.getpathcost()+ world.get(currentnode.getstat(), destination);
+				
+				if(cost < previouscost){
+					previouscost = cost;
+					
+					this.eval.gotASolution(cost , count+1);
+				}
+				
+						
+			}
+			
 			exploration.add(world.indexOf(currentnode.getstat()));
 			double currentpathcost = currentnode.getpathcost();
-			ArrayList<Node> currentsolvation = currentnode.getsolvation();
+			ArrayList<Node> currentsolvation = new ArrayList<Node>();
+			
+			for(Node n: currentnode.getsolvation()){
+				currentsolvation.add(n);
+			}
+			
 			currentsolvation.add(currentnode);
 			
 			for (int i = 0; i < world.size(); i++){
 				if((dist = world.get(currentnode.getstat(), world.getByIndex(i))) < Double.MAX_VALUE){
+					
+					this.eval.newVisite(world.getByIndex(i));
 					
 					double newpathcost = currentpathcost+dist;
 					boolean isInFrontiere = false;
 					int indice = 0;
 					
 					for (int j = 0; j < frontiere.size(); j++){
+						
+						this.eval.newVisite(frontiere.get(j).getstat());
+						
 						if (frontiere.get(j).getstat().equals(world.getByIndex(i))){
 							isInFrontiere = true;
 							indice = j;
@@ -95,7 +124,6 @@ public class UniformCostSearch extends Algorithm{
 						frontiere.add(new Node(world.getByIndex(i), newpathcost,currentsolvation));
 					}else if(isInFrontiere && frontiere.get(indice).isSuperior(new Node(world.getByIndex(i), newpathcost, null))){
 						frontiere.set(indice,new Node(world.getByIndex(i),newpathcost,currentsolvation));
-						System.out.println("Je vais la");
 					}
 				}	
 			}
