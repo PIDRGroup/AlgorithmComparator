@@ -53,19 +53,10 @@ public class MyMap<E, F> implements Serializable{
 	}
 	
 	/**
-	 * Renvoie le set des valeurs de la clé passée en paramètre
+	 * Renvoie le set des valeurs du point n
 	 * @param key Clé dont on veut les valeurs associées.
 	 */
-	public ArrayList<F> valueList(E key){
-		return values.get(keys.indexOf(key));
-	}
-	
-	/**
-	 * Retourne l'index de l'élément dans la liste des clés.
-	 * -1 si l'élément n'est pas présent
-	 * @return
-	 */
-	public int indexOf(E key){
-		return keys.indexOf(key);
+	public ArrayList<F> valueList(int n){
+		return values.get(n);
 	}
 }

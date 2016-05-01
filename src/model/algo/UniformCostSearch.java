@@ -90,7 +90,7 @@ public class UniformCostSearch extends Algorithm{
 						
 			}
 			
-			exploration.add(world.indexOf(currentnode.getstat()));
+			exploration.add(currentnode.getstat().getIndex());
 			double currentpathcost = currentnode.getpathcost();
 			ArrayList<Node> currentsolvation = new ArrayList<Node>();
 			

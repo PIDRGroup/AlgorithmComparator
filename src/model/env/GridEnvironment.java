@@ -82,7 +82,7 @@ public class GridEnvironment extends Environment{
 		}else{
 			
 			for (int i = 0; i < n; i++) {
-				Place p = new Place(coords);
+				Place p = new Place(i, coords);
 				graph.addKey(p);
 //				linked++;
 //				

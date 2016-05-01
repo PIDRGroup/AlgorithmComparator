@@ -39,7 +39,7 @@ public abstract class Environment extends Observable implements Serializable{
 	 */
 	public double get(Place src, Place dest) throws UnknownPlaceException{		
 		//Si val vaut null, la distance est infinie
-		ArrayList<Place> l = graph.valueList(src);
+		ArrayList<Place> l = graph.valueList(src.getIndex());
 		
 		double val = 0;
 		int i=0;
@@ -72,10 +72,10 @@ public abstract class Environment extends Observable implements Serializable{
 		
 		s+="Successors : ";
 		
-		for(Place src : graph.keyList()){
+		for (int i = 0; i < graph.keyList().size(); i++) {
 			s+="[ ";
-			for(Place dest : graph.valueList(src)){
-				s+=dest+" | ";
+			for(int j=0; j < graph.valueList(i).size() ; j++){
+				s+=graph.valueList(i).get(j)+" | ";
 			}
 			s+=" ]";
 		}
@@ -92,13 +92,9 @@ public abstract class Environment extends Observable implements Serializable{
 		return graph.keyList().contains(place);
 	}
 	
-	public int indexOf(Place p){
-		return graph.indexOf(p);
-	}
-	
 	public Place getPlace(int... coordinates) throws UnknownPlaceException{
 		
-		if(coordinates.length != nbDim())throw new UnknownPlaceException(new Place(coordinates));
+		if(coordinates.length != nbDim())throw new UnknownPlaceException(new Place(0, coordinates));
 		
 		Place p = null;
 		ArrayList<Place> places = graph.keyList();
@@ -138,7 +134,7 @@ public abstract class Environment extends Observable implements Serializable{
 		return graph.keyList().get((new Random()).nextInt(graph.keyList().size()));
 	}
 	
-	public ArrayList<Place> getLinks(Place src) throws UnknownPlaceException{
+	public ArrayList<Place> getLinks(int src) throws UnknownPlaceException{
 		return graph.valueList(src);
 	}
 
@@ -146,7 +142,7 @@ public abstract class Environment extends Observable implements Serializable{
 		return seed;
 	}
 	
-	public int degre(Place p){
+	public int degre(int p){
 		return graph.valueList(p).size();
 	}
 	

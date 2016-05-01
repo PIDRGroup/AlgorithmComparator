@@ -23,6 +23,8 @@ public class Place implements Serializable{
 	 */
 	private int[] coordinates;
 	
+	private int index;
+	
 	/**
 	 * Dimension de contrainte supplémentaire pour ajouter une part d'aléa.
 	 * De base, dimension désactivée.
@@ -34,7 +36,7 @@ public class Place implements Serializable{
 	 * @param label Label de la place 
 	 * @param coordinates Coordonnées de la place (détermine son nombre de dimension)
 	 */
-	public Place(String label, int... coordinates){
+	public Place(int index, String label, int... coordinates){
 		this.label = label;
 		this.coordinates= new int[coordinates.length];
 		
@@ -47,8 +49,8 @@ public class Place implements Serializable{
 	 * Constructeur d'une place sans label
 	 * @param coordinates Coordonnées de la place (détermine son nombre de dimension)
 	 */
-	public Place(int... coordinates){
-		this(null, coordinates);
+	public Place(int index, int... coordinates){
+		this(index, null, coordinates);
 	}
 	
 	public Place(ArrayList<Long> coordinates){
@@ -78,7 +80,7 @@ public class Place implements Serializable{
 				coordinates[j] = (new Random()).nextInt(b.max()-b.min()) + b.min();
 			}
 			
-			places[i] = new Place(coordinates);
+			places[i] = new Place(i, coordinates);
 			
 			//Si on active w, on calcule la dimension avec les plus petites bornes
 			if(w_activation){
@@ -193,5 +195,9 @@ public class Place implements Serializable{
 		}
 		
 		return ret;
+	}
+	
+	public int getIndex(){
+		return index;
 	}
 }

@@ -37,7 +37,7 @@ public class Dijkstra extends Algorithm{
 					//On initialise les noeuds adjacents à la src, par leur distance à la src
 				}
 				
-				predecessor.add(world.indexOf(src));
+				predecessor.add(src.getIndex());
 				//On ajoute à chaque noeud comme prédécesseur, eux-mêmes
 				
 			} catch (UnknownPlaceException e) {
@@ -51,7 +51,7 @@ public class Dijkstra extends Algorithm{
 			// Tant que tous les noeuds n'ont pas été parcourus
 			
 			double min = Double.MAX_VALUE;
-			int minnode = world.indexOf(dest);
+			int minnode = dest.getIndex();
 			
 			//On cherche le noeud n'ont encore parcourus avec la plus petit distance à la src
 			for(int i = 0 ; i < world.size() ; i++){
@@ -87,7 +87,7 @@ public class Dijkstra extends Algorithm{
 								
 								path.add(dest);
 								
-								int current = world.indexOf(dest);
+								int current = dest.getIndex();
 								
 								//On rétablit le plus court chemin jusqu'à la dest d'après la liste des prédécesseurs
 								while (!world.getByIndex(current).equals(src)){

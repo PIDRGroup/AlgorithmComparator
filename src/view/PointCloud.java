@@ -118,7 +118,7 @@ public class PointCloud extends JPanel implements Observer{
 		if(show_links){
 			for (Place p : env.getPlaces()) {
 				try {
-					ArrayList<Place> links = env.getLinks(p);
+					ArrayList<Place> links = env.getLinks(p.getIndex());
 					for(Place l : links){
 						g.drawLine(p.getCoordinate(0), p.getCoordinate(1), l.getCoordinate(0), l.getCoordinate(1));
 					}

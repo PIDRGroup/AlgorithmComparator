@@ -41,7 +41,7 @@ public class AStar extends Algorithm{
 		ArrayList<Node> noeud = new ArrayList<Node>();
 		
 		for (int i =0; i < world.size(); i++){
-			if (world.indexOf(src) == i){
+			if (src.getIndex() == i){
 				noeud.add(source);
 			}
 			else noeud.add(new Node(world.getByIndex(i), Double.MAX_VALUE, null));

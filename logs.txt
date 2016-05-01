@@ -1,0 +1,6 @@
+DIJKSTRA: nb_total_1er_visite=2, nb_total_visite=4, nb_total_noeud_env=100
+DIJKSTRA: nb_total_1er_visite=2, nb_total_visite=4, nb_total_noeud_env=1000
+DIJKSTRA: nb_total_1er_visite=2, nb_total_visite=4, nb_total_noeud_env=1000
+DIJKSTRA: nb_total_1er_visite=2, nb_total_visite=3, nb_total_noeud_env=10000
+DIJKSTRA: nb_total_1er_visite=2, nb_total_visite=4, nb_total_noeud_env=10000
+DIJKSTRA: nb_total_1er_visite=2, nb_total_visite=4, nb_total_noeud_env=10000
