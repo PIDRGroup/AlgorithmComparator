@@ -98,17 +98,6 @@ public class GridEnvironment extends Environment{
 
 			//Maintenant, on fusionne tous les graphes que l'on a
 			MyMap temp = blend(duplications);
-			
-//				for (int i = 0; i < nb_places_dim; i++) {
-//					MyMap dup = duplications.get(i);
-//					for (int j = 0; j < dup.keyList().size(); j++) {
-//						System.out.print(dup.keyList().get(j).getIndex()+" : ");
-//						for (int j2 = 0; j2 < dup.valueList(j).size(); j2++) {
-//							System.out.print(dup.valueList(j).get(j2)+"  ");
-//						}
-//						System.out.println();
-//					}
-//				}
 								
 		//Puis on fait de la récurrence
 		return grow(s, temp, current_dim + 1);

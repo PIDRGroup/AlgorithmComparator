@@ -27,7 +27,7 @@ public class MyMap implements Serializable{
 	}
 	
 	/**
-	 * Ajoute vala aux suivants de key.
+	 * Ajoute val aux suivants de key.
 	 * L'objet key doit exister au préalable
 	 * @param key
 	 * @param val
@@ -116,7 +116,6 @@ public class MyMap implements Serializable{
 		int size = keys.size(); //Les deux graphes ont la même taille.
 		
 		for (int i = 0; i < size; i++) {
-			Place origin = this.keys.get(i);
 			Place dest = graph.keys.get(i);
 						
 			//On fait gaffe à l'indice d'origine : il ne correspond pas encore à la taille réelle de la liste
@@ -131,7 +130,6 @@ public class MyMap implements Serializable{
 		//On commence par copier les places
 		for (int i = 0; i < keys.size(); i++){
 			Place copie_place = keys.get(i).copy();
-			if(!keys.get(i).equals(copie_place)) System.out.println(keys.get(i)+"  |  "+copie_place);
 			copie_keys.add(copie_place);
 		}
 		

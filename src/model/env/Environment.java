@@ -37,16 +37,16 @@ public abstract class Environment extends Observable implements Serializable{
 	 * @return Poids du lien (distance entre les deux places)
 	 * @throws UnknownPlaceException Si les places n'appartiennent pas au graph
 	 */
-	public double get(Place src, Place dest) throws UnknownPlaceException{		
+	public double get(int src, int dest) throws UnknownPlaceException{		
 		//Si val vaut null, la distance est infinie
-		ArrayList<Integer> l = graph.valueList(src.getIndex());
+		ArrayList<Integer> l = graph.valueList(src);
 		
 		double val = 0;
 		int i=0;
 		
 		while(i < l.size() && val == 0){
 			if(l.get(i).equals(dest)){
-				val = src.distanceEuclidienne(dest);
+				val = graph.keyList().get(src).distanceEuclidienne(graph.keyList().get(dest));
 			}else{
 				i++;
 			}
@@ -82,37 +82,7 @@ public abstract class Environment extends Observable implements Serializable{
 				
 		return s;
 	}
-	
-	/**
-	 * V�rifie si une place fait partie de l'environnement
-	 * @param place Place � checker
-	 * @return Vrai si la place existe, faux sinon
-	 */
-	public boolean isPlace(Place place){
-		return graph.keyList().contains(place);
-	}
-	
-	public Place getPlace(int... coordinates) throws UnknownPlaceException{
-		
-		if(coordinates.length != nbDim())throw new UnknownPlaceException(new Place(0, coordinates));
-		
-		Place p = null;
-		ArrayList<Place> places = graph.keyList();
-		
-		for (int i = 0; i < places.size() && p == null; i++) {
-			Place current = places.get(i);
-			boolean eq = true;
-			
-			for (int j = 0; j < coordinates.length && eq == true; j++) {
-				if(current.getCoordinate(j) != coordinates[j]) eq = false;
-			}
-			
-			if(eq == true)p = current;
-			
-		}
-		
-		return p;
-	}
+
 	
 	/**
 	 * Retourne la liste de toutes les places du graphe
@@ -127,7 +97,7 @@ public abstract class Environment extends Observable implements Serializable{
 	}
 	
 	/**
-	 * Tier une place au hasard.
+	 * Tirer une place au hasard.
 	 * @return
 	 */
 	public Place alea(){
@@ -140,10 +110,6 @@ public abstract class Environment extends Observable implements Serializable{
 
 	public Seed getSeed() {
 		return seed;
-	}
-	
-	public int degre(int p){
-		return graph.valueList(p).size();
 	}
 	
 	public Place getByIndex(int index){

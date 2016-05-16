@@ -12,7 +12,7 @@ public class UnknownPlaceException extends Exception{
 	}
 	
 	private static String toMess(Place p){
-		String msg = "La place est inconnue : ("+p.getLabel()+", coordonnées : [";
+		String msg = "La place est inconnue : (coordonnées : [";
 		
 		for (int i = 0; i < p.getCoordinates().length; i++) {
 			msg+=p.getCoordinate(i)+" ";
