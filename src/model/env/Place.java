@@ -39,6 +39,7 @@ public class Place implements Serializable{
 	public Place(int index, String label, int... coordinates){
 		this.label = label;
 		this.coordinates= new int[coordinates.length];
+		this.index = index;
 		
 		for (int i = 0; i < coordinates.length; i++) {
 			this.coordinates[i] = coordinates[i];
@@ -173,7 +174,7 @@ public class Place implements Serializable{
 	}
 	
 	public String toString(){
-		String s = "(";
+		String s = index+" (";
 		
 		for (int i = 0; i < coordinates.length; i++) {
 			s+=coordinates[i];
@@ -189,6 +190,7 @@ public class Place implements Serializable{
 		boolean ret = true;
 		
 		int i=0;
+		ret = this.index == p.index;
 		while(ret && i<coordinates.length){
 			ret = coordinates[i] == p.coordinates[i];
 			i++;
@@ -199,5 +201,18 @@ public class Place implements Serializable{
 	
 	public int getIndex(){
 		return index;
+	}
+	
+	public void setIndex(int ind){
+		index = ind;
+	}
+	
+	public Place copy(){
+		
+		//On copie le tableau
+		int[] copie = new int[coordinates.length];
+		for (int i = 0; i < coordinates.length; i++) copie[i] = coordinates[i];
+		
+		return new Place(index, copie);
 	}
 }

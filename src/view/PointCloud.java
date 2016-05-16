@@ -116,11 +116,12 @@ public class PointCloud extends JPanel implements Observer{
 		g.setColor(COLOR_LINE);
 		//Si l'utilisateur le souhaite, on affiche les liens
 		if(show_links){
-			for (Place p : env.getPlaces()) {
+			ArrayList<Place> places = env.getPlaces();
+			for (Place p : places) {
 				try {
-					ArrayList<Place> links = env.getLinks(p.getIndex());
-					for(Place l : links){
-						g.drawLine(p.getCoordinate(0), p.getCoordinate(1), l.getCoordinate(0), l.getCoordinate(1));
+					ArrayList<Integer> links = env.getLinks(p.getIndex());
+					for(Integer l : links){
+						g.drawLine(p.getCoordinate(0), p.getCoordinate(1), places.get(l).getCoordinate(0), places.get(l).getCoordinate(1));
 					}
 				} catch (UnknownPlaceException e) {
 					e.printStackTrace();

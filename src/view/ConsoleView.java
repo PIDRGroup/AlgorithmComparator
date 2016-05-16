@@ -89,7 +89,7 @@ public class ConsoleView {
 				int dim_inf = getField("Borne inf des dimensions", -Integer.MAX_VALUE);
 				int dim_sup = getField("Borne sup des dimensions", dim_inf);
 				
-				Seed s = new Seed(System.nanoTime(), dimensions, nb_dim, dim_inf, dim_sup);
+				Seed s = new Seed(System.nanoTime(), dimensions, dim_inf, dim_sup);
 				
 				if(type == 1){
 					env = new GridEnvironment(s);

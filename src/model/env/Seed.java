@@ -24,9 +24,9 @@ public class Seed {
 		type = TypeSeed.GRID;
 	}
 	
-	public Seed(long s, int nbPlaces[], int nb_dim, int dim_min, int dim_max){
+	public Seed(long s, int nbPlaces[], int dim_min, int dim_max){
 		seed = s;
-		this.nb_dim = nb_dim;
+		this.nb_dim = nbPlaces.length;
 		this.dim_min = dim_min;
 		this.dim_max = dim_max;
 		generator = new Random(seed);
