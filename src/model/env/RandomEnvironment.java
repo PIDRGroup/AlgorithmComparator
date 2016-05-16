@@ -7,7 +7,7 @@ public class RandomEnvironment extends Environment{
 	}
 	
 	public RandomEnvironment(Seed s) throws UnknownPlaceException{
-		graph = new MyMap<Place, Place>();
+		graph = new MyMap();
 		Place current;
 		seed=s;
 		

@@ -9,7 +9,7 @@ public abstract class Environment extends Observable implements Serializable{
 	 * Les places en cl�s correspondent � l'ensemble des places du graphe, 
 	 * tandis que les places en valeur sont les successeurs de ces places.
 	 */
-	protected MyMap<Place, Place> graph;
+	protected MyMap graph;
 	protected Seed seed;
 	
 	/**
@@ -20,7 +20,7 @@ public abstract class Environment extends Observable implements Serializable{
 	 * @param dest Place destination
 	 * @throws UnknownPlaceException 
 	 */
-	public void addLink(Place src, Place dest){	
+	public void addLink(int src, int dest){	
 		graph.put(src, dest);
 	}
 	
@@ -39,7 +39,7 @@ public abstract class Environment extends Observable implements Serializable{
 	 */
 	public double get(Place src, Place dest) throws UnknownPlaceException{		
 		//Si val vaut null, la distance est infinie
-		ArrayList<Place> l = graph.valueList(src.getIndex());
+		ArrayList<Integer> l = graph.valueList(src.getIndex());
 		
 		double val = 0;
 		int i=0;
@@ -134,7 +134,7 @@ public abstract class Environment extends Observable implements Serializable{
 		return graph.keyList().get((new Random()).nextInt(graph.keyList().size()));
 	}
 	
-	public ArrayList<Place> getLinks(int src) throws UnknownPlaceException{
+	public ArrayList<Integer> getLinks(int src) throws UnknownPlaceException{
 		return graph.valueList(src);
 	}
 

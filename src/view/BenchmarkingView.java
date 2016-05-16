@@ -67,12 +67,12 @@ public class BenchmarkingView {
 		
 		ArrayList<Seed> seeds = new ArrayList<Seed>();
 		
-		seeds.add(new Seed(System.nanoTime(), new int[]{10, 10}, 2, -6000, 12000));
-		seeds.add(new Seed(System.nanoTime(), new int[]{10, 10, 10}, 3, -6000, 12000));
-		seeds.add(new Seed(System.nanoTime(), new int[]{100, 10}, 2, -6000, 12000));
-		seeds.add(new Seed(System.nanoTime(), new int[]{100, 100}, 2, -6000, 12000));
-		seeds.add(new Seed(System.nanoTime(), new int[]{10, 100, 10}, 3, -6000, 12000));
-		seeds.add(new Seed(System.nanoTime(), new int[]{10, 10, 10, 10}, 4, -6000, 12000));
+		seeds.add(new Seed(System.nanoTime(), new int[]{10, 10}, -6000, 12000));
+		seeds.add(new Seed(System.nanoTime(), new int[]{10, 10, 10}, -6000, 12000));
+		seeds.add(new Seed(System.nanoTime(), new int[]{100, 10}, -6000, 12000));
+		seeds.add(new Seed(System.nanoTime(), new int[]{100, 100}, -6000, 12000));
+		seeds.add(new Seed(System.nanoTime(), new int[]{10, 100, 10}, -6000, 12000));
+		seeds.add(new Seed(System.nanoTime(), new int[]{10, 10, 10, 10}, -6000, 12000));
 		
 		System.out.println("================== LANCEMENT DU BENCHMARKING ! ==================");
 		
@@ -89,6 +89,9 @@ public class BenchmarkingView {
 				log.write("logs.txt");
 				a.clearEval();
 			}
+			
+			System.out.println(exp.getSrc());
+			System.out.println(exp.getDest());
 		}
 		
 //		
