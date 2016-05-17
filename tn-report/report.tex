@@ -296,10 +296,10 @@ Pour la suite du descriptif de A*, la liste des nœuds explorés sera appeler n�
   \If{NoeudCourant = Destination}{
   	Current = Prédécesseur[Destination]
   	  \While{Current != Source}{
-  	  	Parcours <- Current
-  	  	Current = Prédécesseur[Current]
+  	  	Parcours <- Current\linebreak
+  	  	Current = Prédécesseur[Current]\linebreak
   	  }
-  	  //Fin de l'algorithme
+  	  //Fin de l'algorithme\linebreak
   }
   Retirer(NoeudOuvert, NoeudCourant)\linebreak
   NoeudFermé <- NoeudCourant\linebreak\linebreak
@@ -433,45 +433,45 @@ La particularité de cet algorithme est d'être récursif. Cette récursivité e
  \KwResult{Parcoursfinal : Liste ordonnée du plus court chemin de la Source à la Destination}
 
  g(source) = 0\linebreak
-  RBFS(Neouds, Source, infini)
+  RBFS(Noeuds, Source, infini)\linebreak
  
 \SetKwProg{Fn}{Function}{}{}
 \Fn{RBFS(Listenoeud, noeud, limite)}{
 	
 	\If{noeud = Destination}{
-		Parcoursfinal = Parcours[Destination]
+		Parcoursfinal = Parcours[Destination]\linebreak
 	}
 	//Fin de l'algorithme\linebreak	
 		
 	\For{NoeudAdjacent dans noeudadjacent(noeud)}{
-		g(NoeudAdjacent) = g(noeud) + Chemin(NoeudAdjacent, noeud)
-		f(NoeudAdjacent) = g(NoeudAdjacent) + h(NoeudAdjacent)
+		g(NoeudAdjacent) = g(noeud) + Chemin(NoeudAdjacent, noeud)\linebreak
+		f(NoeudAdjacent) = g(NoeudAdjacent) + h(NoeudAdjacent)\linebreak
 	}
 	
-	Successeurs = noeudadjacent(noeud)
+	Successeurs = noeudadjacent(noeud)\linebreak
 	
 	\While{true}{
-		tri(Successeurs) //On tri les noeuds par valeur croissante de f
+		tri(Successeurs) //On tri les noeuds par valeur croissante de f\linebreak
 		
 		\eIf{isEmpty(Successeurs)}{
-			return RETOUR(true, infini)
+			return RETOUR(true, infini)\linebreak
 		}{
-			Parcours[Successeurs[0]] = Parcours[noeud] + noeud
+			Parcours[Successeurs[0]] = Parcours[noeud] + noeud\linebreak
 		}
 		
 		\If{f(Successeurs[0]) > limite}{
-			return RETOUR (true, Successeurs[0])
+			return RETOUR (true, Successeurs[0])\linebreak
 		}
 		
 		\If{size(Successeurs) = 1}{
-			result = RBFS(Listenoeud, Successeurs[0], limite)
+			result = RBFS(Listenoeud, Successeurs[0], limite)\linebreak
 		}{
-			result = RBFS(Listenoeud, Successeurs[0], min(limite, f(Successeurs[1]))
+			result = RBFS(Listenoeud, Successeurs[0], min(limite, f(Successeurs[1]))\linebreak
 		}
-		//On observe si une deuxième solution est possible ou non
+		//On observe si une deuxième solution est possible ou non\linebreak
 		
 		\If{estSucces(result)}{
-			return result
+			return result\linebreak
 		}
 		
 	}
