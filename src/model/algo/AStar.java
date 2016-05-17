@@ -18,12 +18,6 @@ public class AStar extends Algorithm{
 	@Override
 	public void grow(Environment world, Place src, Place dest) throws UnknownPlaceException{
 		
-		if(!world.isPlace(src))
-			throw new UnknownPlaceException(src);
-		
-		if(!world.isPlace(dest))
-			throw new UnknownPlaceException(dest);
-		
 		this.dest = dest;
 		
 		
@@ -91,11 +85,11 @@ public class AStar extends Algorithm{
 				
 			//Version augmentee
 			
-			if (world.get(current.getstat(), dest) < Double.MAX_VALUE){
+			if (world.get(current.getstat().getIndex(), dest.getIndex()) < Double.MAX_VALUE){
 				
 				double cost = 0.0;
 				int count = 1;
-				cost += current.getpathcost()+ world.get(current.getstat(), dest);
+				cost += current.getpathcost()+ world.get(current.getstat().getIndex(), dest.getIndex());
 				
 				if(cost < previouscost){
 					previouscost = cost;
@@ -111,20 +105,20 @@ public class AStar extends Algorithm{
 				
 						
 			}
-						
+			
 			noeudouvert.remove(current);
 			noeudferme.add(current);
 			double dist;
 			
 			for (int i = 0; i < noeud.size(); i++){
-				if (world.get(current.getstat(), world.getByIndex(i)) < Double.MAX_VALUE){
+				if (world.get(current.getstat().getIndex(), i) < Double.MAX_VALUE){
 					
 					this.eval.newVisite(world.getByIndex(i));
 					
 					if (noeudferme.contains(noeud.get(i))){
 						continue;
 					}
-					dist = current.getG() + world.get(current.getstat(), noeud.get(i).getstat());
+					dist = current.getG() + world.get(current.getstat().getIndex(), noeud.get(i).getstat().getIndex());
 					if (!noeudouvert.contains(noeud.get(i))){
 						noeudouvert.add(noeud.get(i));
 						this.eval.newNoeudEnvisage();

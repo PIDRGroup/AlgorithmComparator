@@ -26,12 +26,6 @@ public class IDAStar extends Algorithm{
 		this.world = world;
 		this.destination = dest;
 		
-		if(!world.isPlace(src))
-			throw new UnknownPlaceException(src);
-		
-		if(!world.isPlace(dest))
-			throw new UnknownPlaceException(dest);
-		
 		this.eval.start();
 		this.eval.newVisite(src);
 		
@@ -73,7 +67,7 @@ public class IDAStar extends Algorithm{
 			return found;
 		}
 		
-		if (world.get(node, destination) < Double.MAX_VALUE){
+		if (world.get(node.getIndex(), destination.getIndex()) < Double.MAX_VALUE){
 			this.eval.gotASolution(bound, depth + 1);
 		}
 		
@@ -82,7 +76,7 @@ public class IDAStar extends Algorithm{
 		double dist;
 		
 		for (int i = 0; i < world.size(); i++){
-			if ((dist = world.get(node, world.getByIndex(i))) < Integer.MAX_VALUE){
+			if ((dist = world.get(node.getIndex(), world.getByIndex(i).getIndex())) < Integer.MAX_VALUE){
 				
 				this.eval.newVisite(world.getByIndex(i));
 				

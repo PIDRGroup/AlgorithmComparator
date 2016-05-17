@@ -75,11 +75,11 @@ public class UniformCostSearch extends Algorithm{
 				break;
 			}
 			
-			if (world.get(currentnode.getstat(), destination) < Double.MAX_VALUE){
+			if (world.get(currentnode.getstat().getIndex(), destination.getIndex()) < Double.MAX_VALUE){
 				
 				double cost = 0.0;
 				int count = currentnode.getsolvation().size()+1;
-				cost += currentnode.getpathcost()+ world.get(currentnode.getstat(), destination);
+				cost += currentnode.getpathcost()+ world.get(currentnode.getstat().getIndex(), destination.getIndex());
 				
 				if(cost < previouscost){
 					previouscost = cost;
@@ -101,7 +101,7 @@ public class UniformCostSearch extends Algorithm{
 			currentsolvation.add(currentnode);
 			
 			for (int i = 0; i < world.size(); i++){
-				if((dist = world.get(currentnode.getstat(), world.getByIndex(i))) < Double.MAX_VALUE){
+				if((dist = world.get(currentnode.getstat().getIndex(), world.getByIndex(i).getIndex())) < Double.MAX_VALUE){
 					
 					this.eval.newVisite(world.getByIndex(i));
 					

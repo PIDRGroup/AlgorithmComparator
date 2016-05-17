@@ -14,11 +14,6 @@ import java.util.Random;
 public class Place implements Serializable{
 	
 	/**
-	 * Optionnel : label de la place
-	 */
-	private String label = null;
-	
-	/**
 	 * Coordonnées de la place
 	 */
 	private int[] coordinates;
@@ -33,25 +28,15 @@ public class Place implements Serializable{
 	
 	/**
 	 * Constructeur d'une place avec label
-	 * @param label Label de la place 
 	 * @param coordinates Coordonnées de la place (détermine son nombre de dimension)
 	 */
-	public Place(int index, String label, int... coordinates){
-		this.label = label;
+	public Place(int index, int... coordinates){
 		this.coordinates= new int[coordinates.length];
 		this.index = index;
 		
 		for (int i = 0; i < coordinates.length; i++) {
 			this.coordinates[i] = coordinates[i];
 		}
-	}
-	
-	/**
-	 * Constructeur d'une place sans label
-	 * @param coordinates Coordonnées de la place (détermine son nombre de dimension)
-	 */
-	public Place(int index, int... coordinates){
-		this(index, null, coordinates);
 	}
 	
 	public Place(ArrayList<Long> coordinates){
@@ -122,16 +107,6 @@ public class Place implements Serializable{
 	}
 	
 	/**
-	 * Retourne le label ou une chaine vide si la place n'a pas de label
-	 * @return Le label de la place
-	 */
-	public String getLabel(){
-		if(label == null) return "";
-		
-		return label;
-	}
-	
-	/**
 	 * Retourne la dimension de contrainte.
 	 * @return
 	 */
@@ -182,21 +157,6 @@ public class Place implements Serializable{
 		}
 		
 		return s+")";
-	}
-	
-	@Override
-	public boolean equals(Object o){
-		Place p = (Place) o;
-		boolean ret = true;
-		
-		int i=0;
-		ret = this.index == p.index;
-		while(ret && i<coordinates.length){
-			ret = coordinates[i] == p.coordinates[i];
-			i++;
-		}
-		
-		return ret;
 	}
 	
 	public int getIndex(){

@@ -89,14 +89,7 @@ public class BenchmarkingView {
 				log.write("logs.txt");
 				a.clearEval();
 			}
-			
-			System.out.println(exp.getSrc());
-			System.out.println(exp.getDest());
+			System.out.println(env);
 		}
-		
-//		
-//		
-//		
-//		exp.launch();
 	}
 }

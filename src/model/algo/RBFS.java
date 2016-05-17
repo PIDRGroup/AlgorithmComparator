@@ -26,12 +26,6 @@ public class RBFS extends Algorithm{
 		this.world = world;
 		this.destination = destination;
 		
-		if(!world.isPlace(source))
-			throw new UnknownPlaceException(source);
-		
-		if(!world.isPlace(destination))
-			throw new UnknownPlaceException(destination);
-		
 		ArrayList<Node> noeud = new ArrayList<Node>();
 		Node current;
 		Node sourcenode = null;
@@ -43,7 +37,7 @@ public class RBFS extends Algorithm{
 				current.setG(0);
 				sourcenode = current;
 			}else{
-				current = new Node(world.getByIndex(i),world.get(source, world.getByIndex(i)),null);
+				current = new Node(world.getByIndex(i),world.get(source.getIndex(), i),null);
 			}	
 				noeud.add(current);
 		}
@@ -72,11 +66,11 @@ public class RBFS extends Algorithm{
 		}
 		
 		try {
-			if (world.get(current.getstat(), destination) < Double.MAX_VALUE){
+			if (world.get(current.getstat().getIndex(), destination.getIndex()) < Double.MAX_VALUE){
 				
 				double cost = 0.0;
 				int count = current.getsolvation().size() + 1;
-				cost += current.getpathcost()+ world.get(current.getstat(), destination);
+				cost += current.getpathcost()+ world.get(current.getstat().getIndex(), destination.getIndex());
 				
 				if(cost < previouscost){
 					previouscost = cost;					
@@ -95,7 +89,7 @@ public class RBFS extends Algorithm{
 		
 		for (int i = 0; i < noeud.size(); i++){
 			try {
-				if(world.get(current.getstat(), noeud.get(i).getstat()) < Double.MAX_VALUE){
+				if(world.get(current.getstat().getIndex(), noeud.get(i).getstat().getIndex()) < Double.MAX_VALUE){
 					successors.add(noeud.get(i));
 				}
 			} catch (UnknownPlaceException e) {
@@ -109,7 +103,7 @@ public class RBFS extends Algorithm{
 		
 		for (int i = 0; i < successors.size(); i++){
 			try {
-				successors.get(i).setG(current.getG()+world.get(current.getstat(), successors.get(i).getstat()));
+				successors.get(i).setG(current.getG()+world.get(current.getstat().getIndex(), successors.get(i).getstat().getIndex()));
 				successors.get(i).setpathcost(successors.get(i).getG()+h(successors.get(i).getstat()));
 				
 				this.eval.newVisite(successors.get(i).getstat());

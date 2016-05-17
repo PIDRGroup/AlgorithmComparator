@@ -23,19 +23,13 @@ public class SMAStar extends Algorithm{
 
 		this.world = world;
 		this.destination = dest;
-
-		if(!world.isPlace(src))
-			throw new UnknownPlaceException(src);
-		
-		if(!world.isPlace(dest))
-			throw new UnknownPlaceException(dest);
 		
 		ArrayList<NodeSMAstar> memory = new ArrayList<NodeSMAstar>();
 		ArrayList<NodeSMAstar> queue = new ArrayList<NodeSMAstar>();
 		
 		NodeSMAstar buffer = new NodeSMAstar(src, h(src), 0.0, 0, null);
 		for (int i = 0; i < this.world.size(); i++){
-			if(world.get(src, this.world.getByIndex(i)) < Double.MAX_VALUE){
+			if(world.get(src.getIndex(), this.world.getByIndex(i).getIndex()) < Double.MAX_VALUE){
 				buffer.addSuccessor(i);
 			}
 		}
@@ -76,7 +70,7 @@ public class SMAStar extends Algorithm{
 				
 				Place successor = world.getByIndex(indice);
 				NodeSMAstar chargesuccessor = this.loadNodeSMAstar(successor, current.getDepth()+1, current);
-				chargesuccessor.setG(current.getG()+world.get(current.getPlace(), successor));
+				chargesuccessor.setG(current.getG()+world.get(current.getPlace().getIndex(), successor.getIndex()));
 				memory.add(chargesuccessor);
 				current.addSuccessorMemory(chargesuccessor);
 				
@@ -123,7 +117,7 @@ public class SMAStar extends Algorithm{
 		
 		for (int i = 0; i < this.world.size(); i++){
 			System.out.println("la");
-			if(world.get(place, this.world.getByIndex(i)) < Double.MAX_VALUE){
+			if(world.get(place.getIndex(), i) < Double.MAX_VALUE){
 				buffer.addSuccessor(i);
 			}
 		}
