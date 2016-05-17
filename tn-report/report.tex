@@ -606,6 +606,22 @@ Il est également possible d'afficher du code directement depuis un fichier sour
 		
 		\subsection{Présentation des résultats et comparaison}
 		
+\begin{table}[h]
+\begin{center}
+   \begin{tabular}{| l | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r |}
+     \hline
+      \textbf{Version} & \multicolumn{3}{c|}{\textbf{Dijkstra}} & \multicolumn{3}{c|}{\textbf{10\up{4}}} & \multicolumn{3}{c|}{\textbf{10\up{6}}} & \multicolumn{3}{c|}{\textbf{10\up{7}}} \\
+     \hline
+     \cline{2-5}
+    & \textbf{2D} & \textbf{3D} & \textbf{4D} & \textbf{2D} & \textbf{3D} & \textbf{4D} & \textbf{2D} & \textbf{3D} & \textbf{4D} & \textbf{2D} & \textbf{3D} & \textbf{4D}\\ \hline
+     1\up{ère} version & 5 & - & - & ~10\up{7} & ~10\up{8} & ~10\up{8} & \multicolumn{3}{c|}{+$\infty$}  & \multicolumn{3}{c|}{+$\infty$}   \\ \hline
+     2\up{ème} version & 2 & - & - & 34 & 36 & 41 & 16 864 & 24 247 & 32 589 & 53 789 & 74 252 & 83 736  \\ \hline
+     3\up{ème} version & 2 & - & - & 13 & 16 & 23 & 368 & 512 & 746  & 14 713 & 21 697 & 37 250 \\ \hline
+   \end{tabular}
+ \end{center}
+ \caption{Tableau récapitulatif des benchmarkings}
+\end{table}		
+		
 		\subsection{Interprétation des résultats}
 
 \chapter{Discussion globale}

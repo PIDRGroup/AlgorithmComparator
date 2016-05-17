@@ -71,7 +71,7 @@ public class IDAStar extends Algorithm{
 			this.eval.gotASolution(bound, depth + 1);
 		}
 		
-		double min = Double.MAX_VALUE;
+		double min = Integer.MAX_VALUE;
 		double t;
 		double dist;
 		

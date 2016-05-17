@@ -144,6 +144,7 @@ public class RBFS extends Algorithm{
 			}
 			
 			if(sortednode.get(0) == null){
+				System.out.println("atteint");
 				return new RBFSreturn(true, Double.MAX_VALUE);
 			}else{
 				sortednode.get(0).setSolvation(currentsolvation);

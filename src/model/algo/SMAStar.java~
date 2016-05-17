@@ -74,7 +74,7 @@ public class SMAStar extends Algorithm{
 				memory.add(chargesuccessor);
 				current.addSuccessorMemory(chargesuccessor);
 				
-				if(!successor.equals(dest) && chargesuccessor.getDepth() >= this.max_depth){
+				if(!successor.equals(dest) && chargesuccessor.getF() >= this.max_depth){
 					chargesuccessor.setF(Double.MAX_VALUE);
 				}else{
 					chargesuccessor.setF(Math.max(current.getF(), chargesuccessor.getG()+h(successor)));
