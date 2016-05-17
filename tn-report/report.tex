@@ -87,10 +87,11 @@ Le projet se propose donc de permettre de réaliser des séquences de tests de d
 Les environnements correspondent aux graphes sur lesquels les algorithmes sont appliqués. Il existe deux types d'algorithmes : les algorithmes générés sous forme de grilles à N dimensions avec N > 1 (hypercubes) et des environnements générés de manière totalement aléatoires.
 			
 			\subsection{Les algorithmes}
-
+				
 \paragraph{}
-Plusieurs algorithmes ont été implémentés afin de tester leur efficacité sur différents types d'environnements de différentes tailles. Leur point de départ et d'arrivée sont définis aléatoirement. Les algorithmes parcourent le graphe en explorant ses noeuds par accès directs.
+Plusieurs algorithmes ont été implémentés afin de tester leur efficacité sur différents types d'environnements de différentes tailles. Leur point de départ et d'arrivée sont définis aléatoirement. Les algorithmes parcourent le graphe en explorant ses nœuds par accès directs.
 		
+							
 		\subsection{Lancer le projet}
 
 \paragraph{}
@@ -239,10 +240,106 @@ Voici un tableau comparatif des différentes versions de l'algorithme de créati
 \end{table}
 
 	\subsection{Les différents algorithmes implémentés}
-	
-		\subsection{Objet Evaluation et fichiers de log}
+		\subsubsection{Dijkstra}			
 \paragraph{}
-Le second outil nous permettant de comparer les algorithmes entre eux sont les objets Evaluation récoltant les données relatives à l'exécution de l'algorithme. Ces données sont les suivantes :
+L'algorithme de Dijkstra nous a servis de référence tout au long de ce projet. C'est un algorithme simple à implémenter, mais sa recherche non orientée devient un inconvénient. Lors d'un parcours, il ne recherche pas le chemin le plus court vers un point précis, mais analyse la totalité du graphe, et calcule le plus court chemin pour tous les points du graphe. On perd ainsi beaucoup de calcul pour des informations non nécessaires. L’algorithme renvoie une tableau de résultat, qui possède une entrée pour chaque nœud du graphe. A chaque nœud dans le tableau correspond le nœud à atteindre avant ce premier dans le cadre du plus court chemin.
+
+\paragraph{}
+L'utilisation d'une liste des nœuds explorés permet à l'algorithme de connaître sa progression. A chaque nœud est associé une distance à la source, initialisée à l'infini pour tous les nœuds, sauf pour le nœud source lui-même, initialisée à 0. Jusqu'à ce que tous les nœuds du graphe soit dans liste des nœuds explorées, on va considérer le nœud qui à la plus petite distance et qui n'a pas encore exploré. On va mettre ce nœud dans la liste des nœuds explorés. On met à jour la distance à la source de tous ces nœuds adjacents qui ne sont pas dans la liste des nœuds explorés. Cette mise à jour consiste à attribuer à cette distance le minimum entre sa valeur actuelle et l'addition de la distance à la source du nœud considéré et la distance entre le nœud considéré et le nœud adjacent. Ce calcul permet de savoir si le nœud considéré offre ou non un chemin plus court vers ses nœuds adjacents. En cas de modification de la distance à la source d'un nœud adjacent, on sait alors que le plus court chemin pour atteindre ce nœud passera par le nœud considéré.   
+
+\begin{algorithm}[H]
+ \KwData{Exploration : liste des nœuds explorés, Prédécesseur : tableau du nœud à atteindre pour atteindre un nœud dans le cas du plus court chemin, Distance : tableau de la distance des nœuds à la source, N : nombre total de point du graphe, Source : nœud source}
+ \KwResult{Tableau Distance et Prédécesseur remplis}
+
+ \For{i=0; i<N; i++}{
+ 		Prédécesseur[noeud(i)] = noeud[i]\linebreak
+ 		Distance[noeud(i)] = infini\linebreak
+ 	}
+
+ Distance[Source] = 0\linebreak
+  
+ \While{size(Exploration) < N}{
+  NoeudCourant = mindistance(Exploration, Distance) //On sélectionne le nœud qui a la plus courte distance à la source et qui n'a pas encore été exploré\linebreak\linebreak
+  \For{NoeudAdjacent dans noeudadjacent(NoeudCourant)}{
+ 		\If{NoeudAdjacent n'est pas dans Exploration}{
+ 			\If{Distance(NoeudCourant) + Chemin(NoeudAdjacent, NoeudCourant) < Distance(NoeudAdjacent)}{
+ 				Distance(NoeudAdjacent) = Distance(NoeudCourant) + Chemin(NoeudAdjacent, NoeudCourant)\linebreak
+ 				Prédécesseur(NoeudAdjacent) = NoeudCourant\linebreak
+ 			}
+ 		}
+ 	}
+ }
+ \caption{Algorithme de Dijkstra}
+\end{algorithm}
+
+			\subsubsection{A*}	
+\paragraph{}
+L'algorithme A* lance une recherche orientée vers une destination précise. Cette recherche est biaisée par une heuristique qui va permettre de développer certain chemin plutôt que d'autre. Les calculs s'effectuent sur deux listes, représentant les nœuds parcourus et la frontière, ensemble des nœuds candidat pour les futures recherches. Les nœuds possèdent un coût f=g+h, où g est la distance courante parcouru lors de l'exploration, et h la distance heuristique du nœud à la destination. Ce coût sera initialisé pour tout les nœuds à l'infini et affiner lorsque les nœuds seront rencontrer. 
+
+\paragraph{}
+Pour la suite du descriptif de A*, la liste des nœuds explorés sera appeler nœuds fermés et la frontière, les nœuds ouverts. Initialement, il n'y a pas de nœud fermés et seul la source est nœud ouvert. Jusqu'à ce que la liste des nœuds ouverts soit vide, ou que la destination soit atteint, on sélectionne dans les nœuds ouverts, le nœuds présentant le meilleur coût f. On extrait ce nœud des nœuds ouverts, puis est ajouté aux nœuds fermés. Des traitements sont ensuite effectués sur les nœuds adjacents à ce nœud, sauf si ces nœuds sont des nœuds fermés. Si le nœud n'est pas dans la liste des nœuds ouverts, il y est ajouté. Son coût est aussi calculé, par somme du coût du chemin courant effectué par l'algorithme (égal au coût du nœud considéré en premier lieu additionné au coût du chemin entre nœud considéré et nœud adjacent), et l'approximation de la distance du nœud à la source. Si le nœud est déjà dans les nœuds ouverts, on met à jour son coût, si le coût du chemin actuelle est plus intéressant que le coût du nœud.
+
+\begin{algorithm}[H]
+ \KwData{NoeudOuvert : liste des nœuds ouverts, NoeudFermé : liste des nœuds explorés, Prédécesseur : tableau de la distance des nœuds à la source, N : nombre total de point du graphe, Source : nœud source, Destination : nœud destination}
+ \KwResult{Liste ordonnée du plus court chemin de la Source à la Destination}
+
+ \For{i=0; i<N; i++}{
+ 		Prédécesseur[noeud(i)] = noeud[i]\linebreak
+ 	}
+
+ NoeudOuvert <- Source\linebreak
+
+ Distance[noeud(source)] = 0\linebreak
+  
+ \While{NoeudOuvert n'est pas vide}{
+  NoeudCourant = minf(NoeudOuvert) //On sélectionne le nœud de Noeud ouvert qui a le plus faible coût f=g+h\linebreak
+  Retirer(NoeudOuvert, NoeudCourant)\linebreak
+  NoeudFermé <- NoeudCourant\linebreak\linebreak
+  \For{NoeudAdjacent dans noeudadjacent(NoeudCourant) AND NoeudAdjacent n'est pas dans NoeudFermé}{
+ 		\If{NoeudAdjacent n'est pas dans NoeudOuvert}{
+ 			\If{Distance(NoeudCourant) + Chemin(NoeudAdjacent, NoeudCourant) < Distance(NoeudAdjacent)}{
+ 				Distance(NoeudAdjacent) = Distance(NoeudCourant) + Chemin(NoeudAdjacent, NoeudCourant)\linebreak
+ 				Prédécesseur(NoeudAdjacent) = NoeudCourant\linebreak
+ 			}
+ 		}
+ 	}
+ }
+ \caption{A*}
+\end{algorithm}
+
+			\subsubsection{IDA* (Iterative deepening A*)}
+\paragraph{}
+L'algorithme IDA* est une modification de l'algorithme A* étudié précédent. Il donc pour objectif d'établir le plus court chemin vers une destination précise. Il est aidé pour cela d'une heuristique qui le conduit à une recherche biaisée. Ce qui le différencie d'A*, c'est l'absence de liste pour retenir les nœuds visitées et il ne possède pas de réel frontière. 
+
+\paragraph{}
+En absence des ces informations, l'algorithme doit parcourir plusieurs fois le graphe à partir du départ vers la destination. Il possède un maximum, correspondant au meilleur chemin trouvé sur le parcours précédent. A chaque parcours, l'algorithme tout les chemins jusqu'à ce que le maximum soit dépassé. Les coûts de tous les chemins sont alors remontés, le plus petit est considérer comme nouveau maximum, et les recherches sont réinitialisées au départ. On répète le processus jusqu'à atteindre la destination.   
+			
+			\subsubsection{Uniform Cost Search}
+\paragraph{}			
+L'algorithme Uniform Cost Search peut être perçu comme une fusion entre les algorithmes Dijkstra et A*. Il garde la démarche de Dijkstra dans l'exploration du graphe, c'est-à-dire une exploration objectif de tout le graphe, mais qui va s'arrêter une fois la destination trouvée. Il exploite deux structures de donnée, des listes qui représente les nœuds explorées et une frontière, comme A*. L'algorithme s'avère assez coûteux en mémoire, car chaque nœud explorée doit contenir le plus chemin qui mène à lui, partant de la source.  
+
+\paragraph{}		
+L'algorithme débute son exploration à partir de la source, qui est alors le seul nœud présent dans la frontière. Il considère le nœud en question et le place dans la liste des nœuds explorés. Tous les nœuds adjacents au nœud source sont alors placés dans la frontière, leur coût d'accès mis à jour avec le coût du chemin courant, et leur plus court chemin sont uniquement constitué du nœud source. Jusqu'à ce que le nœud considéré soit la destination, on considère dans la frontière le nœud le plus accessible, pour le placer dans la liste des nœuds explorés. Les nœuds qui lui sont adjacents sont ajoutés à la frontière avec un court plus chemin égal au plus court chemin du nœud considéré auquel on ajoute ce dernier, sauf si ils ont été déjà explorées. Dans ce dernier cas, on met à jour leur plus court chemin si il s'avère que l'on vient de trouver un meilleur chemin pour ceux-ci.   
+
+			\subsubsection{RBFS (Recursive Best First Search)}
+\paragraph{}	
+L'algorithme RBFS se focalise sur la recherche du plus court chemin vers une destination précise à l'aide d'une exploration biaisée par une heuristique. Les structures de donnée de l'algorithme se base sur une liste des nœuds du graphe. La structure de donnée utilisée pour les nœuds permet le stockage d'un plus court chemin vers celui-ci qui pourra être mis à jour au fils des recherches.
+
+\paragraph{}	
+La particularité de cet algorithme est d'être récursif. Cette récursivité est utile à l'exploration à chaque de plusieurs voies possibles et terminer quel choix est le meilleur. A partir d'un nœud considérée, on met à jour les valeurs les coûts d'accès à ces successeurs (constituer de la valeur nécessaire pour atteindre le nœud lors du chemin considéré et d'une approximation de la distance du nœud à la destination), ainsi que la liste du plus court chemin pour atteindre ces successeurs. On va ensuite développer la voie qui présente le coût le plus intéressant (c'est à dire considérer le nœud successeur ouvrant sur cette voie), tout en gardant en mémoire la deuxième meilleur possibilité. Si il s'avère qu'au fils du développement du chemin son coût devient supérieur à la seconde possibilité, on arrête de développer ce chemin, et on remonte le coût du chemin développé, et on développe le second chemin, et on garde en mémoire le nouveau seconde meilleur coût (qui peut être le coût remonté de la première tentative). On considère au début la source et on termine lorsque la destination est considérée.  
+			
+			\subsubsection{SMA* (Simplified Memory Bounded A*)}	
+\paragraph{}	
+L'algorithme SMA* a pour objectif de palier au problème de mémoire que peut entraîner A*, dans le sens au celui-ci peut remplir la mémoire au fils de ses recherches. Si cela arriver dans la cas de SMA*, l'algorithme est capable d'effacer les informations de certaines nœuds, en retenant les coûts de chemins possibles en passant par ces nœuds. Il sera ainsi possible de développer le nœud si la recherche démontre que passer par ce nœud devient intéressant. Dans le modèle que nous avons développé, nous utilisé une mémoire virtuelle pour simuler plus facilement la saturation de celle-ci. Outre cela, l'algorithme utilise une pile et une structure de données pour le stockage des nœuds en mémoire. Cette structure de donnée permet de stocker le coût pour atteindre ce nœud depuis la source, mais aussi l'approximation du coût pour atteindre la destination, une liste de ces successeurs et de ces ancêtres. SMA* propose aussi une profondeur maximum, pour n'exploiter les nœuds qui ne sont qu'à une certaine distance de la source.
+
+\paragraph{}				
+La queue est initialement remplis par le seul nœud source. Cette queue est toujours trié par coût d'accès au nœud. (Selon la formule f=g+h, où g est le coût du chemin pour atteindre le nœud calculé pendant l'exploration, et h une approximation de la distance du nœud à la destination). C'est le nœud avec le plus petit coût d'accès qui sera considérer (l'algorithme s'arrête quand on arrive ce nœud est la destination), on l'appellera nœud courant. On commence à considérer son prochaine successeur, c'est-à-dire dans la liste de ces successeurs, celui qui n'a pas encore été considéré. On utilise un pointeur attaché au nœud pour savoir cela. Si la profondeur du nœud dépasse la limite (la profondeur étant la taille du chemin courant depuis la source vers ce nœud), on le place dans la queue, et on lui attribut la valeur infini pour f, sinon on met à jour cette valeur normalement (pour rappel f=g+h, où ici g est le coût pour aller jusqu'au nœud courant, additionné au coût du chemin entre le nœud courant et le nœud considéré, et h, une approximation de la distance du nœud considéré à la destination). Si ce nœud est le dernier successeur à considérer, on peut informer le nœud courant et ces ancêtres de la meilleur possibilité de chemin trouvée, et si tout les successeurs du nœud courant sont en mémoire, on peut enlever le nœud courant de le queue. 
+		
+\paragraph{}	
+En cas de saturation de la mémoire, on va décharger le nœud de la queue avec la plus mauvais coût f, et l'enlever de la liste des successeurs de son ancêtre, tout en faisant remonter son coût. On peux ainsi reconsidérer ce chemin si nécessaire. On recharge l'ancêtre en mémoire si celui-ci a été déchargé.
+		\subsection{Objet Évaluation et fichiers de log}
+\paragraph{}
+Le second outil nous permettant de comparer les algorithmes entre eux sont les objets Évaluation récoltant les données relatives à l'exécution de l'algorithme. Ces données sont les suivantes :
 
 \begin{itemize}
 	
