@@ -90,7 +90,7 @@ Les environnements correspondent aux graphes sur lesquels les algorithmes sont a
 			\subsection{Les algorithmes}
 				
 \paragraph{}
-Plusieurs algorithmes ont été implémentés afin de tester leur efficacité sur différents types d'environnements de différentes tailles. Leur point de départ et d'arrivée sont définis aléatoirement. Les algorithmes parcourent le graphe en explorant ses nœuds par accès directs.
+Plusieurs algorithmes de calcul de plus court chemin ont été choisis parmi différent algorithmes proposées afin de tester leur efficacité sur différents types d'environnements de différentes tailles. Nous avons choisis des algorithmes ayant des démarches et des volontés d'optimisations très différentes. Si certains vont trouver un compromis entre mémoire et temps de calcul, d'autres vont rechercher l'économie en mémoire. Certains de ces algorithmes ont d'ailleurs une recherche objective. Le but a été de rassemblé des algorithmes au profil différent pour comparer leur comportement. Leur point de départ et d'arrivée sont définis aléatoirement. Les algorithmes parcourent le graphe en explorant ses nœuds par accès directs.
 		
 							
 		\subsection{Lancer le projet}
@@ -176,6 +176,10 @@ Les données enregistrées sont la graine (le timestamp lors de la première cr�
 
 \paragraph{}
 L'objet Seed de notre programme permet, à partir d'un fichier texte formaté, de reproduire à l'identique le graphe d'une environnement.
+
+			\subsubsection{Les dimensions non-uniformes}
+\paragraph{}
+Il a été décidé d'implémenter un système de dimension non uniforme. La valeur d'un chemin pouvant varier selon sa position sur la carte, quand bien même sa distance euclidienne n'aurait pas changer. Cela permet de simuler la présence sur une carte d'un relief difficile. 
 
 			\subsubsection{Les refactorisations du modèle des environnements}
 
@@ -366,6 +370,13 @@ Lors de la première phase de développement, nous avons réalisé une interface
 
 \chapter{Résultats et interprétation}
 	
+	\section{Un logiciel de test}	
+\paragraph{}
+L'ensemble du projet a pris la forme d'une logiciel permettant la création d’environnement avec génération aléatoire d'une source et d'une destination, l’exécution d'algorithme sur ces environnements, et le calcul de performances de ces exécutions. Parmi les algorithmes cités plus haut, seul SMA* n'a pas passé les tests avec succès, et reste pour le moment en développement. 
+
+\paragraph{}
+Le programme nous offre la possible d'effectuer des séries de tests sur des environnements différents. Cela nous est utile pour établir un descriptif des avantages et inconvénients des algorithmes et décrire leur comportement face à différentes situations et cela grâce à l'évaluation des performances. 
+	
 	\section{Exécution des algorithmes sur les environnements}
 	
 	Nous avons décidé de comparer entre eux les algorithmes partageant certaines caractéristiques communes. \linebreak
@@ -411,6 +422,35 @@ Lors de la première phase de développement, nous avons réalisé une interface
 		\subsection{Interprétation des résultats}
 
 \chapter{Discussion globale}
+
+\section{Notre approche}
+\paragraph{}
+Ce que nous devions réaliser est un outil capable de calculer les performances sur certains algorithmes d'intelligence artificielle, afin de pouvoir comparer ces performances. Nous avions donc besoin de créer un outil de création de carte, permettant de créer des environnements au propriété diverses (nombre de dimensions, uniformité ou non des dimensions), où les algorithmes peuvent s'exécuter, et ainsi révéler les spécificités de chacun, et leur réaction face à des situations non triviales.  
+
+\section{Notre contribution}
+\paragraph{}
+Nous avons mis au point un logiciel capable à la fois de créer des cartes de tests aléatoires à partir de graine gardé en mémoire, puis d'exécuter les algorithmes sur ces cartes dans la recherche d'un plus court chemin entre une source et une destination. Ce programme possède une multitude de configuration qui permette d'effectuer une série de test à la suite pour des cartes différentes. Il est donc possible de le lancer sur des machines dotées de fortes puissance de mémoire et/ou de calcul, comme des clusters, pour générer des environnements de million de points pour y effectuer des tests.
+
+\paragraph{}
+Nous avons effectués nos propres tests, liés à notre propre système de calcul de performance. Ceux-ci nous ont permit de vérifier les propriétés théoriques des algorithmes, ainsi que les avantages et inconvénients qu'ils peuvent apporter. Ainsi nous avons prouvé que même si IDA* semble être une bonne alternative à A* pour des systèmes ne disposant pas de beaucoup de mémoire, celui-ci devra être munis d'une bonne puissance de calcul en compensation, que des algorithmes comme RBFS offre peu d'alternative à des algorithmes comme A*, du fait de sa forte récursion.   
+
+\section{Les améliorations possibles}
+\paragraph{}
+Du fait de son architecture respectant cloisonnement les différents types de modèle, notamment les cartes, les algorithmes d'intelligence artificielle et les critères d'évaluation de performance, il est tout à fait possible d'implémenter de nouveaux algorithmes, de nouveaux critères à l'évaluation, mais aussi de nouveaux moyens de générer des cartes. On peut penser à l'ajout de critères à la création de ces cartes, mais aussi de nouveaux algorithmes pour générer les cartes. 
+
+\paragraph{}
+Une vue graphique est disponible, mais inachevée, car son développement a été abandonné pour se concentrer sur une vue en console. Elle permettait alors de voir les cartes générées. Notre objectif était d'afficher le parcours de l'algorithme sur la carte en mettant en surbrillance les nœuds considérés et les nœuds mis-à-jour. Il est toujours possible de compléter cette interface, elle serait très utile pour comprendre l'interaction d'algorithme comme A*, face à certains types de cartes complexes. 
+
+\paragraph{}
+L'algorithme SMA* est implémenté, mais n'a pas encore passé avec succès les tests. Une mémoire simulée est déjà disponible, ainsi que le reste du code, et le calcul des critères de performance. Il ne reste qu'à débugger la démarche de l'algorithme pour que celui-ci retourne des résultats exploitables.  
+
+\section{Les voies de recherche possibles}
+\paragraph{}
+Nous avons effectués de recherche sur les méthodes de génération de carte aléatoire. Nous n'avons pas trouvé de réel méthode à la création de graphe aléatoire connexe, la connexité étant une propriété nécessaire à nos graphes. Sans cela, il serait possible de n'avoir aucun chemin entre deux points pris aléatoirement dans le graphe. Développer ces applications nous seraient utiles pour supprimer notre dépendance aux grilles, et en apprendre d'avantage sur les comportements de nos algorithmes d'intelligence artificielle.
+
+\paragraph{}
+Nous avons remarqué que nos algorithmes d'intelligence artificielle pouvait privilégier la mémoire à la puissance de calcul, comme c'est la cas pour IDA* et RBFS développé à la fin des années 80, quand la mémoire était encore cher. Il serait intéressé de voir si la création d'algorithme de recherche du plus court chemin orientée (c'est-à-dire avec une heuristique) privilégiant la puissance de calcul au détriment de la mémoire, qui serait alors surexploitée.
+
 
 \clearpage
 \renewcommand{\tocbibname}{Bibliographie / Webographie}
