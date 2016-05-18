@@ -20,6 +20,7 @@ public class Main {
 				break;
 				
 			case "--view":
+				System.out.println("COUCOU");
 				MainWindow.main(null);
 				break;
 				

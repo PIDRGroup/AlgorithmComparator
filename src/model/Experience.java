@@ -71,6 +71,10 @@ public class Experience implements Serializable{
 		}
 	}
 	
+	public void clearAlgos(){
+		algos.clear();
+	}
+	
 	public void launch() throws UnknownPlaceException{
 		for(Algorithm a : algos){
 			System.out.println("LAUNCHING -- "+a.getName()+" -- ");
