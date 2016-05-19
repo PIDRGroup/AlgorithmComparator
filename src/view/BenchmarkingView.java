@@ -64,9 +64,9 @@ public class BenchmarkingView {
 		algos.add(new IDAStar());
 		exp.addAlgos(algos);
 		
-		seeds.add(new Seed(System.nanoTime(), new int[]{100, 100}, -600, 1200)); //10 000
-		seeds.add(new Seed(System.nanoTime(), new int[]{20, 10, 50}, -600, 1200)); //10 000
-		seeds.add(new Seed(System.nanoTime(), new int[]{40, 5, 2, 25}, -600, 1200)); //10 000
+		seeds.add(new Seed(System.nanoTime(), new int[]{100, 10}, -600, 1200)); //1000
+		seeds.add(new Seed(System.nanoTime(), new int[]{20, 10, 5}, -600, 1200)); //1000
+		seeds.add(new Seed(System.nanoTime(), new int[]{4, 5, 2, 25}, -600, 1200)); //1000
 		
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < seeds.size(); j++) {

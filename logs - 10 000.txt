@@ -1,0 +1,18 @@
+DIJKSTRA: nb_total_1er_visite=10000, nb_total_visite=39646, nb_total_noeud_env=10000
+**1** dist=703.0, noeud=38, t=59850 ms
+***** nb_1er_visite=2747, nb_visite=10505, nb_noeud_env=2599
+A*: nb_total_1er_visite=285, nb_total_visite=6280, nb_total_noeud_env=285
+**1** dist=722.0, noeud=37, t=102 ms
+***** nb_1er_visite=283, nb_visite=6226, nb_noeud_env=283
+**2** dist=703.0, noeud=38, t=103 ms
+***** nb_1er_visite=285, nb_visite=6280, nb_noeud_env=285
+UNIFORM COST SEARCH: nb_total_1er_visite=2893, nb_total_visite=17041347, nb_total_noeud_env=2743
+**1** dist=703.0, noeud=38, t=13654 ms
+***** nb_1er_visite=2742, nb_visite=15314304, nb_noeud_env=2596
+**2** dist=703.0, noeud=38, t=15925 ms
+***** nb_1er_visite=2893, nb_visite=17041347, nb_noeud_env=2743
+IDA*: nb_total_1er_visite=285, nb_total_visite=44284355, nb_total_noeud_env=285
+**1** dist=703.0, noeud=38, t=2065175 ms
+***** nb_1er_visite=283, nb_visite=44284351, nb_noeud_env=283
+**2** dist=703.0, noeud=38, t=2065175 ms
+***** nb_1er_visite=285, nb_visite=44284355, nb_noeud_env=285

@@ -6,7 +6,7 @@
 \usepackage{float}
 
 \def\reportTitle{Comparateur d'algorithmes de plus court chemin} % Titre du mémoire
-\def\reportLongTitle{Benchmarking d'algorithmes de plus court chemins sur grilles générées aléatoirement} % Titre plus long du mémoire
+\def\reportLongTitle{Benchmarking d'algorithmes de plus court chemins sur grilles générées par graine} % Titre plus long du mémoire
 
 \def\reportAuthor{Vincent \textsc{Albert}\\ Nicolas \textsc{Bédrine}}
 \def\reportAuthorEmail{\email{vincent.albert@telecomnancy.eu}\\ \email{nicolas.bedrine@telecomnancy.eu}} % Courriel de l'élève
@@ -41,7 +41,7 @@
 \addcontentsline{toc}{chapter}{Remerciements}
 
 {\em
-Nous tenons à remercier toutes les personnes nous ayant accompagnés durant la réalisation de ce projet, et en particulier de M.~Buffet pour nous avoir encadré durant toute la durée du projet et pour nous avoir prodigué ses précieux conseils. \\
+Nous tenons à remercier toutes les personnes nous ayant accompagnés durant la réalisation de ce projet, et en particulier M.~\textsc{Buffet} pour nous avoir encadré et pour nous avoir prodigué ses précieux conseils. \\
 Nous remercions aussi M.~Jean-François \textsc{Scheid} qui a supervisé l'organisation des PIDRs et de Mme~Isabelle \textsc{Chenet}, secrétaire des PIDRs. \\
 Enfin, nous remercions toute l'équipe pédagogique et administrative de TELECOM Nancy pour nous fournir un cadre d'études adéquat à la réalisation de ce projet. \\
 }
@@ -50,10 +50,17 @@ Enfin, nous remercions toute l'équipe pédagogique et administrative de TELECOM
 
 \section*{Avant-propos}
 \addcontentsline{toc}{chapter}{Avant-propos}
-Ce rapport est le résultat d'un projet de découverte de la recherche de quatre mois effectué dans le cadre du sujet fourni par M.~Olivier \textsc{Buffet}, chercheur au Loria. \\
-Le projet a été réalise pour l'équipe Maia (MAchines Intelligentes Autonomes), groupe de recherches centré sur les comportements décisionnels intelligents. Ses principaux champs de recherches sont les systèmes multi-agents et complexes ainsi que les systèmes décisionnels incertains. \\
-N'ayant que peu d'expérience dans le domaine de l'Intelligence Artificielle mais étant très intéressé par cette dernière, nous avons choisi ce sujet afin d'en approfondir nos connaissances. Étant donné notre méconnaissance de la plupart des algorithmes de plus courts chemin, nous nous sommes demandés quelles en sont les principales différences. \\ 
-Notre étude portant sur l'implémentation des algorithmes ainsi que de leurs comparaison au travers de batteries de tests était donc l'occasion d'en apprendre plus sur leur fonctionnement.
+\paragraph{}
+Ce rapport est le résultat d'un projet de découverte de la recherche de quatre mois effectué dans le cadre du sujet fourni par M.~Olivier \textsc{Buffet}, chercheur au Loria.
+
+\paragraph{}
+Le projet a été réalisé pour l'équipe Maia (MAchines Intelligentes Autonomes), groupe de recherches centré sur les comportements décisionnels intelligents. Ses principaux champs de recherches sont les systèmes multi-agents et complexes ainsi que les systèmes décisionnels incertains.
+
+\paragraph{}
+N'ayant que peu d'expérience dans le domaine de l'Intelligence Artificielle mais étant très intéressés par cette dernière, nous avons choisi ce sujet afin d'en approfondir nos connaissances. 
+
+\paragraph{}
+Notre méconnaissance de la plupart des algorithmes de plus courts chemin nous a poussé à nous demander quelles en sont les principales différences. Notre étude portant sur l'implémentation des algorithmes ainsi que de leurs comparaison au travers de batteries de tests était donc l'occasion d'en apprendre plus sur leur fonctionnement.
 
 \clearpage
 
@@ -78,7 +85,7 @@ Cependant, bien que ces algorithmes soient connus et maîtrisés, il est diffici
 	\section{Présentation du fonctionnement global et de l'utilisation du logiciel}
 
 \paragraph{}
-Le projet se propose donc de permettre de réaliser des séquences de tests de différents algorithmes sélectionnés par l'utilisateur sur des environnements différents générés aléatoirement.
+Le projet se propose donc de permettre de réaliser des séquences de tests de différents algorithmes sélectionnés par l'utilisateur sur des environnements différents générés par graine.
 
 		\subsection{Fonctionnement du projet}
 		
@@ -463,10 +470,12 @@ Nous avons remarqué que nos algorithmes d'intelligence artificielle pouvait pri
 \addcontentsline{toc}{chapter}{Glossaire}
 
 \begin{itemize}
-	\item[•] UCS : Uniform Cost Search
-	\item[•] RBFS : Recursive Best For Search
-	\item[•] IDA* : Iterative Deepening A*
-	\item[•] SMA* : Simplified Memory-bound A*
+	\item[•] UCS : Uniform Cost Search, algorithme de recherche de plus court chemin
+	\item[•] RBFS : Recursive Best For Search, algorithme de recherche de plus court chemin
+	\item[•] IDA* : Iterative Deepening A*, algorithme de recherche de plus court chemin
+	\item[•] SMA* : Simplified Memory-bound A*, algorithme de recherche de plus court chemin
+	\item[•] Hypercube : généralisation à n-dimensions du carré (aussi appelé n-cube quand n >= 3)
+	\item[•] Grilles à n-dimensions : grilles de M points à N dimensions, qui peut-être vu comme la généralisation d'un hypercube à M points.
 \end{itemize}
 
 \clearpage
@@ -477,7 +486,7 @@ Nous avons remarqué que nos algorithmes d'intelligence artificielle pouvait pri
 \part*{Annexes}
 \addcontentsline{toc}{part}{Annexes}
 
-\chapter{Première Annexe}
+\chapter{Algorithme de Dijkstra}
 \begin{algorithm}[H]
  \KwData{Exploration : liste des nœuds explorés, Prédécesseur : tableau du nœud à atteindre pour atteindre un nœud dans le cas du plus court chemin, Distance : tableau de la distance des nœuds à la source, N : nombre total de point du graphe, Source : nœud source}
  \KwResult{Tableau Distance et Prédécesseur remplis}
@@ -505,7 +514,7 @@ Nous avons remarqué que nos algorithmes d'intelligence artificielle pouvait pri
 
 \clearpage
 
-\chapter{Seconde Annexe}
+\chapter{Algorithme d'IDA*}
 
 \begin{algorithm}[H]
  \KwData{limite : valeur que l'on s'impose à chaque recherche, Source : nœud source, Destination : nœud destination}
@@ -555,7 +564,7 @@ Nous avons remarqué que nos algorithmes d'intelligence artificielle pouvait pri
 
 \clearpage
 
-\chapter{Troisième Annexe}
+\chapter{Algorithme d'UCS}
 
 \begin{algorithm}[H]
  \KwData{Exploration : liste des nœuds explorés, Frontière : liste des nœuds ouverts, Distance : tableau de la distance des nœuds à la source, Parcours : tableau des plus courant chemin pour atteindre un nœud, N : nombre total de point du graphe, Source : nœud source, Destination : nœud destination}
@@ -591,7 +600,7 @@ Nous avons remarqué que nos algorithmes d'intelligence artificielle pouvait pri
 
 \clearpage
 
-\chapter{Quatrième Annexe}
+\chapter{Algorithme de RBFS}
 
 {\small
 \begin{algorithm}[H]
@@ -636,7 +645,7 @@ Nous avons remarqué que nos algorithmes d'intelligence artificielle pouvait pri
 
 \clearpage
 
-\chapter{Cinquième Annexe}
+\chapter{Algorithme de SMA*}
 
 {\footnotesize
 \begin{algorithm}[H]
@@ -697,13 +706,11 @@ Nous avons remarqué que nos algorithmes d'intelligence artificielle pouvait pri
 \addcontentsline{toc}{chapter}{Résumé}
 
 \paragraph{Le sujet en bref.}
-Le sujet qui a été choisi porte sur la réalisation d'un logiciel de benchmarking permettant de tester et de comparer différents algorithmes de recherche de plus court chemin sur des environnements diversifiés générés aléatoirement sur des séquences de tests paramétrées dans un fichier de configuration. \linebreak
+Le sujet qui a été choisi porte sur la réalisation d'un logiciel de benchmarking permettant de tester et de comparer différents algorithmes de recherche de plus court chemin sur des environnements générés par graine sur des séquences de tests. \linebreak
 
 \paragraph{Les fonctionnalités implémentées.}
 
-\paragraph{Les résultats.}
-
-\paragraph{Interprétation.}
+Génération et sauvegarde de grilles à N dimensions, benchmarkings de création d'environnement, visualisation graphique d'environnement 2D, création d'expérience de déploiement d'algorithmes sur les grilles, benchmarkings de déploiements d'algorithmes.
 
 {\bf Mots-clés :} algorithmes de plus court chemin, théorie des graphes, environnements aléatoires, benchmarking, interface utilisateur, graines.
 
