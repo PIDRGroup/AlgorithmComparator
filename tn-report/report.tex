@@ -32,7 +32,7 @@
 \pagenumbering{roman}
 
 \insertAntiPlagiarismAgreement{\textsc{Albert}, Vincent}{1205033068}
-\insertAntiPlagiarismAgreement{\textsc{Bédrine}, Nicolas}{}
+\insertAntiPlagiarismAgreement{\textsc{Bédrine}, Nicolas}{0905020230}
 
 \clearpage
 \makesecondtitle
@@ -110,6 +110,12 @@ Afin de répondre à tout type de besoins, le jar exécutable du logiciel prend 
 \paragraph{}
 En lançant le logiciel avec la commande : \emph{java -jar AlgoComparator.jar --view}, celui-ci se lance en mode graphique. Cependant cette option a été implémentée au début du développement, avant que nous nous rendions compte qu'elle ne nous était pas utile. Elle a donc été délaissée et n'est plus fonctionnelle.
 
+\begin{figure}[!ht]
+    \includegraphics[width=0.5\textwidth]{./figures/ac_accueil.jpg}
+    \includegraphics[width=0.5\textwidth]{./figures/ac_exp.jpg}
+    \caption{Test graphique de création d'une grille}
+\end{figure}
+
 			\subsubsection{En console avec dialogue utilisateur}
 
 \paragraph{}
@@ -117,15 +123,23 @@ En lançant le logiciel avec la commande : \emph{java -jar AlgoComparator.jar --
 
 			\subsubsection{En console en mode de benchmarking}
 			
-\paragraph{}
-En lançant le logiciel avec la commande : \emph{java -jar AlgoComparator.jar --bench}, celui-ci se lance en mode benchmarking. Il va charger la configuration dans le fichier bench.conf afin de déterminer la taille et le nombre de dimensions des environnements à générer. Un seul dialogue se lance avec l'utilisateur en début d'exécution pour lui demander les algorithmes qu'il veut lancer. Tous les résultats sont stockés dans le fichier "logs.txt". \linebreak
+%\paragraph{}
+En lançant le logiciel avec la commande : \emph{java -jar AlgoComparator.jar --bench}, celui-ci se lance en mode benchmarking. Il va charger la configuration dans le fichier bench.conf afin de déterminer la taille et le nombre de dimensions des environnements à générer. Un seul dialogue se lance avec l'utilisateur en début d'exécution pour lui demander les algorithmes qu'il veut lancer. Tous les résultats sont stockés dans le fichier "logs.txt". %\linebreak
+\newline
 \emph{Note: l'option --bench all permet de lancer un benchmarking sur tous les algorithmes existants et supprime la séquence de dialogue.}
+\cite{AIMA}
 			
 			\subsubsection{Tester la génération d'environnements}
 
 \paragraph{}
 Etant donné que nous avons rencontré des difficultés lors de la génération des environnements durant une certaine période du développement, nous avons aussi ajouté une option permettant de lancer un benchmarking sur la création d'environnements de 10 à plusieurs millions de points. Cette option est accessible avec la commande \emph{java -jar AlgoComparator.jar --test consenv}. \linebreak
 Il est aussi possible d'avoir le test de l'affichage graphique d'un environnement en remplaçant l'option \textsc{consenv} par l'option \textsc{graphenv}. Ceci peut-être pratique pour vérifier que la création des liens entre les points se fait correctement.
+
+\begin{figure}[H]
+	\centering
+    \includegraphics[width=0.6\textwidth]{./figures/ac_grille.jpg}
+    \caption{Test graphique de création d'une grille}
+\end{figure}
 
 \clearpage
 
@@ -248,7 +262,7 @@ Voici un tableau comparatif des différentes versions de l'algorithme de créati
      3\up{ème} version & 2 & - & - & 13 & 16 & 23 & 368 & 512 & 746  & 14 713 & 21 697 & 37 250 \\ \hline
    \end{tabular}
  \end{center}
- \caption{Tableau récapitulatif des benchmarkings}
+ \caption{Tableau récapitulatif des benchmarkings de création d'environnements}
 \end{table}
 
 	\subsection{Les différents algorithmes implémentés}
@@ -258,9 +272,8 @@ Nous allons maintenant présenter les différents algorithmes mis en place dans 
 	
 \subsubsection{A*}	
 \paragraph{}
-L'algorithme A* lance une recherche orientée vers une destination précise. Cette recherche est biaisée par une heuristique qui va permettre de développer certain chemin plutôt que d'autre. Les calculs s'effectuent sur deux listes, représentant les nœuds parcourus et la frontière, ensemble des nœuds candidat pour les futures recherches. Les nœuds possèdent un coût f=g+h, où g est la distance courante parcouru lors de l'exploration, et h la distance heuristique du nœud à la destination. Ce coût sera initialisé pour tout les nœuds à l'infini et affiner lorsque les nœuds seront rencontrer. 
+L'algorithme A* lance une recherche orientée vers une destination précise. Cette recherche est biaisée par une heuristique qui va permettre de développer certain chemin plutôt que d'autre. Les calculs s'effectuent sur deux listes, représentant les nœuds parcourus et la frontière, ensemble des nœuds candidat pour les futures recherches. Les nœuds possèdent un coût f=g+h, où g est la distance courante parcouru lors de l'exploration, et h la distance heuristique du nœud à la destination. Ce coût sera initialisé pour tout les nœuds à l'infini et affiner lorsque les nœuds seront rencontrer. \linebreak
 
-\paragraph{}
 Pour la suite du descriptif de A*, la liste des nœuds explorés sera appeler nœuds fermés et la frontière, les nœuds ouverts. Initialement, il n'y a pas de nœud fermés et seul la source est nœud ouvert. Jusqu'à ce que la liste des nœuds ouverts soit vide, ou que la destination soit atteint, on sélectionne dans les nœuds ouverts, le nœuds présentant le meilleur coût f. On extrait ce nœud des nœuds ouverts, puis est ajouté aux nœuds fermés. Des traitements sont ensuite effectués sur les nœuds adjacents à ce nœud, sauf si ces nœuds sont des nœuds fermés. Si le nœud n'est pas dans la liste des nœuds ouverts, il y est ajouté. Son coût est aussi calculé, par somme du coût du chemin courant effectué par l'algorithme (égal au coût du nœud considéré en premier lieu additionné au coût du chemin entre nœud considéré et nœud adjacent), et l'approximation de la distance du nœud à la source. Si le nœud est déjà dans les nœuds ouverts, on met à jour son coût, si le coût du chemin actuelle est plus intéressant que le coût du nœud.
 
 \begin{algorithm}[H]
@@ -386,45 +399,45 @@ Le programme nous offre la possible d'effectuer des séries de tests sur des env
 	
 	\section{Exécution des algorithmes sur les environnements}
 	
-	Nous avons décidé de comparer entre eux les algorithmes partageant certaines caractéristiques communes. \linebreak
-	Dans un premier temps, nous comparerons donc IDA* et RBFS, ces deux algorithmes ayant une distance limite. Étant donné la vitesse d'exécution de RBFS, nous limiterons la dimension des grilles sur lesquelles ils seront déroulés à 25 noeuds. \linebreak
-	Ensuite, nous comparerons les trois derniers algorithmes restants, Dijkstra, A* et Uniform Cost Search. UCS est semblable à un A* avec une heuristique à 0, et UCS est emblable à Dijkstra mais s'arrête quand il atteint l'objectif. 
+	Nous avons réalisé des benchmarkings des algorithmes fonctionnels afin de les comparer. Pour avoir de plus amples critères de comparaisons, nous en avons réalisé un sur un environnement réduit de 100 points, et un autre sur un environnement étendu de 10 000 points. Etant donné le temps d'exécution sur 10 000 points, les tests n'ont été réalisés qu'en 2D. Un cluster aurait pu nous être bénéfique pour cette partie.
 	
-		\subsection{Présentation des résultats et comparaison de IDA* et RBFS}
-		\subsubsection{Résultats et comparaison de IDA* et RBFS}
+		\subsection{Benchmarking sur 100 points}
 		
-\begin{table}[h]
+\begin{table}[H]
 \begin{center}
    \begin{tabular}{| l | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r |}
      \hline
-      \textbf{Version} & \multicolumn{3}{c|}{\textbf{Critère 1}} & \multicolumn{3}{c|}{\textbf{Critère 2}} & \multicolumn{3}{c|}{\textbf{Critère 3}} & \multicolumn{3}{c|}{\textbf{Critère 4}} \\
-     \hline
-     \cline{2-5}
-    & \textbf{2D} & \textbf{3D} & \textbf{4D} & \textbf{2D} & \textbf{3D} & \textbf{4D} & \textbf{2D} & \textbf{3D} & \textbf{4D} & \textbf{2D} & \textbf{3D} & \textbf{4D}\\ \hline
-     IDA* &  &  &  &  &  &  & & &  & & &   \\ \hline
-     RBFS version &  &  &  &  &  &  &  & &  &  &  &   \\ \hline
-   \end{tabular}
- \end{center}
- \caption{Tableau récapitulatif des benchmarkings sur IDA* et RBFS}
-\end{table}		
-
-		\subsubsection{Résultats et comparaison de Dijkstra, A* et UCS}
-		
-\begin{table}[h]
-\begin{center}
-   \begin{tabular}{| l | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r |}
-     \hline
-      \textbf{Version} & \multicolumn{3}{c|}{\textbf{Critère 1}} & \multicolumn{3}{c|}{\textbf{Critère 2}} & \multicolumn{3}{c|}{\textbf{Critère 3}} & \multicolumn{3}{c|}{\textbf{Critère 4}} \\
+      \textbf{Version} & \multicolumn{3}{c|}{\textbf{Noeuds visités}} & \multicolumn{3}{c|}{\textbf{Nombre de visites}} & \multicolumn{3}{c|}{\textbf{Nombre de noeuds envisagés}} & \multicolumn{3}{c|}{\textbf{Taille du chemin}} \\
      \hline
      \cline{2-5}
     & \textbf{2D} & \textbf{3D} & \textbf{4D} & \textbf{2D} & \textbf{3D} & \textbf{4D} & \textbf{2D} & \textbf{3D} & \textbf{4D} & \textbf{2D} & \textbf{3D} & \textbf{4D}\\ \hline
      Dijkstra &  &  &  &  &  &  & & &  & & & \\ \hline
      A* &  &  &  &  &  &  &  &  &  &  &  &   \\ \hline
       UCS &  &  &  &  &  &  &  &  &  &  &  &   \\ \hline
+      IDA* &  &  &  &  &  &  & & &  & & &   \\ \hline
    \end{tabular}
  \end{center}
- \caption{Tableau récapitulatif des benchmarkings sur Dijkstra, A* et UCS}
-\end{table}	
+ \caption{Tableau récapitulatif des benchmarkings sur 100 points}
+\end{table}		
+
+\subsection{Benchmarking sur 10 000 points}
+		
+\begin{table}[H]
+\begin{center}
+   \begin{tabular}{| l | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r |}
+     \hline
+      \textbf{Version} & \textbf{Noeuds visités} & \textbf{Nombre de visites} & \textbf{Nombre de noeuds envisagés} & \textbf{Taille du chemin} \\
+     \hline
+     \cline{2-5}
+    & \textbf{2D} & \textbf{2D} & \textbf{2D} & \textbf{2D} \\ \hline
+     Dijkstra &  2 747 & 10 505 & 2 599 & 38  \\ \hline
+     A* & 285 & 6 280 & 285 & 38   \\ \hline
+      UCS & 2 893 & 17 041 347 & 2 596 & 38   \\ \hline
+      IDA* & 285 & 44 284 355 & 385 & 38  \\ \hline
+   \end{tabular}
+ \end{center}
+ \caption{Tableau récapitulatif des benchmarkings sur 10 000 points}
+\end{table}
 		
 		\subsection{Interprétation des résultats}
 
@@ -461,8 +474,8 @@ Nous avons remarqué que nos algorithmes d'intelligence artificielle pouvait pri
 
 \clearpage
 \renewcommand{\tocbibname}{Bibliographie / Webographie}
-\bibliography{example} % See example.bib 
 \bibliographystyle{plain}
+\bibliography{example} % See example.bib 
 
 \clearpage
 
@@ -520,43 +533,43 @@ Nous avons remarqué que nos algorithmes d'intelligence artificielle pouvait pri
  \KwData{limite : valeur que l'on s'impose à chaque recherche, Source : nœud source, Destination : nœud destination}
  \KwResult{Parcours : Liste ordonnée du plus court chemin de la Source à la Destination}
 
- limite = h(Source)\linebreak
+ limite = h(Source)\;
   
  \While{true}{
- 	retour = recherche(Source, 0, limite)\linebreak
+ 	retour = recherche(Source, 0, limite)\;
  	\If{retour = -1}{
-		break\linebreak
+		break\;
 	} 
-	//Fin de l'algorithme\linebreak
-	limit = retour\linebreak
+	//Fin de l'algorithme\;
+	limit = retour\;
  }
 \SetKwProg{Fn}{Function}{}{}
 \Fn{recherche (noeud, g, limite)}{
-	f = g + h(noeud)\linebreak
+	f = g + h(noeud)\;
 	\If{f > limit}{
-		return f\linebreak
+		return f\;
 	}
 	
 	\If{noeud = Destination}{
-		Parcours <- noeud\linebreak
-		return -1\linebreak
+		Parcours <- noeud\;
+		return -1\;
 	}
 	
-	min = infini	
+	min = infini\;	
 	
 	\For{NoeudAdjacent dans noeudadjacent(noeud)}{
-		retour = Recherche(NoeudAdjacent, g+Chemin(noeud, NoeudAdjacent), limit)\linebreak
+		retour = Recherche(NoeudAdjacent, g+Chemin(noeud, NoeudAdjacent), limit)\;
 		\If{retour = -1}{
-			Parcours <- NoeudAdjacent\linebreak
-			return -1\linebreak
+			Parcours <- NoeudAdjacent\;
+			return -1\;
 		}
 		
 		\If{retour < min}{
-			min = retour\linebreak
+			min = retour\;
 		}
 	}
 	
-	return retour\linebreak
+	return retour\;
 }
  
  \caption{Algorithme IDA*}

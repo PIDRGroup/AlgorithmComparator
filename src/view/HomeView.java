@@ -82,7 +82,7 @@ public class HomeView extends JPanel{
 			}
 		}));
 		file_chooser = new JFileChooser();
-		file_chooser.setFileFilter(new FileNameExtensionFilter("Fichiers de rï¿½sultats d'expï¿½rience (.xp, .exp)", "xp", "exp"));
+		file_chooser.setFileFilter(new FileNameExtensionFilter("Fichiers de résultats d'expérience (.xp, .exp)", "xp", "exp"));
 		
 		btn_browse.addActionListener(new ActionListener() {
 			@Override
@@ -99,7 +99,7 @@ public class HomeView extends JPanel{
 		
 		//On crï¿½e la zonebox
 		panel_container = new JPanel();
-		TitledBorder border = new TitledBorder("Expï¿½riences sauvegardï¿½es");
+		TitledBorder border = new TitledBorder("Expï¿½riences sauvegardées");
 		panel_container.setBorder(border);
 		
 		panel_container.setLayout(new BorderLayout());
@@ -107,8 +107,8 @@ public class HomeView extends JPanel{
 		panel_container.add(panel_browse, BorderLayout.SOUTH);
 		
 		//On crï¿½e les boutons principaux.
-		btn_new = new JButton("Crï¿½er une nouvelle expï¿½rience");
-		btn_load = new JButton("Charger l'expï¿½rience sï¿½lectionï¿½e");
+		btn_new = new JButton("Créer une nouvelle expérience");
+		btn_load = new JButton("Charger l'expérience sélectionée");
 		
 		btn_new.addActionListener(new ActionListener() {
 			@Override
