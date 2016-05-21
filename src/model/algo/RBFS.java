@@ -10,13 +10,13 @@ public class RBFS extends Algorithm{
 
 	private Environment world;
 	private Place destination;
-	private ArrayList<Node> noeudenvisage;
+	private ArrayList<Place> noeudenvisage;
 	private double previouscost;
 	
 	public RBFS(){
 		path = new ArrayList<Place>();
 		eval = new Evaluation();
-		noeudenvisage = new ArrayList<Node>();
+		noeudenvisage = new ArrayList<Place>();
 		previouscost = Double.MAX_VALUE;
 	}
 	
@@ -52,8 +52,19 @@ public class RBFS extends Algorithm{
 		
 		System.out.println(f_limit);
 		
-		if (!this.noeudenvisage.contains(current)){
-			this.noeudenvisage.add(current);
+		Node noeudcopie;
+		Node copienoeud;
+		ArrayList<Node> noeudclone = new ArrayList<Node>();
+		
+		for (int i = 0; i < noeud.size(); i ++){
+			noeudcopie = noeud.get(i);
+			copienoeud = new Node(noeudcopie.getstat(), noeudcopie.getpathcost(), (ArrayList<Node>) noeudcopie.getsolvation().clone());
+			copienoeud.setG(noeudcopie.getG());
+			noeudclone.add(copienoeud);
+		}
+		
+		if (!this.noeudenvisage.contains(current.getstat())){
+			this.noeudenvisage.add(current.getstat());
 			this.eval.newNoeudEnvisage();
 		}
 		
@@ -93,10 +104,10 @@ public class RBFS extends Algorithm{
 		ArrayList<Node> currentsolvation = current.getsolvation();
 		currentsolvation.add(current);
 		
-		for (int i = 0; i < noeud.size(); i++){
+		for (int i = 0; i < noeudclone.size(); i++){
 			try {
-				if(world.get(current.getstat().getIndex(), noeud.get(i).getstat().getIndex()) < Double.MAX_VALUE){
-					successors.add(noeud.get(i));
+				if(world.get(current.getstat().getIndex(), noeudclone.get(i).getstat().getIndex()) < Double.MAX_VALUE){
+					successors.add(noeudclone.get(i));
 				}
 			} catch (UnknownPlaceException e) {
 				System.out.println("Problème de lecture du monde dans la fonction de récursivité de RBFS");;
@@ -154,7 +165,7 @@ public class RBFS extends Algorithm{
 			
 			if (sortednode.get(0).getpathcost() > f_limit) return new RBFSreturn(true, sortednode.get(0).getpathcost());
 			
-			RBFSreturn result = recursive_BFS(noeud, sortednode.get(0), Math.min(f_limit, sortednode.get(1).getpathcost()));
+			RBFSreturn result = recursive_BFS(noeudclone, sortednode.get(0), Math.min(f_limit, sortednode.get(1).getpathcost()));
 			sortednode.get(1).setSolvation(currentsolvation);
 			
 			if (!result.isFailure()) return result;
