@@ -37,7 +37,7 @@ public class RBFS extends Algorithm{
 				current.setG(0);
 				sourcenode = current;
 			}else{
-				current = new Node(world.getByIndex(i),world.get(source.getIndex(), i),null);
+				current = new Node(world.getByIndex(i), Double.MAX_VALUE ,null);
 			}	
 				noeud.add(current);
 		}
@@ -49,17 +49,15 @@ public class RBFS extends Algorithm{
 	}
 	
 	public RBFSreturn recursive_BFS(ArrayList<Node> noeud, Node current, double f_limit){
-				
+		
+		System.out.println(f_limit);
+		
 		if (!this.noeudenvisage.contains(current)){
 			this.noeudenvisage.add(current);
 			this.eval.newNoeudEnvisage();
 		}
 		
-		if(current.getpathcost() > f_limit){
-			return new RBFSreturn(true, current.getpathcost());
-		}
-		
-		if (current.getstat().equals(destination)){			
+		if (current.getstat() == destination){			
 			for (Node n:current.getsolvation()){
 				this.path.add(n.getstat());
 			}
@@ -68,6 +66,8 @@ public class RBFS extends Algorithm{
 			this.eval.gotASolution(current.getpathcost(), path.size());
 			return new RBFSreturn(false, current.getpathcost());
 		}
+		
+		/*
 		
 		try {
 			if (world.get(current.getstat().getIndex(), destination.getIndex()) < Double.MAX_VALUE){
@@ -81,32 +81,39 @@ public class RBFS extends Algorithm{
 					
 					this.eval.gotASolution(cost , count);
 				}
+					
 			}
 		} catch (UnknownPlaceException e1) {
 			System.out.println("Place non trouve dans la recherche de nouvelles solutions");
 		}
 		
+		*/
+		
 		ArrayList<Node> successors = new ArrayList<Node>();
 		ArrayList<Node> currentsolvation = current.getsolvation();
 		currentsolvation.add(current);
 		
-		try {
-			for (int index : world.getLinks(current.getstat().getIndex())) {
-				successors.add(noeud.get(index));
-			}
-		} catch (UnknownPlaceException e) {
-			e.printStackTrace();
+		for (int i = 0; i < noeud.size(); i++){
+			try {
+				if(world.get(current.getstat().getIndex(), noeud.get(i).getstat().getIndex()) < Double.MAX_VALUE){
+					successors.add(noeud.get(i));
+				}
+			} catch (UnknownPlaceException e) {
+				System.out.println("Problème de lecture du monde dans la fonction de récursivité de RBFS");;
+			}	
 		}
 		
 		if (successors.isEmpty()){
 			return new RBFSreturn(true, Double.MAX_VALUE);
 		}
 		
+		double maxi = 0.0;
+		
 		for (int i = 0; i < successors.size(); i++){
 			try {
 				successors.get(i).setG(current.getG()+world.get(current.getstat().getIndex(), successors.get(i).getstat().getIndex()));
-				successors.get(i).setpathcost(Math.max(current.getpathcost(), successors.get(i).getG()+h(successors.get(i).getstat())));
-				
+				maxi = Math.max(successors.get(i).getG()+h(successors.get(i).getstat()), current.getpathcost());
+				successors.get(i).setpathcost(maxi);
 				this.eval.newVisite(successors.get(i).getstat());
 				
 			} catch (UnknownPlaceException e) {
@@ -115,35 +122,15 @@ public class RBFS extends Algorithm{
 			
 		}
 		
-		double min;
-		ArrayList<Node> sortednode = new ArrayList<Node>();
-		ArrayList<Node> alreadysorted = new ArrayList<Node>();
-		Node current_best = null;
-		
-		for (int i = 0; i < successors.size(); i ++){
-			min = Double.MAX_VALUE;
+		while(true){
 			
-			for (int j = 0; j < successors.size(); j++){
-				
-				this.eval.newVisite(successors.get(j).getstat());
-				
-				if (!alreadysorted.contains(successors.get(j)) && successors.get(j).getpathcost() < min){
-					current_best = successors.get(j);
-					min = successors.get(j).getpathcost();
-				}
-				
-			}				
-			
-			sortednode.add(current_best);
-			alreadysorted.add(current_best);
-			
-		}
-		
-		while(sortednode.get(0).getpathcost() <= f_limit && sortednode.get(0).getpathcost() < Integer.MAX_VALUE){
-			
-			sortednode.get(0).setpathcost(recursive_BFS(noeud, sortednode.get(0), Math.min(f_limit, sortednode.get(1).getpathcost())).getBestF());
+			double min;
+			ArrayList<Node> sortednode = new ArrayList<Node>();
+			ArrayList<Node> alreadysorted = new ArrayList<Node>();
+			Node current_best = null;
 			
 			for (int i = 0; i < successors.size(); i ++){
+				
 				min = Double.MAX_VALUE;
 				
 				for (int j = 0; j < successors.size(); j++){
@@ -161,9 +148,19 @@ public class RBFS extends Algorithm{
 				alreadysorted.add(current_best);
 				
 			}
+			
+			sortednode.get(0).setSolvation(currentsolvation);
+			this.eval.newVisite(sortednode.get(0).getstat());
+			
+			if (sortednode.get(0).getpathcost() > f_limit) return new RBFSreturn(true, sortednode.get(0).getpathcost());
+			
+			RBFSreturn result = recursive_BFS(noeud, sortednode.get(0), Math.min(f_limit, sortednode.get(1).getpathcost()));
+			sortednode.get(1).setSolvation(currentsolvation);
+			
+			if (!result.isFailure()) return result;
+			
 		}
 		
-		return new RBFSreturn(false, sortednode.get(0).getpathcost());
 	}
 
 	public double h(Place current){
