@@ -50,8 +50,6 @@ public class RBFS extends Algorithm{
 	
 	public RBFSreturn recursive_BFS(ArrayList<Node> noeud, Node current, double f_limit){
 		
-		System.out.println(f_limit);
-		
 		Node noeudcopie;
 		Node copienoeud;
 		ArrayList<Node> noeudclone = new ArrayList<Node>();
@@ -78,8 +76,6 @@ public class RBFS extends Algorithm{
 			return new RBFSreturn(false, current.getpathcost());
 		}
 		
-		/*
-		
 		try {
 			if (world.get(current.getstat().getIndex(), destination.getIndex()) < Double.MAX_VALUE){
 				
@@ -98,7 +94,7 @@ public class RBFS extends Algorithm{
 			System.out.println("Place non trouve dans la recherche de nouvelles solutions");
 		}
 		
-		*/
+		
 		
 		ArrayList<Node> successors = new ArrayList<Node>();
 		ArrayList<Node> currentsolvation = current.getsolvation();
@@ -166,7 +162,9 @@ public class RBFS extends Algorithm{
 			if (sortednode.get(0).getpathcost() > f_limit) return new RBFSreturn(true, sortednode.get(0).getpathcost());
 			
 			RBFSreturn result = recursive_BFS(noeudclone, sortednode.get(0), Math.min(f_limit, sortednode.get(1).getpathcost()));
+			sortednode.get(0).setpathcost(result.getBestF());
 			sortednode.get(1).setSolvation(currentsolvation);
+			
 			
 			if (!result.isFailure()) return result;
 			
