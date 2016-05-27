@@ -80,7 +80,7 @@ Notre méconnaissance de la plupart des algorithmes de plus courts chemin nous a
 Les algorithmes de plus court chemin appartiennent à la théorie des graphes et constituent un vaste champ de recherches de l'Intelligence Artificielle. Il existe de nombreux algorithmes qui ont été développés depuis les débuts de la Recherche Opérationnelle au début des années 1940, les plus connus étant Dijkstra et A*.
 
 \paragraph{}
-Cependant, bien que ces algorithmes soient connus et maîtrisés, il est difficile de déterminer \textit{a priori} leur comportement sur différents types d'environnements, et donc de savoir lequel sera le plus efficace. \linebreak
+Cependant, bien que ces algorithmes soient connus et maîtrisés, il est difficile de déterminer \textit{a priori} leur comportement sur différents types d'environnements, et donc de savoir lequel sera le plus efficace. \newline
 
 	\section{Présentation du fonctionnement global et de l'utilisation du logiciel}
 
@@ -92,7 +92,7 @@ Le projet se propose donc de permettre de réaliser des séquences de tests de d
 			\subsection{Les environnements}
 
 \paragraph{}
-Les environnements correspondent aux graphes sur lesquels les algorithmes sont appliqués. Il existe deux types d'algorithmes : les algorithmes générés sous forme de grilles à N dimensions avec N > 1 (hypercubes) et des environnements générés de manière totalement aléatoires.
+Les environnements correspondent aux graphes sur lesquels les algorithmes sont appliqués. Il existe deux types d'algorithmes : les algorithmes générés sous forme de grilles à N dimensions avec N > 1 (hypercubes\footnote{Un hypercube est une version généralisée du carré à N dimensions}) et des environnements générés de manière totalement aléatoires.
 			
 			\subsection{Les algorithmes}
 				
@@ -124,15 +124,14 @@ En lançant le logiciel avec la commande : \emph{java -jar AlgoComparator.jar --
 			\subsubsection{En console en mode de benchmarking}
 			
 %\paragraph{}
-En lançant le logiciel avec la commande : \emph{java -jar AlgoComparator.jar --bench}, celui-ci se lance en mode benchmarking. Il va charger la configuration dans le fichier bench.conf afin de déterminer la taille et le nombre de dimensions des environnements à générer. Un seul dialogue se lance avec l'utilisateur en début d'exécution pour lui demander les algorithmes qu'il veut lancer. Tous les résultats sont stockés dans le fichier "logs.txt". %\linebreak
-\newline
+En lançant le logiciel avec la commande : \emph{java -jar AlgoComparator.jar --bench}, celui-ci se lance en mode benchmarking. Il va charger la configuration dans le fichier bench.conf afin de déterminer la taille et le nombre de dimensions des environnements à générer. Un seul dialogue se lance avec l'utilisateur en début d'exécution pour lui demander les algorithmes qu'il veut lancer. Tous les résultats sont stockés dans le fichier "logs.txt". \newline
 \emph{Note: l'option --bench all permet de lancer un benchmarking sur tous les algorithmes existants et supprime la séquence de dialogue.}
 \cite{AIMA}
 			
 			\subsubsection{Tester la génération d'environnements}
 
 \paragraph{}
-Etant donné que nous avons rencontré des difficultés lors de la génération des environnements durant une certaine période du développement, nous avons aussi ajouté une option permettant de lancer un benchmarking sur la création d'environnements de 10 à plusieurs millions de points. Cette option est accessible avec la commande \emph{java -jar AlgoComparator.jar --test consenv}. \linebreak
+Etant donné que nous avons rencontré des difficultés lors de la génération des environnements durant une certaine période du développement, nous avons aussi ajouté une option permettant de lancer un benchmarking sur la création d'environnements de 10 à plusieurs millions de points. Cette option est accessible avec la commande \emph{java -jar AlgoComparator.jar --test consenv}. \newline
 Il est aussi possible d'avoir le test de l'affichage graphique d'un environnement en remplaçant l'option \textsc{consenv} par l'option \textsc{graphenv}. Ceci peut-être pratique pour vérifier que la création des liens entre les points se fait correctement.
 
 \begin{figure}[H]
@@ -153,13 +152,13 @@ Nous allons maintenant voir les procédés mis en place pour le bon déroulement
 		\subsection{Son organisation}
 
 \paragraph{}
-Afin d'avoir le meilleur suivi possible de l'avancement du projet, une réunion a été organisée avec l'encadrant toutes les deux semaines durant toute le période de développement du projet. En dehors de ces réunions, nous nous rencontrions afin de développer le projet en commun. Le reste du temps, nous avons programmé à distance grâce à l'utilitaire git.
+Afin d'avoir le meilleur suivi possible de l'avancement du projet, une réunion a été organisée avec l'encadrant toutes les deux semaines durant toute le période de développement du projet. En dehors de ces réunions, nous nous rencontrions afin de développer le projet en commun. Le reste du temps, nous avons programmé à distance grâce à l'utilitaire git. Le dépôt est accessible depuis le lien suivant : \url{https://github.com/PIDRGroup/AlgorithmComparator}.
 
 		\subsection{Les technologies utilisées}
 
 \paragraph{}
-Le projet a été réalisé en Java sous Eclipse. \linebreak
-Afin de travailler au mieux en équipe et de pouvoir gérer les versions de notre projet, nous avons utilisé le gestionnaire de version git. \linebreak
+Le projet a été réalisé en Java sous Eclipse. \newline
+Afin de travailler au mieux en équipe et de pouvoir gérer les versions de notre projet, nous avons utilisé le gestionnaire de version git. \newline
 		
 	\section{Outils développés pour tester les algorithmes}
 	
@@ -222,24 +221,24 @@ Voici les images exposant ce principe et dont nous nous sommes inspirés :
 \end{figure}
 
 \paragraph{}
-Nous avons donc refactorisé le code des Environnements afin d'appliquer cette modification, et la différence fut flagrante. Alors qu'il était impossible de générer un environnement d'un million de points dans la première version (même après plusieurs heures), le nouvel algorithme était capable de le faire en moins d'une dizaine de secondes. \linebreak
+Nous avons donc refactorisé le code des Environnements afin d'appliquer cette modification, et la différence fut flagrante. Alors qu'il était impossible de générer un environnement d'un million de points dans la première version (même après plusieurs heures), le nouvel algorithme était capable de le faire en moins d'une dizaine de secondes. \newline
 Voici l'algorithme que nous avons implémenté : 
 
 \begin{algorithm}[H]
  \KwData{M : tableau qui associe à chaque dimension i son nombre de points, N : nombre de dimensions du graphe, borne\_inf : borne inférieure de toutes les dimensions, borne\_sup : borne supérieure de toutes les dimensions, i : compteur correspondant à la dimension courante, j : compteur correspondant au nombre de points de la dimension courante, graph : graph actuel que l'on fait évoluer}
  \KwResult{Hypercube de N dimensions à M[i] points chacune}
 
-  graph = new Point(nb\_dim = N, coordonnées = \{borne\_min, ...\}) //On crée le point extremum  \linebreak
- i = 0 \linebreak
+  graph = new Point(nb\_dim = N, coordonnées = \{borne\_min, ...\}) //On crée le point extremum  \newline
+ i = 0 \newline
  \While{i < N}{
- //On calcule la distance entre les points de la dimension courante \linebreak
- 	distance = calculerDist(M[i], borne\_inf, borne\_sup)  \linebreak
- 	//On duplique le graphe le nombre de fois qu'il faut \linebreak
+ //On calcule la distance entre les points de la dimension courante \newline
+ 	distance = calculerDist(M[i], borne\_inf, borne\_sup)  \newline
+ 	//On duplique le graphe le nombre de fois qu'il faut \newline
  	\For{j=0; j<M[i]; j++}{
- 		tmp = dupliquer(graph) \linebreak
- 		//On décale les coordonnées de la copie de la distance qui existe entre les points \linebreak
- 		glisser\_coordonnées(tmp, distance) \linebreak
- 		copies\_graph.push(tmp) \linebreak
+ 		tmp = dupliquer(graph) \newline
+ 		//On décale les coordonnées de la copie de la distance qui existe entre les points \newline
+ 		glisser\_coordonnées(tmp, distance) \newline
+ 		copies\_graph.push(tmp) \newline
  	}
  	graph = fusion(graph, copies\_graph) //On fusionne toutes les copies ensembles
  }
@@ -247,22 +246,22 @@ Voici l'algorithme que nous avons implémenté :
 \end{algorithm}
 
 \paragraph{}
-Voici un tableau comparatif des différentes versions de l'algorithme de création de cartes à N dimensions :
+Le tableau \ref{label_env} compare les différentes versions de l'algorithme de création de grilles à N dimensions.
 
 \begin{table}[h]
 \begin{center}
-   \begin{tabular}{| l | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r |}
+   \begin{tabular}{| l || r | r | r || r | r | r || r | r | r || r | r | r || r | r | r || r | r | r || r | r | r |}
      \hline
-      \textbf{Version} & \multicolumn{3}{c|}{\textbf{10\up{2}}} & \multicolumn{3}{c|}{\textbf{10\up{4}}} & \multicolumn{3}{c|}{\textbf{10\up{6}}} & \multicolumn{3}{c|}{\textbf{10\up{7}}} \\
+      \textbf{Version} & \multicolumn{3}{c||}{\textbf{10\up{2}}} & \multicolumn{3}{c||}{\textbf{10\up{4}}} & \multicolumn{3}{c||}{\textbf{10\up{6}}} & \multicolumn{3}{c||}{\textbf{10\up{7}}} \\
      \hline
      \cline{2-5}
     & \textbf{2D} & \textbf{3D} & \textbf{4D} & \textbf{2D} & \textbf{3D} & \textbf{4D} & \textbf{2D} & \textbf{3D} & \textbf{4D} & \textbf{2D} & \textbf{3D} & \textbf{4D}\\ \hline
-     1\up{ère} version & 5 & - & - & ~10\up{7} & ~10\up{8} & ~10\up{8} & \multicolumn{3}{c|}{+$\infty$}  & \multicolumn{3}{c|}{+$\infty$}   \\ \hline
+     1\up{ère} version & 5 & - & - & ~10\up{7} & ~10\up{8} & ~10\up{8} & \multicolumn{3}{c||}{+$\infty$}  & \multicolumn{3}{c||}{+$\infty$}   \\ \hline
      2\up{ème} version & 2 & - & - & 34 & 36 & 41 & 16 864 & 24 247 & 32 589 & 53 789 & 74 252 & 83 736  \\ \hline
      3\up{ème} version & 2 & - & - & 13 & 16 & 23 & 368 & 512 & 746  & 14 713 & 21 697 & 37 250 \\ \hline
    \end{tabular}
  \end{center}
- \caption{Tableau récapitulatif des benchmarkings de création d'environnements}
+ \caption{Tableau récapitulatif des benchmarkings de création d'environnements  \label{label_env}}
 \end{table}
 
 	\subsection{Les différents algorithmes implémentés}
@@ -272,56 +271,54 @@ Nous allons maintenant présenter les différents algorithmes mis en place dans 
 	
 \subsubsection{A*}	
 \paragraph{}
-L'algorithme A* lance une recherche orientée vers une destination précise. Cette recherche est biaisée par une heuristique qui va permettre de développer certain chemin plutôt que d'autre. Les calculs s'effectuent sur deux listes, représentant les nœuds parcourus et la frontière, ensemble des nœuds candidat pour les futures recherches. Les nœuds possèdent un coût f=g+h, où g est la distance courante parcouru lors de l'exploration, et h la distance heuristique du nœud à la destination. Ce coût sera initialisé pour tout les nœuds à l'infini et affiner lorsque les nœuds seront rencontrer. \linebreak
+L'algorithme A* lance une recherche orientée vers une destination précise. Cette recherche est biaisée par une heuristique qui va permettre de développer certain chemin plutôt que d'autre. Les calculs s'effectuent sur deux listes, représentant les nœuds parcourus et la frontière, ensemble des nœuds candidat pour les futures recherches. Les nœuds possèdent un coût f=g+h, où g est la distance courante parcouru lors de l'exploration, et h la distance heuristique du nœud à la destination. Ce coût sera initialisé pour tout les nœuds à l'infini et affiner lorsque les nœuds seront rencontrer. \newline
 
-Pour la suite du descriptif de A*, la liste des nœuds explorés sera appeler nœuds fermés et la frontière, les nœuds ouverts. Initialement, il n'y a pas de nœud fermés et seul la source est nœud ouvert. Jusqu'à ce que la liste des nœuds ouverts soit vide, ou que la destination soit atteint, on sélectionne dans les nœuds ouverts, le nœuds présentant le meilleur coût f. On extrait ce nœud des nœuds ouverts, puis est ajouté aux nœuds fermés. Des traitements sont ensuite effectués sur les nœuds adjacents à ce nœud, sauf si ces nœuds sont des nœuds fermés. Si le nœud n'est pas dans la liste des nœuds ouverts, il y est ajouté. Son coût est aussi calculé, par somme du coût du chemin courant effectué par l'algorithme (égal au coût du nœud considéré en premier lieu additionné au coût du chemin entre nœud considéré et nœud adjacent), et l'approximation de la distance du nœud à la source. Si le nœud est déjà dans les nœuds ouverts, on met à jour son coût, si le coût du chemin actuelle est plus intéressant que le coût du nœud.
+Pour la suite du descriptif de A*, la liste des nœuds explorés sera appeler nœuds fermés et la frontière, les nœuds ouverts. Initialement, il n'y a pas de nœud fermés et seul la source est nœud ouvert. Jusqu'à ce que la liste des nœuds ouverts soit vide, ou que la destination soit atteint, on sélectionne dans les nœuds ouverts, le nœuds présentant le meilleur coût f. On extrait ce nœud des nœuds ouverts, puis est ajouté aux nœuds fermés. Des traitements sont ensuite effectués sur les nœuds adjacents à ce nœud, sauf si ces nœuds sont des nœuds fermés. Si le nœud n'est pas dans la liste des nœuds ouverts, il y est ajouté. Son coût est aussi calculé, par somme du coût du chemin courant effectué par l'algorithme (égal au coût du nœud considéré en premier lieu additionné au coût du chemin entre nœud considéré et nœud adjacent), et l'approximation de la distance du nœud à la source. Si le nœud est déjà dans les nœuds ouverts, on met à jour son coût, si le coût du chemin actuelle est plus intéressant que le coût du nœud\footnote{Pour plus d'informations sur A*, nous vous conseillons l'ouvrage \textit{Heuristics: Intelligent Search Strategies for Computer Problem Solving} \cite{Jupea}}. \newline \newline
 
 \begin{algorithm}[H]
  \KwData{NoeudOuvert : liste des nœuds ouverts, NoeudFermé : liste des nœuds explorés, Prédécesseur : tableau du nœud à atteindre pour atteindre un nœud dans le cas du plus court chemin, N : nombre total de point du graphe, Source : nœud source, Destination : nœud destination}
  \KwResult{Parcours : Liste ordonnée du plus court chemin de la Source à la Destination}
 
- \For{i=0; i<N; i++}{
- 		Prédécesseur[noeud(i)] = noeud[i]\linebreak
+ \For{i<-0; i<N; i++}{
+ 		Prédécesseur[noeud(i)] <- noeud[i]\;
  	}
 
- NoeudOuvert <- Source\linebreak
+ NoeudOuvert.push(Source)\;
 
- g(Source) = 0\linebreak
+ g(Source) <- 0\newline
   
  \While{NoeudOuvert n'est pas vide}{
-  NoeudCourant = minf(NoeudOuvert) //On sélectionne le nœud de Noeud ouvert qui a le plus faible coût f=g+h\linebreak\linebreak
+  NoeudCourant <- minf(NoeudOuvert) //On sélectionne le nœud de Noeud ouvert qui a le plus faible coût f=g+h\;
   \If{NoeudCourant = Destination}{
-  	Current = Prédécesseur[Destination]
+  	Current <- Prédécesseur[Destination]
   	  \While{Current != Source}{
-  	  	Parcours <- Current\linebreak
-  	  	Current = Prédécesseur[Current]\linebreak
+  	  	Parcours.push(Current)\;
+  	  	Current <- Prédécesseur[Current]\;
   	  }
-  	  //Fin de l'algorithme\linebreak
+  	  //Fin de l'algorithme\;
   }
-  Retirer(NoeudOuvert, NoeudCourant)\linebreak
-  NoeudFermé <- NoeudCourant\linebreak\linebreak
+  Retirer(NoeudOuvert, NoeudCourant)\;
+  NoeudFermé.push(NoeudCourant)\;
   \For{NoeudAdjacent dans noeudadjacent(NoeudCourant) AND NoeudAdjacent n'est pas dans NoeudFermé}{
   
-		Nouveaug = g(NoeudCourant) + Chemin(NoeudCourant + NoeudAdjacent)\linebreak  
+		Nouveaug <- g(NoeudCourant) + Chemin(NoeudCourant + NoeudAdjacent)\newline  
   
  		\uIf{NoeudAdjacent n'est pas dans NoeudOuvert}{
   
- 				NoeudOuvert <- NoeudAdjacent\linebreak  								
+ 				NoeudOuvert.push(NoeudAdjacent)\;
  				
  		}
  		\uElseIf{Nouveaug > g(NoeudAdjacent)}{							
  					continue 
  		}
- 			
- 		
- 		g(NoeudAdjacent) = Nouveaug\linebreak  
- 		f(NoeudAdjacent) = Nouveaug + f(NoeudAdjacent)\linebreak  
- 		Prédécesseur[NoeudAdjacent] = NoeudCourant\linebreak  
+ 		g(NoeudAdjacent) <- Nouveaug\; 
+ 		f(NoeudAdjacent) <- Nouveaug + f(NoeudAdjacent)\;  
+ 		Prédécesseur[NoeudAdjacent] <- NoeudCourant\; 
  		
  	}
  }
  
-	print("Plus de noeud ouvert! Chemin non trouve!)\linebreak  
+	print("Plus de noeud ouvert! Chemin non trouve!)\;  
  
  \caption{Algorithme A*}
 \end{algorithm}
@@ -332,14 +329,17 @@ L'algorithme de Dijkstra nous a servis de référence tout au long de ce projet.
 
 \paragraph{}
 L'utilisation d'une liste des nœuds explorés permet à l'algorithme de connaître sa progression. A chaque nœud est associé une distance à la source, initialisée à l'infini pour tous les nœuds, sauf pour le nœud source lui-même, initialisée à 0. Jusqu'à ce que tous les nœuds du graphe soit dans liste des nœuds explorées, on va considérer le nœud qui à la plus petite distance et qui n'a pas encore exploré. On va mettre ce nœud dans la liste des nœuds explorés. On met à jour la distance à la source de tous ces nœuds adjacents qui ne sont pas dans la liste des nœuds explorés. Cette mise à jour consiste à attribuer à cette distance le minimum entre sa valeur actuelle et l'addition de la distance à la source du nœud considéré et la distance entre le nœud considéré et le nœud adjacent. Ce calcul permet de savoir si le nœud considéré offre ou non un chemin plus court vers ses nœuds adjacents. En cas de modification de la distance à la source d'un nœud adjacent, on sait alors que le plus court chemin pour atteindre ce nœud passera par le nœud considéré.   
-
+\newline\newline
+Le pseudo de l'algorithme est disponible en annexe \ref{algo_dijk}\footnote{Pour plus d'informations sur Dijkstra, nous vous conseillons les ouvrages \textit{Artificial Intelligence: A Modern Approach} \cite{AIMA} et \textit{Computer Networking: A Top-Down Approach} \cite{Kurose}}. \newline
 
 			\subsubsection{IDA* (Iterative deepening A*)}
 \paragraph{}
 L'algorithme IDA* est une modification de l'algorithme A* étudié précédent. Il donc pour objectif d'établir le plus court chemin vers une destination précise. Il est aidé pour cela d'une heuristique qui le conduit à une recherche biaisée. Ce qui le différencie d'A*, c'est l'absence de liste pour retenir les nœuds visitées et il ne possède pas de réel frontière. 
 
 \paragraph{}
-En absence des ces informations, l'algorithme doit parcourir plusieurs fois le graphe à partir du départ vers la destination. Il possède un maximum, correspondant au meilleur chemin trouvé sur le parcours précédent. A chaque parcours, l'algorithme tout les chemins jusqu'à ce que le maximum soit dépassé. Les coûts de tous les chemins sont alors remontés, le plus petit est considérer comme nouveau maximum, et les recherches sont réinitialisées au départ. On répète le processus jusqu'à atteindre la destination.   
+En absence des ces informations, l'algorithme doit parcourir plusieurs fois le graphe à partir du départ vers la destination. Il possède un maximum, correspondant au meilleur chemin trouvé sur le parcours précédent. A chaque parcours, l'algorithme tout les chemins jusqu'à ce que le maximum soit dépassé. Les coûts de tous les chemins sont alors remontés, le plus petit est considérer comme nouveau maximum, et les recherches sont réinitialisées au départ. On répète le processus jusqu'à atteindre la destination.  
+\newline\newline
+Le pseudo de l'algorithme est disponible en annexe \ref{algo_IDA}\footnote{Pour plus d'informations sur IDA*, nous vous conseillons l'article \textit{Planning as heuristic search} \cite{BlaiHec}}. 
 
 			\subsubsection{UCS (Uniform Cost Search)}
 \paragraph{}			
@@ -347,6 +347,8 @@ L'algorithme Uniform Cost Search peut être perçu comme une fusion entre les al
 
 \paragraph{}		
 L'algorithme débute son exploration à partir de la source, qui est alors le seul nœud présent dans la frontière. Il considère le nœud en question et le place dans la liste des nœuds explorés. Tous les nœuds adjacents au nœud source sont alors placés dans la frontière, leur coût d'accès mis à jour avec le coût du chemin courant, et leur plus court chemin sont uniquement constitué du nœud source. Jusqu'à ce que le nœud considéré soit la destination, on considère dans la frontière le nœud le plus accessible, pour le placer dans la liste des nœuds explorés. Les nœuds qui lui sont adjacents sont ajoutés à la frontière avec un court plus chemin égal au plus court chemin du nœud considéré auquel on ajoute ce dernier, sauf si ils ont été déjà explorées. Dans ce dernier cas, on met à jour leur plus court chemin si il s'avère que l'on vient de trouver un meilleur chemin pour ceux-ci.   
+\newline\newline
+Le pseudo de l'algorithme est disponible en annexe \ref{algo_UCS}\footnote{Pour plus d'informations sur UCS, nous vous conseillons l'ouvrage \textit{Introduction to Algorithms} \cite{CorLeiRivSte-ita09}}.
 
 			\subsubsection{RBFS (Recursive Best First Search)}
 \paragraph{}	
@@ -354,6 +356,8 @@ L'algorithme RBFS se focalise sur la recherche du plus court chemin vers une des
 
 \paragraph{}	
 La particularité de cet algorithme est d'être récursif. Cette récursivité est utile à l'exploration à chaque de plusieurs voies possibles et terminer quel choix est le meilleur. A partir d'un nœud considérée, on met à jour les valeurs les coûts d'accès à ces successeurs (constituer de la valeur nécessaire pour atteindre le nœud lors du chemin considéré et d'une approximation de la distance du nœud à la destination), ainsi que la liste du plus court chemin pour atteindre ces successeurs. On va ensuite développer la voie qui présente le coût le plus intéressant (c'est à dire considérer le nœud successeur ouvrant sur cette voie), tout en gardant en mémoire la deuxième meilleur possibilité. Si il s'avère qu'au fils du développement du chemin son coût devient supérieur à la seconde possibilité, on arrête de développer ce chemin, et on remonte le coût du chemin développé, et on développe le second chemin, et on garde en mémoire le nouveau seconde meilleur coût (qui peut être le coût remonté de la première tentative). On considère au début la source et on termine lorsque la destination est considérée.  
+\newline\newline
+Le pseudo de l'algorithme est disponible en annexe \ref{algo_RBFS}\footnote{Pour plus d'informations sur RBFS, nous vous conseillons l'article \textit{Recursive Best-First Search with Bounded Overhead} \cite{Scottma}}.
 	
 			\subsubsection{SMA* (Simplified Memory Bounded A*)}	
 \paragraph{}	
@@ -364,6 +368,8 @@ La queue est initialement remplis par le seul nœud source. Cette queue est touj
 		
 \paragraph{}	
 En cas de saturation de la mémoire, on va décharger le nœud de la queue avec la plus mauvais coût f, et l'enlever de la liste des successeurs de son ancêtre, tout en faisant remonter son coût. On peux ainsi reconsidérer ce chemin si nécessaire. On recharge l'ancêtre en mémoire si celui-ci a été déchargé.
+\newline\newline
+Le pseudo de l'algorithme est disponible en annexe \ref{algo_SMA}\footnote{Pour plus d'informations sur SMA*, nous vous conseillons l'article \textit{Efficient memory-bounded search methods} \cite{Russell-ecai92}}.
 
 		\subsection{Objet Évaluation et fichiers de log}
 \paragraph{}
@@ -403,11 +409,13 @@ Le programme nous offre la possible d'effectuer des séries de tests sur des env
 	
 		\subsection{Benchmarking sur 100 points}
 		
+		Le tableau \ref{bench_100} présente les moyennes des résultats des différents benchmarkings sur un environnement de 100 points en 2D, 3D et 4D.
+		
 \begin{table}[H]
 \begin{center}
-   \begin{tabular}{| l | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r |}
+   \begin{tabular}{| l || r | r | r || r | r | r || r | r | r || r | r | r || r | r | r || r | r | r || r | r | r |}
      \hline
-      \textbf{Version} & \multicolumn{3}{c|}{\textbf{Noeuds visités}} & \multicolumn{3}{c|}{\textbf{Nombre de visites}} & \multicolumn{3}{c|}{\textbf{Nombre de noeuds envisagés}} & \multicolumn{3}{c|}{\textbf{Taille du chemin}} \\
+      \textbf{Algorithme} & \multicolumn{3}{c||}{\textbf{Noeuds visités}} & \multicolumn{3}{c||}{\textbf{Visites}} & \multicolumn{3}{c||}{\textbf{Noeuds envisagés}} & \multicolumn{3}{c||}{\textbf{Taille du chemin}} \\
      \hline
      \cline{2-5}
     & \textbf{2D} & \textbf{3D} & \textbf{4D} & \textbf{2D} & \textbf{3D} & \textbf{4D} & \textbf{2D} & \textbf{3D} & \textbf{4D} & \textbf{2D} & \textbf{3D} & \textbf{4D}\\ \hline
@@ -417,16 +425,18 @@ Le programme nous offre la possible d'effectuer des séries de tests sur des env
       IDA* &  &  &  &  &  &  & & &  & & &   \\ \hline
    \end{tabular}
  \end{center}
- \caption{Tableau récapitulatif des benchmarkings sur 100 points}
+ \caption{Tableau récapitulatif des benchmarkings sur 100 points \label{bench_100}}
 \end{table}		
 
 \subsection{Benchmarking sur 10 000 points}
+
+Le tableau \ref{bench_10000} présente les moyennes des résultats des différents benchmarkings sur un environnement de 10 000 points en 2D.		
 		
 \begin{table}[H]
 \begin{center}
-   \begin{tabular}{| l | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r | r |}
+   \begin{tabular}{| l || r || r || r || r ||}
      \hline
-      \textbf{Version} & \textbf{Noeuds visités} & \textbf{Nombre de visites} & \textbf{Nombre de noeuds envisagés} & \textbf{Taille du chemin} \\
+      \textbf{Algorithme} & \textbf{Noeuds visités} & \textbf{Visites} & \textbf{Noeuds envisagés} & \textbf{Taille du chemin} \\
      \hline
      \cline{2-5}
     & \textbf{2D} & \textbf{2D} & \textbf{2D} & \textbf{2D} \\ \hline
@@ -436,7 +446,7 @@ Le programme nous offre la possible d'effectuer des séries de tests sur des env
       IDA* & 285 & 44 284 355 & 385 & 38  \\ \hline
    \end{tabular}
  \end{center}
- \caption{Tableau récapitulatif des benchmarkings sur 10 000 points}
+ \caption{Tableau récapitulatif des benchmarkings sur 10 000 points \label{bench_10000}}
 \end{table}
 		
 		\subsection{Interprétation des résultats}
@@ -468,10 +478,6 @@ L'algorithme SMA* est implémenté, mais n'a pas encore passé avec succès les 
 \paragraph{}
 Nous avons effectués de recherche sur les méthodes de génération de carte aléatoire. Nous n'avons pas trouvé de réel méthode à la création de graphe aléatoire connexe, la connexité étant une propriété nécessaire à nos graphes. Sans cela, il serait possible de n'avoir aucun chemin entre deux points pris aléatoirement dans le graphe. Développer ces applications nous seraient utiles pour supprimer notre dépendance aux grilles, et en apprendre d'avantage sur les comportements de nos algorithmes d'intelligence artificielle.
 
-\paragraph{}
-Nous avons remarqué que nos algorithmes d'intelligence artificielle pouvait privilégier la mémoire à la puissance de calcul, comme c'est la cas pour IDA* et RBFS développé à la fin des années 80, quand la mémoire était encore cher. Il serait intéressé de voir si la création d'algorithme de recherche du plus court chemin orientée (c'est-à-dire avec une heuristique) privilégiant la puissance de calcul au détriment de la mémoire, qui serait alors surexploitée.
-
-
 \clearpage
 \renewcommand{\tocbibname}{Bibliographie / Webographie}
 \bibliographystyle{plain}
@@ -479,19 +485,6 @@ Nous avons remarqué que nos algorithmes d'intelligence artificielle pouvait pri
 
 \clearpage
 
-\chapter*{Glossaire}
-\addcontentsline{toc}{chapter}{Glossaire}
-
-\begin{itemize}
-	\item[•] UCS : Uniform Cost Search, algorithme de recherche de plus court chemin
-	\item[•] RBFS : Recursive Best For Search, algorithme de recherche de plus court chemin
-	\item[•] IDA* : Iterative Deepening A*, algorithme de recherche de plus court chemin
-	\item[•] SMA* : Simplified Memory-bound A*, algorithme de recherche de plus court chemin
-	\item[•] Hypercube : généralisation à n-dimensions du carré (aussi appelé n-cube quand n >= 3)
-	\item[•] Grilles à n-dimensions : grilles de M points à N dimensions, qui peut-être vu comme la généralisation d'un hypercube à M points.
-\end{itemize}
-
-\clearpage
 \renewcommand{\thesubsection}{\Roman{subsection}}
 
 
@@ -505,38 +498,38 @@ Nous avons remarqué que nos algorithmes d'intelligence artificielle pouvait pri
  \KwResult{Tableau Distance et Prédécesseur remplis}
 
  \For{i=0; i<N; i++}{
- 		Prédécesseur[noeud(i)] = noeud[i]\linebreak
- 		Distance[noeud(i)] = infini\linebreak
+ 		Prédécesseur[noeud(i)] <- noeud[i]\;
+ 		Distance[noeud(i)] <- infini\;
  	}
 
- Distance[Source] = 0\linebreak
+ Distance[Source] = 0\newline
   
  \While{size(Exploration) < N}{
-  NoeudCourant = mindistance(Exploration, Distance) //On sélectionne le nœud qui a la plus courte distance à la source et qui n'a pas encore été exploré\linebreak\linebreak
+  NoeudCourant <- mindistance(Exploration, Distance) //On sélectionne le nœud qui a la plus courte distance à la source et qui n'a pas encore été exploré\;
   \For{NoeudAdjacent dans noeudadjacent(NoeudCourant)}{
  		\If{NoeudAdjacent n'est pas dans Exploration}{
  			\If{Distance(NoeudCourant) + Chemin(NoeudAdjacent, NoeudCourant) < Distance(NoeudAdjacent)}{
- 				Distance(NoeudAdjacent) = Distance(NoeudCourant) + Chemin(NoeudAdjacent, NoeudCourant)\linebreak
- 				Prédécesseur(NoeudAdjacent) = NoeudCourant\linebreak
+ 				Distance(NoeudAdjacent) <- Distance(NoeudCourant) + Chemin(NoeudAdjacent, NoeudCourant)\;
+ 				Prédécesseur(NoeudAdjacent) <- NoeudCourant\;
  			}
  		}
  	}
  }
- \caption{Algorithme de Dijkstra}
+ \caption{Dijkstra \label{algo_dijk}}
 \end{algorithm}
 
 \clearpage
 
-\chapter{Algorithme d'IDA*}
+\chapter{Algorithme IDA*}
 
 \begin{algorithm}[H]
  \KwData{limite : valeur que l'on s'impose à chaque recherche, Source : nœud source, Destination : nœud destination}
  \KwResult{Parcours : Liste ordonnée du plus court chemin de la Source à la Destination}
 
- limite = h(Source)\;
+ limite <- h(Source)\;
   
  \While{true}{
- 	retour = recherche(Source, 0, limite)\;
+ 	retour <- recherche(Source, 0, limite)\;
  	\If{retour = -1}{
 		break\;
 	} 
@@ -545,39 +538,39 @@ Nous avons remarqué que nos algorithmes d'intelligence artificielle pouvait pri
  }
 \SetKwProg{Fn}{Function}{}{}
 \Fn{recherche (noeud, g, limite)}{
-	f = g + h(noeud)\;
+	f <- g + h(noeud)\;
 	\If{f > limit}{
 		return f\;
 	}
 	
 	\If{noeud = Destination}{
-		Parcours <- noeud\;
+		Parcours.push(noeud)\;
 		return -1\;
 	}
 	
 	min = infini\;	
 	
 	\For{NoeudAdjacent dans noeudadjacent(noeud)}{
-		retour = Recherche(NoeudAdjacent, g+Chemin(noeud, NoeudAdjacent), limit)\;
+		retour <- Recherche(NoeudAdjacent, g+Chemin(noeud, NoeudAdjacent), limit)\;
 		\If{retour = -1}{
-			Parcours <- NoeudAdjacent\;
+			Parcours.push(NoeudAdjacent)\;
 			return -1\;
 		}
 		
 		\If{retour < min}{
-			min = retour\;
+			min <- retour\;
 		}
 	}
 	
 	return retour\;
 }
  
- \caption{Algorithme IDA*}
+ \caption{Iterative Deepening A* \label{algo_IDA}}
 \end{algorithm}
 
 \clearpage
 
-\chapter{Algorithme d'UCS}
+\chapter{Algorithme UCS}
 
 \begin{algorithm}[H]
  \KwData{Exploration : liste des nœuds explorés, Frontière : liste des nœuds ouverts, Distance : tableau de la distance des nœuds à la source, Parcours : tableau des plus courant chemin pour atteindre un nœud, N : nombre total de point du graphe, Source : nœud source, Destination : nœud destination}
@@ -586,140 +579,162 @@ Nous avons remarqué que nos algorithmes d'intelligence artificielle pouvait pri
  Frontière <- Source
   
  \While{true}{
-  NoeudCourant = mindistance(Frontière) //On sélectionne le nœud qui a la plus courte distance à la source\linebreak\linebreak
+  NoeudCourant <- mindistance(Frontière) //On sélectionne le nœud qui a la plus courte distance à la source\;
   \If{NoeudCourant = Destination}{
-  		Parcoursfinal = Parcours[NoeudCourant]
+  		Parcoursfinal <- Parcours[NoeudCourant]
 	}
-	//Fin de l'algorithme\linebreak  
-	Retirer(Frontière, NoeudCourant)\linebreak
-  	Exploration <- NoeudCourant\linebreak\linebreak
+	//Fin de l'algorithme\;
+	Retirer(Frontière, NoeudCourant)\;
+  	Exploration.push(NoeudCourant)\;
   	\For{NoeudAdjacent dans noeudadjacent(NoeudCourant)}{
   		
-		NouvelleDistance = Distance[NoeudCourant]+ Chemin(NoeudCourant, NoeudAdjacent)\linebreak
-		NouveauParcours = Parcours[NoeudCourant] + NoeudCourant\linebreak
+		NouvelleDistance <- Distance[NoeudCourant]+ Chemin(NoeudCourant, NoeudAdjacent)\;
+		NouveauParcours <- Parcours[NoeudCourant] + NoeudCourant\;
   		
   		\uIf{NoeudAdjacent n'est ni dans Exploration ni dans Frontière}{
-  			Frontiere <- NoeudAdjacent\linebreak
-  			Parcours[NoeudAdjacent] = NouveauParcours\linebreak
-  			Distance[NoeudAdjacent] = NouvelleDistance\linebreak
+  			Frontiere.push(NoeudAdjacent)\;
+  			Parcours[NoeudAdjacent] <- NouveauParcours\;
+  			Distance[NoeudAdjacent] <- NouvelleDistance\;
 		}\uElseIf{NoeudAdjacent est dans Frontière et Distance[NoeudAdjacent] > NouvelleDistance}{							
- 			Parcours[NoeudAdjacent] = NouveauParcours\linebreak
-  			Distance[NoeudAdjacent] = NouvelleDistance\linebreak	 
+ 			Parcours[NoeudAdjacent] <- NouveauParcours\;
+  			Distance[NoeudAdjacent] <- NouvelleDistance\; 
  		}
   	}
  }
- \caption{Algorithme Uniform Cost Search}
+ \caption{Uniform Cost Search \label{algo_UCS}}
 \end{algorithm}
 
 \clearpage
 
-\chapter{Algorithme de RBFS}
+\chapter{Algorithme RBFS}
 
 {\small
 \begin{algorithm}[H]
  \KwData{RETOUR : structure de donnée de deux type décrivant si la recherche est un échec et la taille du chemin, limite : limite de recherche, Parcours : tableau du plus court chemin, Noeuds : liste de tous les noeuds, Source : nœud source, Destination : nœud destination}
  \KwResult{Parcoursfinal : Liste ordonnée du plus court chemin de la Source à la Destination}
- g(source) = 0\linebreak
-  RBFS(Noeuds, Source, infini)\linebreak
+ g(source) <- 0\;
+  RBFS(Noeuds, Source, infini)\;
 \SetKwProg{Fn}{Function}{}{}
 \Fn{RBFS(Listenoeud, noeud, limite)}{
 	\If{noeud = Destination}{
-		Parcoursfinal = Parcours[Destination]\linebreak
+		Parcoursfinal <- Parcours[Destination]\;
 	}
 	\For{NoeudAdjacent dans noeudadjacent(noeud)}{
-		g(NoeudAdjacent) = g(noeud) + Chemin(NoeudAdjacent, noeud)\linebreak
-		f(NoeudAdjacent) = g(NoeudAdjacent) + h(NoeudAdjacent)\linebreak
+		g(NoeudAdjacent) <- g(noeud) + Chemin(NoeudAdjacent, noeud)\;
+		f(NoeudAdjacent) <- g(NoeudAdjacent) + h(NoeudAdjacent)\;
 	}
-	Successeurs = noeudadjacent(noeud)\linebreak
+	Successeurs <- noeudadjacent(noeud)\;
 	\While{true}{
-		tri(Successeurs) //On tri les noeuds par valeur croissante de f\linebreak
+		tri(Successeurs) //On tri les noeuds par valeur croissante de f\;
 		\eIf{isEmpty(Successeurs)}{
-			return RETOUR(true, infini)\linebreak
+			return RETOUR(true, infini)\;
 		}{
-			Parcours[Successeurs[0]] = Parcours[noeud] + noeud\linebreak
+			Parcours[Successeurs[0]] <- Parcours[noeud] + noeud\;
 		}
 		\If{f(Successeurs[0]) > limite}{
-			return RETOUR (true, Successeurs[0])\linebreak
+			return RETOUR (true, Successeurs[0])\;
 		}
 		\If{size(Successeurs) = 1}{
-			result = RBFS(Listenoeud, Successeurs[0], limite)\linebreak
+			result <- RBFS(Listenoeud, Successeurs[0], limite)\;
 		}{
-			result = RBFS(Listenoeud, Successeurs[0], min(limite, f(Successeurs[1]))\linebreak
+			result <- RBFS(Listenoeud, Successeurs[0], min(limite, f(Successeurs[1]))\;
 		}
 		\If{estSucces(result)}{
-			return result\linebreak
+			return result\;
 		}
 	}
-	return retour\linebreak
+	return retour\;
 }
- \caption{Algorithme RBFS}
+ \caption{Recursive Best First Search \label{algo_RBFS}}
 \end{algorithm}
 }
 
 \clearpage
 
-\chapter{Algorithme de SMA*}
+\chapter{Algorithme SMA*}
 
 {\footnotesize
 \begin{algorithm}[H]
  \KwData{Queue : liste des nœuds ouverts, Mémoire : liste à capacité limitée, T: Taille de la mémoire, DepthMax: Taille maximum d'un chemin en nombre de nœud, Source : nœud source, Destination : nœud destination}
  \KwResult{Parcours : Liste ordonnée du plus court chemin de la Source à la Destination}
 
- Queue <- Source \linebreak
- Mémoire <- Source \linebreak
+ Queue.push(Source) \;
+ Mémoire.push(Source) \;
   
  \While{true}{
   Tri(queue) // On tri la queue par f croissant
-  NoeudCourant = Queue(0) //On sélectionne l'élément de la queue qui a le plus faible coût f=g+h\linebreak\linebreak
+  NoeudCourant <- Queue(0) //On sélectionne l'élément de la queue qui a le plus faible coût f=g+h\;
   \If{NoeudCourant = Destination}{
-  	Current = Ancêtre(Destination)\linebreak
+  	Current <- Ancêtre(Destination)\;
   	\While{Current != Source}{
-		Parcours <- Current\linebreak
-  		Current = Ancêtre(Current)\linebreak
+		Parcours.push(Current)\;
+  		Current <- Ancêtre(Current)\;
   	}
   }
-	//Fin de l'algorithme\linebreak  
+	//Fin de l'algorithme\;
   
   \eIf{Tous les successeurs de NoeudCourant ont été générés}{
-  	Retirer(Queue, NoeudCourant)\linebreak 	 
+  	Retirer(Queue, NoeudCourant)\;
   }{
-  	NoeudAdjacent = SuccesseurNonConsidéré(NoeudCourant)\linebreak
-  	Mémoire <- NoeudAdjacent\linebreak
-  	Queue <- NoeudAdjacent\linebreak
-  	g(NoeudAdjacent) = g(NoeudCourant) + Chemin(NoeudCourant, NoeudAdjacent)\linebreak
+  	NoeudAdjacent <- SuccesseurNonConsidéré(NoeudCourant)\;
+  	Mémoire.push(NoeudAdjacent)\;
+  	Queue.push(NoeudAdjacent)\;
+  	g(NoeudAdjacent) <- g(NoeudCourant) + Chemin(NoeudCourant, NoeudAdjacent)\;
   	\eIf{Pronfondeur(NoeudAdjacent) > DepthMax}{
-  		f(NoeudAdjacent) = infini\linebreak 	  
+  		f(NoeudAdjacent) <- infini\;	  
   	}{
-  		f(NoeudAdjacent) = g(NoeudAdjacent) + h(NoeudAdjacent)\linebreak
+  		f(NoeudAdjacent) <- g(NoeudAdjacent) + h(NoeudAdjacent)\;
   	}
   	\If{NoeudAdjacent est le dernier successeur de NoeudCourant à être considérer}{
-  		//Informer NoeudCourant et ses ancêtres du meilleur f des successeurs de NoeudCourant\linebreak
+  		//Informer NoeudCourant et ses ancêtres du meilleur f des successeurs de NoeudCourant\;
   	}
   	\If{Tous les successeurs de NoeudCourant sont en mémoire}{
-  		//Informer NoeudCourant et ses ancêtres du meilleur f des successeurs de NoeudCourant\linebreak
+  		//Informer NoeudCourant et ses ancêtres du meilleur f des successeurs de NoeudCourant\;
   	}
   	\If{size(Mémoire) == T}{
-  		Tri(queue)\linebreak
-  		Asupprimer = Queue(size(Queue)-1)\linebreak
-  		Retirer(Queue, Queue(size(Queue)-1))\linebreak
-  		Retirer(Successeurs(Ancêtre(Asupprimer)), Asupprimer)\linebreak
+  		Tri(queue)\;
+  		Asupprimer = Queue(size(Queue)-1)\;
+  		Retirer(Queue, Queue(size(Queue)-1))\;
+  		Retirer(Successeurs(Ancêtre(Asupprimer)), Asupprimer)\;
   		\If{Ancêtre(Asupprimer) n'est pas dans la queue}{
-  			Queue <- Ancêtre(Asupprimer)\linebreak
+  			Queue <- Ancêtre(Asupprimer)\;
   		}
-  		Retirer(Mémoire, Asupprimer)\linebreak
+  		Retirer(Mémoire, Asupprimer)\;
   	}
   	
   }
 }
- \caption{Algorithme SMA*}
+ \caption{Simplified Memory bounded A* \label{algo_SMA}}
 \end{algorithm}
 }
+
+\clearpage
+
+\chapter{Fichier de log}
+
+\begin{figure}[H]
+\centering
+    \includegraphics[width=1\textwidth]{./figures/log.jpg}
+    \caption{Extrait du fichier de log du benchmarking sur 10 000 noeuds.}
+\end{figure}
+
+\clearpage
+
+\chapter{Fichier d'une graine}
+
+\begin{figure}[H]
+\centering
+    \includegraphics[width=0.5\textwidth]{./figures/seed.jpg}
+    \caption{Extrait du fichier de la graine générant uen grille 2D de 5 sur 10 noeuds.}
+\end{figure}
+
+\clearpage
 
 \section*{Résumé}
 \addcontentsline{toc}{chapter}{Résumé}
 
 \paragraph{Le sujet en bref.}
-Le sujet qui a été choisi porte sur la réalisation d'un logiciel de benchmarking permettant de tester et de comparer différents algorithmes de recherche de plus court chemin sur des environnements générés par graine sur des séquences de tests. \linebreak
+Le sujet qui a été choisi porte sur la réalisation d'un logiciel de benchmarking permettant de tester et de comparer différents algorithmes de recherche de plus court chemin sur des environnements générés par graine sur des séquences de tests. \newline
 
 \paragraph{Les fonctionnalités implémentées.}
 
